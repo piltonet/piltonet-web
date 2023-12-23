@@ -1,0 +1,50 @@
+{
+    "networks": [
+        "viction_mainnet",
+        "viction_testnet"
+    ],
+    "viction_mainnet": {
+        "id": 88,
+		"chainId": "0x58",
+        "chainName": "Viction",
+        "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
+        "environment": "evm",
+        "rpcUrls": ["https://rpc.tomochain.com"],
+        "blockExplorerUrls": ["https://tomoscan.io/"],
+        "wallets": ["metamask", "coin98"],
+        "links": {
+            "website": "https://www.tomochain.com/",
+            "twitter": "https://twitter.com/tomochain"
+        },
+        "nativeCurrency": {
+			"decimals": 18,
+			"name": "Viction",
+			"symbol": "VIC",
+            "standard": "ERC20",
+            "logo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025"
+        },
+        "supportedTokens": []
+    },
+    "viction_testnet": {
+        "id": 89,
+		"chainId": "0x59",
+        "chainName": "Viction Testnet",
+        "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
+        "environment": "evm",
+        "rpcUrls": ["https://rpc.testnet.tomochain.com"],
+        "blockExplorerUrls": ["https://testnet.tomoscan.io/"],
+        "wallets": ["metamask", "coin98"],
+        "links": {
+            "website": "https://www.tomochain.com/",
+            "twitter": "https://twitter.com/tomochain"
+        },
+        "nativeCurrency": {
+			"decimals": 18,
+			"name": "Viction",
+			"symbol": "VIC",
+            "standard": "ERC20",
+            "logo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025"
+        },
+        "supportedTokens": []
+    }
+}
