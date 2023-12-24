@@ -28,7 +28,8 @@
       </span>
       <span class="account-username mt-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
       <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-        <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span>
+        <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
+        <span class="account-address mt-3">Your Soulbound Account: {{ accountProfile?.account_tba_address ? utils.truncate(accountProfile?.account_tba_address, 12) : '' }}</span>
         <span>
           <el-tooltip
             :content="this.copyAddressTooltip"
