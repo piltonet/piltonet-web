@@ -18,7 +18,7 @@
       </p>
       <!-- <p>{{ `PublicKey: ${publicKey}` }}</p> -->
       <p v-if="account?.account_balance">
-        {{ utils.fixedNumber(account.account_balance / 10 ** defaultchain.nativeToken.decimals, 5, 2) }}
+        {{ utils.fixedNumber(account.account_balance / 10 ** defaultchain.nativeCurrency.decimals, 5, 2) }}
       </p>
       <p v-else>
         <i class="fa fa-sync fa-spin"></i>
@@ -47,7 +47,7 @@
           </span>
         </p>
         <p v-if="accountsContractBalance">
-          {{ utils.fixedNumber(accountsContractBalance / 10 ** defaultchain.nativeToken.decimals, 5, 2) }}
+          {{ utils.fixedNumber(accountsContractBalance / 10 ** defaultchain.nativeCurrency.decimals, 5, 2) }}
         </p>
 
         <button v-if="!this.accountsContractAccount?.created" class="submit-btn" @click="onConnectClick">
@@ -63,7 +63,7 @@
           </span>
         </p>
         <p v-if="accountProfileContractBalance">
-          {{ utils.fixedNumber(accountProfileContractBalance / 10 ** defaultchain.nativeToken.decimals, 5, 2) }}
+          {{ utils.fixedNumber(accountProfileContractBalance / 10 ** defaultchain.nativeCurrency.decimals, 5, 2) }}
         </p>
         
         <button v-if="accountProfileContractAddress" class="submit-btn" @click="getAccountProfileContract">

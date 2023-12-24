@@ -48,15 +48,15 @@
         <div class="d-flex flex-column justify-content-start align-items-start">
           <div class="d-flex flex-row justify-content-start align-items-center mb-1">
             <el-tooltip
-                :content="defaultchain.nativeToken.symbol"
+                :content="defaultchain.nativeCurrency.symbol"
                 placement="top"
                 :hide-after="0"
             >
-              <img :src="defaultchain.nativeToken.logo" class="token-logo-small mx-2" />
+              <img :src="defaultchain.nativeCurrency.logo" class="token-logo-small mx-2" />
             </el-tooltip>
             <span v-if="connectedAccount.account_balance === undefined" class="main-text-small"><i class="fa fa-sync fa-spin"></i></span>
             <span v-else class="main-text-small">
-              {{ utils.fixedNumber(connectedAccount.account_balance / 10 ** defaultchain.nativeToken.decimals, 5, 2) }}
+              {{ utils.fixedNumber(connectedAccount.account_balance / 10 ** defaultchain.nativeCurrency.decimals, 5, 2) }}
             </span>
           </div>
           <div v-if="defaultchain.supportedTokens.length > 0" class="d-flex flex-row justify-content-start align-items-center">

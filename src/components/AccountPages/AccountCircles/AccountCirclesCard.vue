@@ -389,7 +389,7 @@
                 :paymentToken="accountCircleProps.circle_payment_token"
                 :height="13" customClass="ms-1"
               />
-            <span class="account-circles-card-creator-fullname ps-1">{{ defaultchain.nativeToken.symbol }}</span>
+            <span class="account-circles-card-creator-fullname ps-1">{{ defaultchain.nativeCurrency.symbol }}</span>
           </div>
           
           <!-- Round Period -->

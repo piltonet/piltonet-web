@@ -32,8 +32,8 @@
           </label>
           <button
             class="account-circles-deploy-button selected locked"
-            :class="circleInfo.circle_payment_token == this.defaultchain.nativeToken.address ? 'selected' : ''"
-            @click="circleInfo.circle_payment_token = this.defaultchain.nativeToken.address"
+            :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? 'selected' : ''"
+            @click="circleInfo.circle_payment_token = this.defaultchain.nativeCurrency.address"
           >
             <SvgPaymentToken
               :chainId="circleInfo.circle_chain_id"
@@ -41,7 +41,7 @@
               :tooltip="false"
               customClass="mb-1 me-2"
             />
-            <p>{{ defaultchain.nativeToken.symbol }}</p>
+            <p>{{ defaultchain.nativeCurrency.symbol }}</p>
             <i class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
           <p id="circlePaymentTokenHelp" class="help-text mb-3">
@@ -247,7 +247,7 @@ export default {
           circle_id: null,
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
           circle_chain_id: this.defaultchain.chainId,
-          circle_payment_token: this.defaultchain.nativeToken.address,
+          circle_payment_token: this.defaultchain.nativeCurrency.address,
           circle_round_days: 30,
           circle_payment_type: 'fixed_pay',
           circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,

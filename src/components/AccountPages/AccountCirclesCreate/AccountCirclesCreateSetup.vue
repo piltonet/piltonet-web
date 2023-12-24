@@ -55,10 +55,10 @@
             v-model="circleInfo.circle_fixed_amount"
           />
           <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text mb-3">
-            {{ `Participants contribute the same monthly payment, ${minFixedAmount} to ${maxFixedAmount} ${this.defaultchain.nativeToken.symbol}.` }}
+            {{ `Participants contribute the same monthly payment, ${minFixedAmount} to ${maxFixedAmount} ${this.defaultchain.nativeCurrency.symbol}.` }}
           </p>
           <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text mb-3">
-            {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${this.defaultchain.nativeToken.symbol}.` }}
+            {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${this.defaultchain.nativeCurrency.symbol}.` }}
           </p>
 
           <!-- Min Members -->

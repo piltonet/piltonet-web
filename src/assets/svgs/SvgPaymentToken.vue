@@ -2,8 +2,8 @@
 	<!-- Viction -->
 	<div v-if="chainId == 88 || chainId == 89">
 		<!-- VIC -->
-		<div v-if="paymentToken == this.defaultchain.nativeToken.address">
-			<el-tooltip :content="this.defaultchain.nativeToken.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
+		<div v-if="paymentToken == this.defaultchain.nativeCurrency.address">
+			<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
 				<SvgTomoIcon
 					:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
 					:class="customClass"
@@ -15,7 +15,7 @@
 	<!-- VenomNetwork -->
 	<div v-else-if="chainId == 1000 || chainId == 1002">
 		<!-- Venom -->
-		<el-tooltip :content="this.defaultchain.nativeToken.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
+		<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
 			<SvgVenomIcon
 				:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
 				:class="customClass"
