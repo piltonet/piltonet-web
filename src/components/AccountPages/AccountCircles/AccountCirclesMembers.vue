@@ -90,8 +90,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#account-circles-members {
-}
 
 /* Start labtop - lg < 1200 */
 @media (max-width: 1199px) {
