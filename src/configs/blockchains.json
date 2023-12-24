@@ -16,9 +16,10 @@
             "website": "https://www.viction.xyz/"
         },
         "nativeCurrency": {
-			"decimals": 18,
+            "address": "0x0000000000000000000000000000000000000000",
 			"name": "Viction",
 			"symbol": "VIC",
+			"decimals": 18,
             "standard": "ERC20",
             "logo": ""
         },
@@ -37,9 +38,10 @@
             "website": "https://www.viction.xyz/"
         },
         "nativeCurrency": {
-			"decimals": 18,
+            "address": "0x0000000000000000000000000000000000000000",
 			"name": "Viction",
 			"symbol": "VIC",
+			"decimals": 18,
             "standard": "ERC20",
             "logo": ""
         },
