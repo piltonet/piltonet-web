@@ -1,5 +1,5 @@
 module.exports = {
-	viction_mainnet: {
+	viction: {
 		id: 88,
 		chainId: '0x58',
 		name: 'Viction',

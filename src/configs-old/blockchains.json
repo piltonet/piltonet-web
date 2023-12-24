@@ -1,9 +1,9 @@
 {
     "networks": [
-        "viction_mainnet",
+        "viction",
         "viction_testnet"
     ],
-    "viction_mainnet": {
+    "viction": {
         "chainId": 88,
         "chainName": "Viction",
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",

@@ -1,9 +1,9 @@
 {
     "networks": [
-        "viction_mainnet",
+        "viction",
         "viction_testnet"
     ],
-    "viction_mainnet": {
+    "viction": {
         "id": 88,
 		"chainId": "0x58",
         "chainName": "Viction",

@@ -1,6 +1,6 @@
 const { ethers } = require('ethers')
 const constants = require('./constants')
-const SDK = require('./v1')
+const SDK = require(process.evm.VUE_APP_DEFAULT_SDK)
 
 const NETWORKS = constants.NETWORKS
 
