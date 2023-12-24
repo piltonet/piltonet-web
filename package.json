@@ -25,7 +25,7 @@
     "element-plus": "^2.2.6",
     "ethcall": "^4.8.2",
     "ethereum-multicall": "^2.14.1",
-    "ethers": "^6.9.0",
+    "ethers": "^6.9.1",
     "ethers-multicall": "^0.2.3",
     "everscale-inpage-provider": "^0.3.58",
     "everscale-standalone-client": "^2.1.18",

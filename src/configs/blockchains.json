@@ -1,7 +1,7 @@
 {
     "networks": [
         "viction",
-        "viction_testnet"
+        "victestnet"
     ],
     "viction": {
         "id": 88,
@@ -25,7 +25,7 @@
         },
         "supportedTokens": []
     },
-    "viction_testnet": {
+    "victestnet": {
         "id": 89,
 		"chainId": "0x59",
         "chainName": "Viction Testnet",

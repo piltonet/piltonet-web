@@ -142,7 +142,9 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import { ethers } from 'ethers'
 import api from "@/services/api";
+import abi from "@/services/abi";
 import wallets from "@/wallets";
 
 export default {
@@ -157,9 +159,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getConnectionStore']),
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
     connectedAccount() {
       return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
     }
   },
   methods: {
@@ -194,13 +199,17 @@ export default {
       }
     },
     async acceptInviteCode() {
-      const contractAbi = abi.setAbi(
-        this.circleInfoProps.circle_id,
-        this.circleInfoProps.circle_contract,
-        this.provider
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        "0x", // address fixed in sdk
+        "ERC1155Contacts",
+        signer
       );
-      let abiResponse = await contractAbi.interaction('launchCircle', [parseInt(this.startDate.getTime() / 1000)]);
-
+      let abiResponse = await contract.interaction('addContact', [
+        ethers.getAddress(this.accountProfile.account_tba_address),
+        ethers.getAddress(this.inviteAccount.account_tba_address)
+      ]);
       if(!abiResponse.done) {
         this.notif({
           title: "OOPS!",
@@ -209,10 +218,7 @@ export default {
           type: abiResponse.message_type,
           duration: 3000,
         });
-      }
-      
-      let personalSign = await this.personalSign();
-      if(personalSign) {
+      } else {
         let apiResponse = await api.post_account_contacts_accept_invite_code({invite_code: this.inviteAccount.account_invite_code});
         if(apiResponse.data.done) {
           this.notif({

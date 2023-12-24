@@ -1,7 +1,7 @@
 {
     "networks": [
         "viction",
-        "viction_testnet"
+        "victestnet"
     ],
     "viction": {
         "chainId": 88,
@@ -26,7 +26,7 @@
         },
         "supportedTokens": []
     },
-    "viction_testnet": {
+    "victestnet": {
         "chainId": 89,
         "chainName": "Viction Testnet",
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",

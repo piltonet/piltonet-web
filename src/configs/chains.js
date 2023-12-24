@@ -41,7 +41,7 @@ module.exports = {
 		isSupported: true,
 		logoURI: 'https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025'
 	},
-	viction_testnet: {
+	victestnet: {
 		id: 89,
 		chainId: '0x59',
 		name: 'Viction Testnet',

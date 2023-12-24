@@ -4,21 +4,21 @@ const { SDK } = require('@/sdk')
 const { ElLoading } = require('element-plus')
 
 class abi {
-	constructor(contractAddress, contractAbi, sdk, provider) {
+	constructor(contractAddress, contractName, sdk, signer) {
 		this.contractAddress = contractAddress;
-		this.contractAbi = contractAbi;
-		this.contract = new sdk(contractAddress, provider);
-		this.provider = provider;
+		this.contractName = contractName;
+		this.signer = signer;
+		this.contract = new sdk(contractAddress, signer);
 	}
 	
-	static setAbi(contractAddress, contractAbi, provider) {
-		let sdk = SDK[contractAbi];
-		return new abi(contractAddress, contractAbi, sdk, provider);
+	static setAbi(contractAddress, contractName, signer) {
+		let sdk = SDK[contractName];
+		return new abi(contractAddress, contractName, sdk, signer);
 	}
 
 	async interaction(_function, _params, _loading = true) {
 		let resp = {
-			origin_url: `abi/${this.contractAbi}/${_function}`,
+			origin_url: `abi/${this.contractName}/${_function}`,
 			response_id: null,
 			status_code: 200,
 			done: true,
@@ -31,12 +31,11 @@ class abi {
 		
 		try {
 			var transaction = await this.contract[_function](..._params);
-			var txResult = await transaction.wait();
 			
 			resp.done = true;
 			resp.message_type = 'success';
 			resp.message = "Show Log Message.";
-			resp.result = txResult;
+			resp.result = transaction;
 		} catch(err) {
 			console.log(err);
 			resp.done = false;
