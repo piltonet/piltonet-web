@@ -181,7 +181,7 @@ export default {
   },
   methods: {
     async copyAccount(id) {
-      navigator.clipboard.writeText(this.accountProfile?.account_address);
+      navigator.clipboard.writeText(this.accountProfile?.account_tba_address);
       document.getElementById(id).innerHTML = '<i class="fa fa-check mt-3" style="color: lightgreen;"></i>'
       this.copyAddressTooltip = "Copied To Clipboard";
       setTimeout(() => {
