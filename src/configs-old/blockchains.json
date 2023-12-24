@@ -13,7 +13,7 @@
         "environment": "evm",
         "rpcUrl": "https://rpc.tomochain.com",
         "gqlUrl": "",
-        "explorer": "https://tomoscan.io/",
+        "explorer": "https:/vicscan.xyz",
         "wallets": ["metamask"],
         "links": {
             "website": "https://www.tomochain.com/",

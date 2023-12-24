@@ -11,22 +11,22 @@ module.exports = {
 		},
 		rpcUrls: {
 			default: {
-				http: ['https://rpc.tomochain.com/'],
+				http: ['https://rpc.viction.xyz'],
 				// webSocket: ['wss://bsc-ws-node.nariox.org:443']
 			},
 			public: {
-				http: ['https://rpc.tomochain.com/'],
+				http: ['https://rpc.viction.xyz'],
 				// webSocket: ['wss://bsc-ws-node.nariox.org:443']
 			},
 		},
 		blockExplorers: {
 			etherscan: {
 				name: 'TomoScan',
-				url: 'https://tomoscan.io/',
+				url: 'https:/vicscan.xyz',
 			},
 			default: {
 				name: 'TomoScan',
-				url: 'https://tomoscan.io/',
+				url: 'https:/vicscan.xyz',
 			},
 		},
 		contracts: {
@@ -36,7 +36,7 @@ module.exports = {
 			// },
 		},
 		
-		// rpcUrls: ['https://rpc.tomochain.com/'], blockExplorerUrls: ['https://tomoscan.io/'],
+		// rpcUrls: ['https://rpc.viction.xyz'], blockExplorerUrls: ['https:/vicscan.xyz'],
 		
 		isSupported: true,
 		logoURI: 'https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025'
@@ -78,7 +78,7 @@ module.exports = {
 			// },
 		},
 		
-		// rpcUrls: ['https://rpc.tomochain.com/'], blockExplorerUrls: ['https://tomoscan.io/'],
+		// rpcUrls: ['https://rpc.viction.xyz'], blockExplorerUrls: ['https:/vicscan.xyz'],
 		
 		isSupported: true,
 		logoURI: 'https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025'

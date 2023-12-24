@@ -10,7 +10,7 @@
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
         "environment": "evm",
         "rpcUrls": ["https://rpc.tomochain.com"],
-        "blockExplorerUrls": ["https://tomoscan.io/"],
+        "blockExplorerUrls": ["https:/vicscan.xyz"],
         "wallets": ["metamask", "coin98"],
         "links": {
             "website": "https://www.tomochain.com/",

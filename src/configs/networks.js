@@ -36,7 +36,7 @@ module.exports = [
         chainId: '0x58',
         chainName: 'Viction',
         nativeCurrency: { name: 'Viction', symbol: 'VIC', decimals: 18, wrappedToken: '0xB1f66997A5760428D3a87D68b90BfE0aE64121cC' },
-        rpcUrls: ['https://rpc.tomochain.com/'], blockExplorerUrls: ['https://tomoscan.io/'],
+        rpcUrls: ['https://rpc.viction.xyz'], blockExplorerUrls: ['https:/vicscan.xyz'],
         isSupported: true,
         logoURI: 'https://github.com/bazarion/assets/raw/main/chains/tomochain/logo.png'
     },
