@@ -1,22 +1,18 @@
 import { createWebHistory, createRouter } from 'vue-router';
-import app from '@/main'
 import routes from '@/router/routes';
 import store from '@/store';
-import { notification } from '@/plugins'
 import { nextTick } from 'vue';
 import wallets from "@/wallets";
 
-const Blockchain = () => {return app?.config.globalProperties.defaultchain || null};
-
 const router = createRouter({
 	history: createWebHistory(),
-	scrollBehavior(to, from, savedPosition) {
-		if(savedPosition && from.fullPath == '/account/settings') {
-			return savedPosition
-		} else {
-			return { top: 0 }
-		}
-	},
+	// scrollBehavior(to, from, savedPosition) {
+	// 	if(savedPosition && from.fullPath == '/account/settings') {
+	// 		return savedPosition
+	// 	} else {
+	// 		return { top: 0 }
+	// 	}
+	// },
 	routes
 });
 
@@ -33,15 +29,7 @@ router.beforeEach((to, from, next) => {
 			return next({ name: 'HomePage' });
 		}
 		if('chain' in to.meta && to.meta.chain) {
-			const activeNetwork = wallets[connectedAccount.connected_wallet].getActiveNetwork();
-			if(activeNetwork != Blockchain()?.chainId) {
-				notification({
-					title: 'Wrong Network!',
-					message: `Please select ${Blockchain()?.name} in Wallet.`,
-					dangerouslyUseHTMLString: true,
-					type: 'error',
-					duration: 3000
-				})
+			if(!wallets[connectedAccount.connected_wallet].isDefaultNetwork()) {
 				return next({ name: from.name || 'HomePage' });
 			}
 		}
@@ -54,7 +42,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
 	nextTick(() => {
-		document.title = to.meta.title || 'Tezuka.io';
+		document.title = to.meta.title || 'Piltonet | Web3 Lending Circles';
 	})
 });
 
