@@ -82,7 +82,7 @@
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
-// import wallets from "@/wallets";
+import wallets from "@/wallets";
 // import { Address } from 'everscale-inpage-provider';
 
 // const { AccountsContract } = require('@/contracts');
@@ -113,26 +113,10 @@ export default {
     ...mapMutations(['setConnectionStore', 'setConnectionStoreByKey', 'setProfileStore']),
     async setupAccount() {
       if(this.checkForm()) {
-        let loadingId = await this.showLoading();
-        try {
-        //   const accountsContractAddress = process.env.VUE_APP_VENOMDEVNET_ACCOUNTSCONTRACT_ADDRESS;
-        //   const accountsContract = await venomwallet.getDeployedContract(AccountsContract, accountsContractAddress);
-        //   const publicKey = await venomwallet.getPublicKey();
-        //   const _accountAddress = new Address(this.accountAddress)
-        //   loadingId = await this.showLoading();
-        //   const { output, transaction } = await accountsContract.methods.setAccount({
-        //     accountAddress: _accountAddress,
-        //     username: this.accountInfo.account_nickname,
-        //     email: this.accountInfo.account_email,
-        //     answerId: 1
-        //   }).sendExternal({
-        //     publicKey: publicKey,
-        //   });
-        //   this.openLoadings[loadingId].close();
-
-        //   if(output.done) {
-        //     console.log('transaction:', transaction);
-
+        let personalSign = await this.personalSign();
+        if(personalSign) {
+          let loadingId = await this.showLoading();
+          try {
             let apiResponse = await api.post_account_create(this.accountInfo);
             if(apiResponse.data.done) {
               this.setConnectionStoreByKey({
@@ -163,45 +147,28 @@ export default {
                 })
               }
             }
-        //   } else {
-        //     if(output.err == 102) {
-        //       this.notif({
-        //         title: "OOPS!",
-        //         message: "Nickname already taken, please choose another one.",
-        //         dangerouslyUseHTMLString: true,
-        //         type: "error",
-        //         duration: 3000,
-        //       })
-        //     } else if(output.err == 103) {
-        //       this.notif({
-        //         title: "OOPS!",
-        //         message: "Email already taken, please choose another one.",
-        //         dangerouslyUseHTMLString: true,
-        //         type: "error",
-        //         duration: 3000,
-        //       })
-        //     } else {
-        //       this.notif({
-        //         title: "OOPS!",
-        //         message: `Transaction failed by code: ${output.err}`,
-        //         dangerouslyUseHTMLString: true,
-        //         type: "error",
-        //         duration: 3000,
-        //       })
-        //     }
-        //   }
-        } catch(err) {
-          this.openLoadings[loadingId].close();
-          this.notif({
-            title: "OOPS!",
-            message: "Something went wrong, please try again later.",
-            dangerouslyUseHTMLString: true,
-            type: "error",
-            duration: 3000,
-          })
-          console.log(err);
+          } catch(err) {
+            this.openLoadings[loadingId].close();
+            this.notif({
+              title: "OOPS!",
+              message: "Something went wrong, please try again later.",
+              dangerouslyUseHTMLString: true,
+              type: "error",
+              duration: 3000,
+            })
+            console.log(err);
+          }
         }
       }
+    },
+    async personalSign() {
+      let personalSignResult = await wallets[this.connectedAccount.connected_wallet].personalSign(
+        "This request requires your signature. It won't cost you anything." +
+          `\nTimestamp: ${new Date().getTime()}`,
+        this.connectedAccount.account_address,
+				null
+      );
+      return personalSignResult;
     },
     checkForm() {
       try {
