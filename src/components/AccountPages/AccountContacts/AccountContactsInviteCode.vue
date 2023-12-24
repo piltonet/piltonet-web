@@ -194,6 +194,23 @@ export default {
       }
     },
     async acceptInviteCode() {
+      const contractAbi = abi.setAbi(
+        this.circleInfoProps.circle_id,
+        this.circleInfoProps.circle_contract,
+        this.provider
+      );
+      let abiResponse = await contractAbi.interaction('launchCircle', [parseInt(this.startDate.getTime() / 1000)]);
+
+      if(!abiResponse.done) {
+        this.notif({
+          title: "OOPS!",
+          message: abiResponse.message,
+          dangerouslyUseHTMLString: true,
+          type: abiResponse.message_type,
+          duration: 3000,
+        });
+      }
+      
       let personalSign = await this.personalSign();
       if(personalSign) {
         let apiResponse = await api.post_account_contacts_accept_invite_code({invite_code: this.inviteAccount.account_invite_code});
