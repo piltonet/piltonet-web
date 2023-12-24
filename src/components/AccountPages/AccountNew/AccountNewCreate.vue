@@ -104,9 +104,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getConnectionStoreByKey']),
-    accountAddress() {
-      return this.getConnectionStoreByKey('account_address');
+    ...mapGetters(['getConnectionStore']),
+    connectedAccount() {
+      return this.getConnectionStore;
     }
   },
   methods: {
@@ -121,7 +121,7 @@ export default {
             if(apiResponse.data.done) {
               this.setConnectionStoreByKey({
                 account_status: 'main',
-                main_account_address: this.accountAddress
+                main_account_address: this.connectedAccount.account_address
               });
               this.setProfileStore(apiResponse.data.result[0]);
               this.notif({
