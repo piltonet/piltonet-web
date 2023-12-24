@@ -21,7 +21,7 @@ class SDK {
 		contactTBA
 	) {
 		const tx = await this.contract.addContact(senderTBA, contactTBA, {
-			gasLimit: 6000000
+			gasLimit: 3000000
 		})
 		return await tx.wait();
 	}
