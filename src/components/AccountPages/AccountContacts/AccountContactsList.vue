@@ -43,7 +43,7 @@
         </div>
         <div class="d-flex flex-column flex-sm-row justify-content-start align-items-start mt-2">
           <div class="d-flex flex-row justify-content-start align-items-center">
-            <p class="main-text">{{ `Is ${accountContact.account_fullname || accountContact.account_username} your trusted friend?` }}</p>
+            <p class="main-text">{{ `Is ${accountContact.account_fullname || accountContact.account_nickname} your trusted friend?` }}</p>
           </div>
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div
@@ -94,7 +94,7 @@
           />
           <p class="top-text-small ms-2">
             <span>
-              {{ accountContact.account_fullname || accountContact.account_username }}
+              {{ accountContact.account_fullname || accountContact.account_nickname }}
             </span>
             <span class="note-text d-none d-sm-inline-block ps-2">
               {{ `your contact since ${utils.formatDate(accountContact.updated_at, 'Month YYYY')}` }}

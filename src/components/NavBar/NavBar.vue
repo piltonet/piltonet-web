@@ -34,7 +34,7 @@
             class="link-connect"
             @click="$router.push('/account/profile')"
           >
-            {{ accountProfile.account_username }}
+            {{ accountProfile.account_nickname }}
             <span class="d-none d-md-inline-block">
               {{ `(${utils.truncate(connectedAccount.account_address, 12)})` }}
             </span>

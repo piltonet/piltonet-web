@@ -50,7 +50,7 @@
                 You
               </p>
               <p v-else class="main-text-tiny ms-2">
-                {{ member.account_fullname || member.account_username }}
+                {{ member.account_fullname || member.account_nickname }}
               </p>
             </div>
             <!-- Vacant -->

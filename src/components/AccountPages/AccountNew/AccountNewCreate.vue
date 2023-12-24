@@ -20,14 +20,14 @@
             <span class="input-label-small">(Required)</span>
           </label>
 					<input
-            ref="account_username"
+            ref="account_nickname"
 						id="accountNickname"
 						type="text"
 						class="small-input mb-0"
-            :class="hasError['account_username'] ? 'has-error' : ''"
+            :class="hasError['account_nickname'] ? 'has-error' : ''"
 						placeholder="Enter A Nickname"
 						aria-describedby="nicknameHelp"
-						v-model="accountInfo.account_username"
+						v-model="accountInfo.account_nickname"
 					/>
 					<p id="nicknameHelp" class="help-text mb-3">
 						The nickname must start with a letter and can only contain letters, numbers, and the underscore character.
@@ -81,7 +81,7 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
-// import api from "@/services/api";
+import api from "@/services/api";
 // import wallets from "@/wallets";
 // import { Address } from 'everscale-inpage-provider';
 
@@ -94,10 +94,10 @@ export default {
     return {
       accountInfo: {
         account_email: '',
-        account_username: ''
+        account_nickname: ''
       },
       hasError: {
-        account_username: false,
+        account_nickname: false,
         account_email: false,
       },
       openLoadings: []
@@ -113,8 +113,8 @@ export default {
     ...mapMutations(['setConnectionStore', 'setConnectionStoreByKey', 'setProfileStore']),
     async setupAccount() {
       if(this.checkForm()) {
-        // let loadingId = await this.showLoading();
-        // try {
+        let loadingId = await this.showLoading();
+        try {
         //   const accountsContractAddress = process.env.VUE_APP_VENOMDEVNET_ACCOUNTSCONTRACT_ADDRESS;
         //   const accountsContract = await venomwallet.getDeployedContract(AccountsContract, accountsContractAddress);
         //   const publicKey = await venomwallet.getPublicKey();
@@ -122,7 +122,7 @@ export default {
         //   loadingId = await this.showLoading();
         //   const { output, transaction } = await accountsContract.methods.setAccount({
         //     accountAddress: _accountAddress,
-        //     username: this.accountInfo.account_username,
+        //     username: this.accountInfo.account_nickname,
         //     email: this.accountInfo.account_email,
         //     answerId: 1
         //   }).sendExternal({
@@ -133,36 +133,36 @@ export default {
         //   if(output.done) {
         //     console.log('transaction:', transaction);
 
-        //     let apiResponse = await api.post_account_create(this.accountInfo);
-        //     if(apiResponse.data.done) {
-        //       this.setConnectionStoreByKey({
-        //         account_status: 'main',
-        //         main_account_address: this.accountAddress
-        //       });
-        //       this.setProfileStore(apiResponse.data.result[0]);
-        //       this.notif({
-        //         title: "SUCCESS!",
-        //         message: apiResponse.data.message,
-        //         dangerouslyUseHTMLString: true,
-        //         type: apiResponse.data.message_type,
-        //         duration: 3000,
-        //         onClose: () => { this.$router.push("/account/profile") }
-        //       })
-        //     } else {
-        //       if(apiResponse.data.status_code == "401") {
-        //         this.setConnectionStore({ is_connected: false });
-        //         this.setProfileStore(null);
-        //         this.$router.go();
-        //       } else {
-        //         this.notif({
-        //           title: "OOPS!",
-        //           message: apiResponse.data.message,
-        //           dangerouslyUseHTMLString: true,
-        //           type: apiResponse.data.message_type,
-        //           duration: 3000,
-        //         })
-        //       }
-        //     }
+            let apiResponse = await api.post_account_create(this.accountInfo);
+            if(apiResponse.data.done) {
+              this.setConnectionStoreByKey({
+                account_status: 'main',
+                main_account_address: this.accountAddress
+              });
+              this.setProfileStore(apiResponse.data.result[0]);
+              this.notif({
+                title: "SUCCESS!",
+                message: apiResponse.data.message,
+                dangerouslyUseHTMLString: true,
+                type: apiResponse.data.message_type,
+                duration: 3000,
+                onClose: () => { this.$router.push("/account/profile") }
+              })
+            } else {
+              if(apiResponse.data.status_code == "401") {
+                this.setConnectionStore({ is_connected: false });
+                this.setProfileStore(null);
+                this.$router.go();
+              } else {
+                this.notif({
+                  title: "OOPS!",
+                  message: apiResponse.data.message,
+                  dangerouslyUseHTMLString: true,
+                  type: apiResponse.data.message_type,
+                  duration: 3000,
+                })
+              }
+            }
         //   } else {
         //     if(output.err == 102) {
         //       this.notif({
@@ -190,17 +190,17 @@ export default {
         //       })
         //     }
         //   }
-        // } catch(err) {
-        //   this.openLoadings[loadingId].close();
-        //   this.notif({
-        //     title: "OOPS!",
-        //     message: "Something went wrong, please try again later.",
-        //     dangerouslyUseHTMLString: true,
-        //     type: "error",
-        //     duration: 3000,
-        //   })
-        //   console.log(err);
-        // }
+        } catch(err) {
+          this.openLoadings[loadingId].close();
+          this.notif({
+            title: "OOPS!",
+            message: "Something went wrong, please try again later.",
+            dangerouslyUseHTMLString: true,
+            type: "error",
+            duration: 3000,
+          })
+          console.log(err);
+        }
       }
     },
     checkForm() {
@@ -217,7 +217,7 @@ export default {
             })
             throw false;
           }
-          if(element == 'account_username' && !(this.accountInfo[element].match(/^(?=.{4,25}$)(?![_])(?!.*[_]{2})[a-z][a-z0-9_]+(?![_])$/i))) {
+          if(element == 'account_nickname' && !(this.accountInfo[element].match(/^(?=.{4,25}$)(?![_])(?!.*[_]{2})[a-z][a-z0-9_]+(?![_])$/i))) {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({

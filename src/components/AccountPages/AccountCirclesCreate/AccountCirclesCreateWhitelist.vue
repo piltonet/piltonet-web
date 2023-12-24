@@ -43,7 +43,7 @@
           />
           <p class="top-text-small ms-2">
             <span :class="whitelist.whitelist_is_rejected ? 'text-decoration-line-through' : ''">
-              {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'You' : whitelist.account_fullname || whitelist.account_username }}
+              {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
             </span>
             <span v-if="!whitelist.whitelist_is_joined && !whitelist.whitelist_is_rejected" class="note-text d-none d-sm-inline-block ps-2">
               {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'whitelisted as the circle creator.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
@@ -125,7 +125,7 @@
           />
           <p class="top-text-small ms-2">
             <span>
-              {{ contact.account_fullname || contact.account_username }}
+              {{ contact.account_fullname || contact.account_nickname }}
             </span>
             <span class="note-text d-none d-sm-inline-block ps-2">
               {{ `your contact since ${utils.formatDate(contact.updated_at, 'Month YYYY')}` }}

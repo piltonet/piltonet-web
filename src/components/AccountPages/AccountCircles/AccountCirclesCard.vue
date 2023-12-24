@@ -31,7 +31,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">By:</span>
             <span class="account-circles-card-creator-fullname ps-2">
-              {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_username }}
+              {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_nickname }}
             </span>
           </div>
 
@@ -202,7 +202,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">By:</span>
             <span class="account-circles-card-creator-fullname ps-2">
-              {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_username }}
+              {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_nickname }}
             </span>
           </div>
 

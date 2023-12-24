@@ -24,8 +24,8 @@
           <p class="top-text-small ms-2">
             <span>
               {{ member.main_account_address == mainAccountAddress ? (isCircleCreator ? 'You (creator)' : (isCircleModerator ? 'You (moderator)' : 'You'))
-                : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_username} (creator)`
-                : member.member_is_moderator ? `${member.account_fullname || member.account_username} (moderator)` : member.account_fullname || member.account_username }}
+                : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_nickname} (creator)`
+                : member.member_is_moderator ? `${member.account_fullname || member.account_nickname} (moderator)` : member.account_fullname || member.account_nickname }}
             </span>
             <span class="note-text ps-2">
               {{ `joined on ${utils.formatDate(member.created_at, 'DD Month YYYY', 'HH:MM')}` }}

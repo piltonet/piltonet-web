@@ -26,7 +26,7 @@
           </a>
         </el-tooltip> 
       </span>
-      <span class="account-username mt-2">{{ accountProfile?.account_username ? `@${accountProfile?.account_username}` : '' }}</span>
+      <span class="account-username mt-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
       <div class="d-flex flex-row justify-content-center align-items-center gap-2">
         <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span>
         <span>

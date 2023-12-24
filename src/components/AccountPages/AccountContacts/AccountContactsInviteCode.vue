@@ -62,7 +62,7 @@
         </p>
         <p>
           <span class="account-contacts-invite-code-account">
-            {{ `@${inviteAccount.account_username}` }}
+            {{ `@${inviteAccount.account_nickname}` }}
           </span>
         </p>
 
@@ -117,7 +117,7 @@
       </div>
       
       <div v-if="inviteAccount" class="d-flex flex-column flex-md-row justify-content-start align-items-center my-2">
-        <p class="main-text">{{ `Is ${inviteAccount.account_fullname || inviteAccount.account_username} your trusted friend?` }}</p>
+        <p class="main-text">{{ `Is ${inviteAccount.account_fullname || inviteAccount.account_nickname} your trusted friend?` }}</p>
         <div class="row">
           <div
             type="button"

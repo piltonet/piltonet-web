@@ -66,6 +66,7 @@ export default {
   },
   methods: {
     async creatNewAccount() {
+      this.$router.push('/account/create')
       // let loadingId = await this.showLoading();
       // try {
       //   const accountsContractAddress = process.env.VUE_APP_VENOMDEVNET_ACCOUNTSCONTRACT_ADDRESS;

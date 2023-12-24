@@ -102,14 +102,14 @@
             <span class="input-label-small">(Required)</span>
           </label>
 					<input disabled
-            ref="account_username"
+            ref="account_nickname"
 						id="accountNickname"
 						type="text"
 						class="small-input mb-0"
-            :class="hasError['account_username'] ? 'has-error' : ''"
+            :class="hasError['account_nickname'] ? 'has-error' : ''"
 						placeholder="Enter A Nickname"
 						aria-describedby="usernameHelp"
-						v-model="accountProfile.account_username"
+						v-model="accountProfile.account_nickname"
 					/>
 					<p id="usernameHelp" class="help-text mb-3">
 						Nickname is public and it will appear on your profile.
@@ -225,7 +225,7 @@ export default {
       connectedAccount: this.connectedAccountProps,
       accountProfile: this.accountProfileProps,
       hasError: {
-        // account_username: false,
+        // account_nickname: false,
         // account_email: false
       }
     }
@@ -324,7 +324,7 @@ export default {
             })
             throw false;
           }
-          if(element == 'account_username' && !(this.accountProfile[element].match(/^(?=.{4,25}$)(?![_])(?!.*[_]{2})[a-z][a-z0-9_]+(?![_])$/i))) {
+          if(element == 'account_nickname' && !(this.accountProfile[element].match(/^(?=.{4,25}$)(?![_])(?!.*[_]{2})[a-z][a-z0-9_]+(?![_])$/i))) {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({

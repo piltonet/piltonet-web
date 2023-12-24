@@ -23,7 +23,7 @@
           class="account-image-small"
         />
         <span class="top-text-small ms-2">
-          {{ circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_username }}
+          {{ circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname }}
         </span>
         <span class="main-text-small ps-2">(creator)</span>
       </div>
