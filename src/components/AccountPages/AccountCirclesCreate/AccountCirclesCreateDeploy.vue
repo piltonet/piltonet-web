@@ -194,7 +194,7 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { ethers } from 'ethers'
-// import api from "@/services/api";
+import api from "@/services/api";
 import abi from "@/services/abi";
 import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
@@ -241,7 +241,7 @@ export default {
     async setup() {
       if(this.circleInfoProps) {
         this.circleInfo = this.circleInfoProps;
-        this.explorerLink = `${this.defaultchain.explorer}accounts/${this.circleInfo.circle_id}`;
+        this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfo.circle_id}`;
       } else {
         // New Circle
         this.circleInfo = {
@@ -273,11 +273,8 @@ export default {
         // }
         const deployArgs = [
           "https://piltonet.com/profile/"
-        ]
-        // const params = {
-        //   contractOwner: ethers.getAddress(this.accountProfile.account_tba_address),
-        //   deployArgs
-        // }
+        ];
+
         const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
         const signer = await provider.getSigner();
         const contract = abi.setAbi(
@@ -285,57 +282,45 @@ export default {
           "DeployCustomContract",
           signer
         );
+        // deploy TLCC
         let abiResponse = await contract.interaction('deployTLCC', deployArgs);
-        console.log(abiResponse.result.target);
-        
-        // const circleContract = await wallets[this.connectedAccount.connected_wallet].deployContract(
-        //   LendingCircleContract,
-        //   initParams,
-        //   deployArgs,
-        //   "5000000000" // 5 venom
-        // );
-        // // const circleContract = await venomwallet.deployContract(
-        // //   LendingCircleContract,
-        // //   initParams,
-        // //   deployArgs,
-        // //   "5000000000" // 5 venom
-        // // );
-        // if(circleContract) {
-        //   this.circleInfo.circle_id = circleContract.address.toString();
-        //   let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
-        //   if(apiResponse.data.done) {
-        //     this.circleInfo = apiResponse.data.result[0];
-        //     this.notif({
-        //       title: "SUCCESS!",
-        //       message: apiResponse.data.message,
-        //       dangerouslyUseHTMLString: true,
-        //       type: apiResponse.data.message_type,
-        //       duration: 3000,
-        //       onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
-        //     })
-        //   } else {
-        //     if(apiResponse.data.status_code == "401") {
-        //       this.setConnectionStore({ is_connected: false });
-        //       this.setProfileStore(null);
-        //       this.$router.go();
-        //     } else {
-        //       this.notif({
-        //         title: "OOPS!",
-        //         message: apiResponse.data.message,
-        //         dangerouslyUseHTMLString: true,
-        //         type: apiResponse.data.message_type,
-        //         duration: 3000,
-        //       })
-        //     }
-        //   }
-        // } else {
-        //   this.notif({
-        //     title: "OOPS!",
-        //     message: "Something Went Wrong, Please Try Again.",
-        //     type: "error",
-        //     duration: 3000,
-        //   })
-        // }
+        if(!abiResponse.done) {
+          this.notif({
+            title: "OOPS!",
+            message: abiResponse.message,
+            dangerouslyUseHTMLString: true,
+            type: abiResponse.message_type,
+            duration: 3000,
+          });
+        } else {
+          this.circleInfo.circle_id = abiResponse.result.target;
+          let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
+          if(apiResponse.data.done) {
+            this.circleInfo = apiResponse.data.result[0];
+            this.notif({
+              title: "SUCCESS!",
+              message: apiResponse.data.message,
+              dangerouslyUseHTMLString: true,
+              type: apiResponse.data.message_type,
+              duration: 3000,
+              onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
+            })
+          } else {
+            if(apiResponse.data.status_code == "401") {
+              this.setConnectionStore({ is_connected: false });
+              this.setProfileStore(null);
+              this.$router.go();
+            } else {
+              this.notif({
+                title: "OOPS!",
+                message: apiResponse.data.message,
+                dangerouslyUseHTMLString: true,
+                type: apiResponse.data.message_type,
+                duration: 3000,
+              })
+            }
+          }
+        }
       }
     },
     checkForm() {

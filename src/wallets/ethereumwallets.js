@@ -4,8 +4,6 @@ import store from "@/store"
 import api from "@/services/api"
 import { notification } from '@/plugins'
 import { ElLoading } from 'element-plus'
-import { ethers } from 'ethers'
-import { ContractFactory } from 'ethers';
 
 // GET PROVIDER
 function getProvider(walletName = undefined) {
@@ -354,50 +352,6 @@ async function disconnectWallet() {
 	}
 }
 
-// Deploy Custom Contract
-async function deployCustomContract(contractInfo) {
-  let loading = show_loading();
-  
-  try {
-		let walletName = store.getters.getConnectionStore?.connected_wallet;
-    const provider = new ethers.BrowserProvider(getProvider(walletName));
-    if(!isDefaultNetwork(provider)) {
-      loading.close();
-      return
-    }
-    const signer = await provider.getSigner();
-    const contracts = require(`@/contracts`);
-    const contractJsonFile =  contracts[process.env.VUE_APP_CUSTOM_CONTRACT_ABI];
-    const contractJson = JSON.parse(JSON.stringify(contractJsonFile));
-    const contractAbi = contractJson.abi;
-    const contractByteCode = contractJson.bytecode;
-  
-    const launchpadAdr = process.env.VUE_APP_MACRO_CONTRACT_OWNER;
-    const launchpadShare = process.env.VUE_APP_CUSTOM_CONTRACT_LAUNCHPADSHARE * 10000;
-
-    const factory = new ContractFactory(contractAbi, contractByteCode, signer);
-    const nftContract = await factory.deploy(
-      contractInfo.contract_name,
-      contractInfo.contract_symbol,
-      contractInfo.contract_mint_token,
-      Math.round(contractInfo.contract_mint_price * 10**2),
-      contractInfo.contract_max_supply,
-      contractInfo.contract_max_mint,
-      launchpadAdr,
-      launchpadShare
-    );
-  
-    // await nftContract.deployed();
-    nftContract['contract_abi'] = process.env.VUE_APP_CUSTOM_CONTRACT_ABI;
-    loading.close();
-    return nftContract;
-  } catch(err) {
-    console.log(err);
-    loading.close();
-    return null;
-  }
-}
-
 function show_loading() {
   let loading = ElLoading.service({
     lock: true,
@@ -415,6 +369,5 @@ export default {
 	isDefaultNetwork,
 	switchNetworkToDefault,
 	personalSign,
-	disconnectWallet,
-	deployCustomContract
+	disconnectWallet
 };

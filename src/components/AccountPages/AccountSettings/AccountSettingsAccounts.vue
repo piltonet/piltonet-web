@@ -108,7 +108,7 @@ export default {
       showShareLinkModal: false,
       copyLinkTooltip: "Copy Link",
       copyAddressTooltip: "Copy Address",
-      networkExplorerUrl: `${this.defaultchain.explorer}accounts`,
+      networkExplorerUrl: `${this.defaultchain.blockExplorerUrl}/address`,
       hasError: {
         accept_waiting: false
       }

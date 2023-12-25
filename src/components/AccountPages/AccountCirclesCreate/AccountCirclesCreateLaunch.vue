@@ -354,7 +354,7 @@ export default {
       this.minStartDate = now;
       this.minStartDate.setDate(now.getDate() + (now.getHours() < 12 ? 1 : 2 ))
       if(this.circleInfoProps) {
-        this.explorerLink = `${this.defaultchain.explorer}accounts/${this.circleInfoProps.circle_id}`;
+        this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfoProps.circle_id}`;
       }
     },
     async confirmLaunch() {

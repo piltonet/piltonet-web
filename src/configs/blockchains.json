@@ -9,8 +9,8 @@
         "chainName": "Viction",
         "chainLogo": "",
         "environment": "evm",
-        "rpcUrls": ["https://rpc.viction.xyz"],
-        "blockExplorerUrls": ["https:/vicscan.xyz"],
+        "rpcUrl": "https://rpc.viction.xyz",
+        "blockExplorerUrl": "https:/vicscan.xyz",
         "wallets": ["metamask", "coin98", "coinbase"],
         "links": {
             "website": "https://www.viction.xyz/"
@@ -31,8 +31,8 @@
         "chainName": "Viction Testnet",
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
         "environment": "evm",
-        "rpcUrls": ["https://rpc.testnet.tomochain.com"],
-        "blockExplorerUrls": ["https://testnet.tomoscan.io/"],
+        "rpcUrl": "https://rpc.testnet.tomochain.com",
+        "blockExplorerUrl": "https://testnet.tomoscan.io",
         "wallets": ["metamask", "coin98", "coinbase"],
         "links": {
             "website": "https://www.viction.xyz/"
