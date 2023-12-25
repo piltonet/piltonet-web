@@ -98,7 +98,7 @@ export default {
       // } else {
         this.$refs.message_modal.setMessage({
           title: 'Beta Version',
-          message: 'This is a test version of lending circles on Viction-Testnet. In future updates, your information may be deleted without notice.',
+          message: 'This is a test version of lending circles on Viction Testnet. In future updates, your information may be deleted without notice.',
           okBtn: 'I Like To Test',
           cancelBtn: null,
           customStyle: 'text-align: start !important; padding-left: 1rem !important;'

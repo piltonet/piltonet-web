@@ -14,8 +14,8 @@
       <div class="viction-hack-body px-1 px-md-2 px-lg-5 py-2">
         <p class="viction-hack-text m-0 px-1 py-1">
           Please note, it is now working on the 
-          <a href="https://testnet.tomoscan.io/" target="_blank">
-            <span  class="text-decoration-underline blue-btn">viction-testnet</span>
+          <a href="https://viction.xyz/" target="_blank">
+            <span  class="text-decoration-underline blue-btn">Viction Testnet</span>
           </a>
         </p>
         <button

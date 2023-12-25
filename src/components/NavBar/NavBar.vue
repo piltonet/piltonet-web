@@ -24,6 +24,7 @@
   
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="menu navbar-nav ms-auto">
+          <SwitchTheme class="me-3"/>
           
           <!-- To Do -->
           <!-- <AccountMessages class="me-1" /> -->
@@ -89,16 +90,6 @@
                 <a
                   class="dropdown-item"
                   role="button"
-                  @click="$router.push('/account/circles')"
-                >
-                  <i class="fa fa-circle pe-3" aria-hidden="true"></i>
-                  Lending Circles
-                </a>
-              </li>
-              <li v-if="connectedAccount.account_status != 'fresh' && connectedAccount.account_status != 'waiting'">
-                <a
-                  class="dropdown-item"
-                  role="button"
                   @click="$router.push('/account/contacts')"
                 >
                   <i class="fa fa-address-card pe-3"></i>
@@ -109,10 +100,10 @@
                 <a
                   class="dropdown-item"
                   role="button"
-                  @click="$router.push('/account/settings')"
+                  @click="$router.push('/account/circles')"
                 >
-                  <i class="fa fa-gear pe-3"></i>
-                  Settings
+                  <i class="fa fa-circle pe-3" aria-hidden="true"></i>
+                  Lending Circles
                 </a>
               </li>
               <li v-if="connectedAccount.account_status != 'fresh' && connectedAccount.account_status != 'waiting'">
@@ -127,6 +118,19 @@
                   <i class="fa fa-wallet pe-3"></i>
                   Wallet
                 </a>
+              </li>
+              <li v-if="connectedAccount.account_status != 'fresh' && connectedAccount.account_status != 'waiting'">
+                <a
+                  class="dropdown-item"
+                  role="button"
+                  @click="$router.push('/account/settings')"
+                >
+                  <i class="fa fa-gear pe-3"></i>
+                  Settings
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
               </li>
               <li>
                 <a
@@ -143,12 +147,6 @@
                   Logout
                 </a>
               </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <SwitchTheme class="px-3" />
-              </li>
             </ul>
           </li>
         </ul>
@@ -164,8 +162,8 @@
           @click="$router.push('/')"
         />
       </div>
-      <SwitchTheme class="d-none" />
       <ul class="menu navbar-nav ms-auto">
+        <SwitchTheme class="me-3"/>
         <li type="button" class="btn-connect" @click="onConnectButtonClick">
           Connect Wallet
         </li>

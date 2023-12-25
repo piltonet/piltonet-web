@@ -1,5 +1,4 @@
 <template>
-  <SwitchTheme class="d-none" />
   <div class="container-fluid m-0 p-0">
     <div id="top-section" class="min-vh-100 p-0">
       <div class="container p-0">
@@ -28,13 +27,9 @@
 </template>
 
 <script>
-import SwitchTheme from "@/components/NavBar/SwitchTheme.vue";
 
 export default {
-  name: "NotFound",
-  components: {
-    SwitchTheme
-  },
+  name: "NotFound"
 };
 </script>
 

@@ -3,21 +3,17 @@
     v-if="darkMode"
     id="switch-theme"
     role="button"
-    class="dropdown-item"
     @click="toggleTheme"
   >
-    <i class="far fa-sun pe-3" aria-hidden="true"></i>
-    Light Mode
+    <i class="far fa-sun" aria-hidden="true"></i>
   </a>
   <a
     v-else
     id="switch-theme"
     role="button"
-    class="dropdown-item"
     @click="toggleTheme"
   >
-    <i class="far fa-moon pe-3" aria-hidden="true"></i>
-    Dark Mode
+    <i class="far fa-moon" aria-hidden="true"></i>
   </a>
 </template>
 
