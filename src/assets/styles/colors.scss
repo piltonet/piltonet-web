@@ -44,11 +44,11 @@
     --ptn-black: #000000;
     --ptn-black-rgb: 0, 0, 0;
 
-    --ptn-viction-grean: #11a97d;
-    --ptn-viction-second-grean: #15cc97;
-    --ptn-viction-third-grean: #094030;
-    --ptn-viction-grean-rgb: r17, 169, 125;
-
+    --ptn-viction-default: #231f20;
+    --ptn-viction-beige: #f8f6d7;
+    --ptn-viction-black: #231f20;
+    --ptn-viction-gainsboro: #e0ded8;
+    --ptn-viction-gray: #988f86;
 }
 
 [theme="dark"] {
@@ -58,4 +58,6 @@
     --ptn-second-bg-rgb: 0, 0, 0;
     --ptn-color: #f9f9f9;
     --ptn-color-rgb: 247, 247, 247;
+
+    --ptn-viction-default: #f8f6d7;
 }

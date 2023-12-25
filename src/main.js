@@ -32,12 +32,16 @@ app.component("font-awesome-icon", FontAwesomeIcon)
 import Jazzicon from 'vue-jazzicon/src/components'
 app.component('JazzIcon', Jazzicon)
 app.config.globalProperties.jazzColors = [
-  '#2347b3', // blue
-  '#4462be', // second blue
-  '#3c4a77', // third blue
-  '#11a97d', // green
-  '#15cc97', // second green
-  '#094030', // third green
+  '#f8f6d7', // viction-beige
+  '#231f20', // viction-black
+  '#e0ded8', // viction-gainsboro
+  '#988f86', // viction-gray
+  // '#2347b3', // blue
+  // '#4462be', // second blue
+  // '#3c4a77', // third blue
+  // '#11a97d', // green
+  // '#15cc97', // second green
+  // '#094030', // third green
 ]
 
 import MessageModal from "@/components/CustomModals/MessageModal.vue"
@@ -54,14 +58,7 @@ app.config.globalProperties.emitter = mitt()
 
 import blockchains from "@/configs/blockchains"
 app.config.globalProperties.blockchains = blockchains
-const defaultChain = blockchains[process.env.VUE_APP_DEFAULT_NETWORK];
-app.config.globalProperties.defaultchain = {
-  chainId: defaultChain.chainId,
-  chainName: defaultChain.chainName,
-  rpcUrls: defaultChain.rpcUrls,
-  blockExplorerUrls: defaultChain.blockExplorerUrls,
-  nativeCurrency: defaultChain.nativeCurrency
-}
+app.config.globalProperties.defaultchain = blockchains[process.env.VUE_APP_DEFAULT_NETWORK]
 
 import { device, notification, utils, regex } from "@/plugins"
 app.config.globalProperties.device = device()

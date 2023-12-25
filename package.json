@@ -27,8 +27,6 @@
     "ethereum-multicall": "^2.14.1",
     "ethers": "^6.9.1",
     "ethers-multicall": "^0.2.3",
-    "everscale-inpage-provider": "^0.3.58",
-    "everscale-standalone-client": "^2.1.18",
     "js-base64": "^3.7.5",
     "mitt": "^3.0.0",
     "next-vue-device-detector": "^0.0.1",

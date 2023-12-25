@@ -207,10 +207,6 @@ import api from "@/services/api";
 import CropperModal from "@/components/CustomModals/CropperModal.vue";
 import wallets from "@/wallets";
 
-// const Blockchain = () => {return this.defaultchain || null};
-// const Wallet = () => {return Blockchain()?.wallets[0] == 'venom-connect' ? venomwallet : metamask};
-
-
 export default {
   name: "AccountSettingsProfile",
   components: {

@@ -83,7 +83,6 @@ import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import wallets from "@/wallets";
-// import { Address } from 'everscale-inpage-provider';
 
 // const { AccountsContract } = require('@/contracts');
 

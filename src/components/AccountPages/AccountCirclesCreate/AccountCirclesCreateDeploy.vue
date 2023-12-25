@@ -39,7 +39,7 @@
               :chainId="circleInfo.circle_chain_id"
               :paymentToken="circleInfo.circle_payment_token"
               :tooltip="false"
-              customClass="mb-1 me-2"
+              customClass="m-1"
             />
             <p>{{ defaultchain.nativeCurrency.symbol }}</p>
             <i class="fa fa-lock ps-2" aria-hidden="true"></i>
@@ -193,13 +193,11 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import api from "@/services/api";
-// import deploy from "@/services/deploy";
+import { ethers } from 'ethers'
+// import api from "@/services/api";
+import abi from "@/services/abi";
 import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
-import { Address } from 'everscale-inpage-provider';
-
-const { LendingCircleContract } = require('@/contracts');
 
 export default {
   name: "AccountCirclesCreateDeploy",
@@ -212,7 +210,7 @@ export default {
   emits: ["setActivePage"],
   data() {
     return {
-      circleInfo: this.circleInfoProps,
+      circleInfo: null,
       maxCreatorEarnings: process.env.VUE_APP_CIRCLES_MAX_CREATOR_EARNINGS / 100,
       hasError: {
         circle_creator_earnings: false
@@ -222,9 +220,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getConnectionStore"]),
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
     connectedAccount() {
       return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
     }
   },
   mounted() {
@@ -246,7 +247,7 @@ export default {
         this.circleInfo = {
           circle_id: null,
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
-          circle_chain_id: this.defaultchain.chainId,
+          circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.nativeCurrency.address,
           circle_round_days: 30,
           circle_payment_type: 'fixed_pay',
@@ -257,67 +258,84 @@ export default {
     },
     async deployCircle() {
       if(this.checkForm()) {
-        const circleOwner =  new Address(this.connectedAccount.account_address);
-        const initParams = {
-          version: "A01",
-          circleOwner: circleOwner,
-          serviceAddress: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS,
-          nonce: (Math.random() * 64000).toFixed()
-        }
-        const constructorParams = {
-          paymentToken: new Address("0:0000000000000000000000000000000000000000000000000000000000000000"),
-          roundDays: this.circleInfo.circle_round_days,
-          paymentType: this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
-          creatorEarnings_x10000: this.circleInfo.circle_creator_earnings * 100
-        }
-        const circleContract = await wallets[this.connectedAccount.connected_wallet].deployContract(
-          LendingCircleContract,
-          initParams,
-          constructorParams,
-          "5000000000" // 5 venom
+        // const circleOwner =  new Address(this.connectedAccount.account_address);
+        // const initParams = {
+        //   version: "A01",
+        //   circleOwner: circleOwner,
+        //   serviceAddress: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS,
+        //   nonce: (Math.random() * 64000).toFixed()
+        // }
+        // const deployArgs = {
+        //   paymentToken: new Address("0:0000000000000000000000000000000000000000000000000000000000000000"),
+        //   roundDays: this.circleInfo.circle_round_days,
+        //   paymentType: this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
+        //   creatorEarnings_x10000: this.circleInfo.circle_creator_earnings * 100
+        // }
+        const deployArgs = [
+          "https://piltonet.com/profile/"
+        ]
+        // const params = {
+        //   contractOwner: ethers.getAddress(this.accountProfile.account_tba_address),
+        //   deployArgs
+        // }
+        const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+        const signer = await provider.getSigner();
+        const contract = abi.setAbi(
+          "0x", // deploy new contract
+          "DeployCustomContract",
+          signer
         );
-        // const circleContract = await venomwallet.deployContract(
+        let abiResponse = await contract.interaction('deployTLCC', deployArgs);
+        console.log(abiResponse.result.target);
+        
+        // const circleContract = await wallets[this.connectedAccount.connected_wallet].deployContract(
         //   LendingCircleContract,
         //   initParams,
-        //   constructorParams,
+        //   deployArgs,
         //   "5000000000" // 5 venom
         // );
-        if(circleContract) {
-          this.circleInfo.circle_id = circleContract.address.toString();
-          let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
-          if(apiResponse.data.done) {
-            this.circleInfo = apiResponse.data.result[0];
-            this.notif({
-              title: "SUCCESS!",
-              message: apiResponse.data.message,
-              dangerouslyUseHTMLString: true,
-              type: apiResponse.data.message_type,
-              duration: 3000,
-              onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
-            })
-          } else {
-            if(apiResponse.data.status_code == "401") {
-              this.setConnectionStore({ is_connected: false });
-              this.setProfileStore(null);
-              this.$router.go();
-            } else {
-              this.notif({
-                title: "OOPS!",
-                message: apiResponse.data.message,
-                dangerouslyUseHTMLString: true,
-                type: apiResponse.data.message_type,
-                duration: 3000,
-              })
-            }
-          }
-        } else {
-          this.notif({
-            title: "OOPS!",
-            message: "Something Went Wrong, Please Try Again.",
-            type: "error",
-            duration: 3000,
-          })
-        }
+        // // const circleContract = await venomwallet.deployContract(
+        // //   LendingCircleContract,
+        // //   initParams,
+        // //   deployArgs,
+        // //   "5000000000" // 5 venom
+        // // );
+        // if(circleContract) {
+        //   this.circleInfo.circle_id = circleContract.address.toString();
+        //   let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
+        //   if(apiResponse.data.done) {
+        //     this.circleInfo = apiResponse.data.result[0];
+        //     this.notif({
+        //       title: "SUCCESS!",
+        //       message: apiResponse.data.message,
+        //       dangerouslyUseHTMLString: true,
+        //       type: apiResponse.data.message_type,
+        //       duration: 3000,
+        //       onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
+        //     })
+        //   } else {
+        //     if(apiResponse.data.status_code == "401") {
+        //       this.setConnectionStore({ is_connected: false });
+        //       this.setProfileStore(null);
+        //       this.$router.go();
+        //     } else {
+        //       this.notif({
+        //         title: "OOPS!",
+        //         message: apiResponse.data.message,
+        //         dangerouslyUseHTMLString: true,
+        //         type: apiResponse.data.message_type,
+        //         duration: 3000,
+        //       })
+        //     }
+        //   }
+        // } else {
+        //   this.notif({
+        //     title: "OOPS!",
+        //     message: "Something Went Wrong, Please Try Again.",
+        //     type: "error",
+        //     duration: 3000,
+        //   })
+        // }
       }
     },
     checkForm() {

@@ -3,27 +3,23 @@
 	<div v-if="chainId == 88 || chainId == 89">
 		<!-- VIC -->
 		<div v-if="paymentToken == this.defaultchain.nativeCurrency.address">
-			<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
-				<SvgTomoIcon
+			<template v-if="tooltip">
+				<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" placement="top" :hide-after="0">
+					<SvgVicIcon
+						:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
+						:class="customClass"
+					/>
+				</el-tooltip>
+			</template>
+			<template v-else>
+				<SvgVicIcon
 					:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
 					:class="customClass"
 				/>
-			</el-tooltip>
+			</template>
 		</div>
 	</div>
 	
-	<!-- VenomNetwork -->
-	<div v-else-if="chainId == 1000 || chainId == 1002">
-		<!-- Venom -->
-		<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" :placement="tooltip ? 'top' : ''" :hide-after="0">
-			<SvgVenomIcon
-				:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
-				:class="customClass"
-			/>
-		</el-tooltip>
-	</div>
-	
-
 	<!-- Undefined -->
 	<div v-else>
 		<el-tooltip content="Undefined Token" :placement="tooltip ? 'top' : ''" :hide-after="0">
@@ -35,16 +31,15 @@
 </template>
 
 <script>
-import { SvgTomoIcon, SvgVenomIcon } from "@/assets/svgs";
+import { SvgVicIcon } from "@/assets/svgs";
 
 export default {
   name: "SvgPaymentToken",
   components: {
-    SvgTomoIcon,
-		SvgVenomIcon
+    SvgVicIcon
   },
   props: {
-    chainId: String,
+    chainId: Number,
 		paymentToken: String,
 		tooltip: {
 			type: Boolean,

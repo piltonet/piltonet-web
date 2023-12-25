@@ -204,7 +204,6 @@ import { mapGetters, mapMutations } from "vuex";
 // import abi from "@/services/abi";
 // import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
-// import { Address } from 'everscale-inpage-provider';
 
 // const { LendingCircleContract } = require('@/contracts');
 
@@ -219,8 +218,8 @@ export default {
   data() {
     return {
       circleInfo: this.circleInfoProps,
-      minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VENOM),
-      maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VENOM),
+      minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VICTION),
+      maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VICTION),
       minMembers: parseInt(process.env.VUE_APP_CIRCLES_MIN_MEMBERS),
       maxMembers: parseInt(process.env.VUE_APP_CIRCLES_MAX_MEMBERS),
       hasError: {

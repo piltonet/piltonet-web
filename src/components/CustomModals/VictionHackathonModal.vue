@@ -41,7 +41,7 @@ export default {
     };
   },
   methods: {
-    goToVenomHackathon() {
+    goToVictionHackathon() {
       window.open("https://viction.piltonet.com", "_self");
     },
     closeModal() {

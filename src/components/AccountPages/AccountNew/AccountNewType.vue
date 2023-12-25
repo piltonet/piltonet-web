@@ -10,7 +10,7 @@
         <div
           type="button"
           class="account-profile-new-card right"
-          @click="creatNewAccount"
+          @click="$router.push('/account/create')"
         >
           <h2>
             CREATE A NEW<br />
@@ -44,13 +44,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
-import { mapGetters } from "vuex";
-// import wallets from "@/wallets";
-// import { Address } from 'everscale-inpage-provider';
-
-// const { AccountsContract } = require('@/contracts');
-
 export default {
   name: "AccountNewType",
   data() {
@@ -58,59 +51,7 @@ export default {
       openLoadings: []
     }
   },
-  computed: {
-    ...mapGetters(['getConnectionStore']),
-    connectedAccount() {
-      return this.getConnectionStore;
-    }
-  },
   methods: {
-    async creatNewAccount() {
-      this.$router.push('/account/create')
-      // let loadingId = await this.showLoading();
-      // try {
-      //   const accountsContractAddress = process.env.VUE_APP_VENOMDEVNET_ACCOUNTSCONTRACT_ADDRESS;
-      //   const accountsContract = await venomwallet.getDeployedContract(AccountsContract, accountsContractAddress);
-      //   const publicKey = await venomwallet.getPublicKey();
-      //   const accountAddress = new Address(this.connectedAccount.account_address)
-      //   loadingId = await this.showLoading();
-      //   const transaction = await accountsContract.methods.createAccount({publicKey: `0x${publicKey}`}).send({
-      //     from: accountAddress,
-      //     amount: '1000000000' // 1 venom
-      //   });
-      //   this.openLoadings[loadingId].close();
-      //   this.notif({
-      //     title: "SUCCESS!",
-      //     message: "Your account successfully created.",
-      //     dangerouslyUseHTMLString: true,
-      //     type: "success",
-      //     duration: 3000,
-      //     onClose: () => { this.$router.push('/account/create') }
-      //   })
-
-      //   console.log('connect transaction:', transaction);
-      // } catch (err) {
-      //   this.openLoadings[loadingId].close();
-      //   this.notif({
-      //     title: "OOPS!",
-      //     message: "Something went wrong, please try again later.",
-      //     dangerouslyUseHTMLString: true,
-      //     type: "error",
-      //     duration: 3000,
-      //   })
-      //   console.log(err);
-      // }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
-    },
     async comingSoonMsg() {
       this.notif({
         title: "COMING SOON",

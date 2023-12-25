@@ -179,7 +179,6 @@ import { mapGetters, mapMutations } from "vuex";
 // import abi from "@/services/abi";
 // import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
-// import { Address } from 'everscale-inpage-provider';
 
 // const { LendingCircleContract } = require('@/contracts');
 

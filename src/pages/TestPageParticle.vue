@@ -23,7 +23,6 @@
 import { ElLoading } from 'element-plus';
 // import NavBar from '@/components/NavBar/NavBar.vue';
 import { mapGetters } from "vuex";
-// import deploy from "@/services/deploy";
 
 import particle from "@/wallets/particle";
 
