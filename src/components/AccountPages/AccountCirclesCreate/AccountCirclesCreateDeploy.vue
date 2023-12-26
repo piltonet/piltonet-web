@@ -50,7 +50,7 @@
             <p>{{ defaultchain.nativeCurrency.symbol }}</p>
             <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
-          <!-- // ToDo! -->
+          <!-- To Do -->
           <button
             class="account-circles-deploy-button mt-2"
             :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"

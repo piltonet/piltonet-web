@@ -1,100 +1,162 @@
 <template>
   <div id="account-profile-header">
-    <div class="d-flex flex-column justify-content-center align-items-center pt-5">
-      <img
-        v-if="accountProfile?.account_image_url"
-        :src="accountProfile?.account_image_url"
-        alt=""
-        class="account-image"
-      />
-      <JazzIcon
-        v-if="!accountProfile?.account_image_url"
-        :address="accountProfile?.account_address"
-        :diameter="130"
-        :colors=jazzColors
-        class="account-image"
-      />
-      <span class="account-fullname mt-3 ms-2">
-        {{ accountProfile?.account_fullname || '' }}
-        <el-tooltip
-          content="Edit Profile"
-          placement="top"
-          :hide-after="0"
-        >
-          <a role="button" @click="$router.push('/account/settings?active_page=profile')">
-            <i class="fa fa-pencil account-edit-icon ms-1" aria-hidden="true"></i>
-          </a>
-        </el-tooltip> 
-      </span>
-      <span class="account-username mt-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
-      <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-        <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
-        <span class="account-address mt-3">Your Soulbound Account: {{ accountProfile?.account_tba_address ? utils.truncate(accountProfile?.account_tba_address, 12) : '' }}</span>
-        <span>
-          <el-tooltip
-            :content="this.copyAddressTooltip"
-            placement="top"
-            :hide-after="0"
-          >
-            <a id="copy-account" role="button" @click="copyAccount('copy-account')">
-              <i class="far fa-copy mt-3"></i>
-            </a>
-          </el-tooltip>
-        </span>
-      </div>
-      
-      <!-- account social -->
-      <div class="gap-2 mt-3 d-flex flex-row justify-content-center align-items-center">
-        <!-- account social twitter -->
-        <span v-if="accountProfile?.account_social_twitter">
-          <a
-            :href="`https://twitter.com/${accountProfile?.account_social_twitter}`"
-            target="_blank"
-          >
-            <i class="fab fa-twitter account-social-icons"></i>
-          </a>
-        </span>
-        <!-- account social facebook -->
-        <span v-if="accountProfile?.account_social_facebook">
-          <a
-            :href="`https://facebook.com/${accountProfile?.account_social_facebook}`"
-            target="_blank"
-          >
-            <i class="fab fa-facebook-f account-social-icons"></i>
-          </a>
-        </span>
-        <!-- account social instagram -->
-        <span v-if="accountProfile?.account_social_instagram">
-          <a
-            :href="`https://instagram.com/${accountProfile?.account_social_instagram}`"
-            target="_blank"
-          >
-            <i class="fab fa-instagram account-social-icons"></i>
-          </a>
-        </span>
-        <!-- account social linkedin -->
-        <span v-if="accountProfile?.account_social_linkedin">
-          <a
-            :href="`https://linkedin.com/${accountProfile?.account_social_linkedin}`"
-            target="_blank"
-          >
-            <i class="fab fa-linkedin account-social-icons"></i>
-          </a>
-        </span>
-        <!-- account social telegram -->
-        <span v-if="accountProfile?.account_social_telegram">
-          <a
-            :href="`https://t.me/${accountProfile?.account_social_telegram}`"
-            target="_blank"
-          >
-            <i class="fab fa-telegram account-social-icons"></i>
-          </a>
-        </span>
+    <div class="d-flex flex-row justify-content-center align-items-start row">
+      <!-- profile info -->
+      <div class="col-12 col-md-4">
+        <div class="d-flex flex-column justify-content-center align-items-start pt-5">
+          <img
+            v-if="accountProfile?.account_image_url"
+            :src="accountProfile?.account_image_url"
+            alt=""
+            class="account-image"
+          />
+          <JazzIcon
+            v-if="!accountProfile?.account_image_url"
+            :address="accountProfile?.account_address"
+            :diameter="130"
+            :colors=jazzColors
+            class="account-image"
+          />
+          <span class="account-fullname mt-3 ms-2">
+            {{ accountProfile?.account_fullname || '' }}
+            <el-tooltip
+              content="Edit Profile"
+              placement="top"
+              :hide-after="0"
+            >
+              <a role="button" @click="$router.push('/account/settings?active_page=profile')">
+                <i class="fa fa-pencil account-edit-icon ms-1" aria-hidden="true"></i>
+              </a>
+            </el-tooltip> 
+          </span>
+          <span class="account-data mt-2 ms-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
+          
+          <!-- account social -->
+          <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-3 ms-2">
+            <!-- account social twitter -->
+            <span v-if="accountProfile?.account_social_twitter">
+              <a
+                :href="`https://twitter.com/${accountProfile?.account_social_twitter}`"
+                target="_blank"
+              >
+                <i class="fab fa-twitter account-social-icons"></i>
+              </a>
+            </span>
+            <!-- account social facebook -->
+            <span v-if="accountProfile?.account_social_facebook">
+              <a
+                :href="`https://facebook.com/${accountProfile?.account_social_facebook}`"
+                target="_blank"
+              >
+                <i class="fab fa-facebook-f account-social-icons"></i>
+              </a>
+            </span>
+            <!-- account social instagram -->
+            <span v-if="accountProfile?.account_social_instagram">
+              <a
+                :href="`https://instagram.com/${accountProfile?.account_social_instagram}`"
+                target="_blank"
+              >
+                <i class="fab fa-instagram account-social-icons"></i>
+              </a>
+            </span>
+            <!-- account social linkedin -->
+            <span v-if="accountProfile?.account_social_linkedin">
+              <a
+                :href="`https://linkedin.com/${accountProfile?.account_social_linkedin}`"
+                target="_blank"
+              >
+                <i class="fab fa-linkedin account-social-icons"></i>
+              </a>
+            </span>
+            <!-- account social telegram -->
+            <span v-if="accountProfile?.account_social_telegram">
+              <a
+                :href="`https://t.me/${accountProfile?.account_social_telegram}`"
+                target="_blank"
+              >
+                <i class="fab fa-telegram account-social-icons"></i>
+              </a>
+            </span>
+          </div>
+        </div>
       </div>
 
+      <div class="col-12 col-md-8">
+        <div class="d-flex flex-column justify-content-end align-items-start pt-2 pt-md-4">
+          <!-- profile Account -->
+          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+            <span class="account-title mt-3">Profile Account Address</span>
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-1">
+              <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
+              <span class="account-address">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
+              <span>
+                <el-tooltip
+                  :content="this.copyAddressTooltip"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
+                    <i class="far fa-copy mt-1"></i>
+                  </a>
+                </el-tooltip>
+              </span>
+            </div>
+          </div>
+          <!-- profile balance -->
+          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+            <span class="account-title mt-3">Profile Account Balance</span>
+            <div class="d-flex flex-row justify-content-center align-items-center mt-1">
+              <span class="account-balance">0.00</span>
+              <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
+                <SvgPaymentToken
+                  :chainId="this.defaultchain.id"
+                  :paymentToken="this.defaultchain.nativeCurrency.address"
+                  :tooltip="false"
+                  customClass=""
+                />
+                <p>{{ defaultchain.nativeCurrency.symbol }}</p>
+              </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center mt-1">
+              <span class="account-balance">0.00</span>
+              <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
+                <SvgPaymentToken
+                  :chainId="this.defaultchain.id"
+                  :paymentToken="'PUSD-token-address'"
+                  :tooltip="false"
+                  customClass=""
+                />
+                <p>PCUSD</p>
+              </div>
+            </div>
+
+            <!-- Top-Up & Withdraw -->
+            <div class="d-flex flex-row justify-content-center align-items-center row mt-3">
+              <div
+                type="button"
+                @click="acceptInviteCode"
+                class="main-btn"
+              >
+                <span class="m-0 p-0">Top-Up</span>
+              </div>
+              <div
+                type="button"
+                @click="inviteAccount = null"
+                class="main-btn green-bg ms-2"
+              >
+                <span class="m-0 p-0">Withdraw</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="horizontal-line mt-3"></div>
+      
+      <!-- profile menu -->
+      <!-- To Do -->
       <div class="container-fluid d-flex flex-row p-0 mt-3">
-        <!-- profile menu -->
-        <!-- To Do -->
         <div v-if="false" class="col-6 d-flex justify-content-start">
           <!-- account circles -->
           <div
@@ -199,22 +261,40 @@ export default {
   height: 130px;
   object-fit: cover;
   border: none;
-  border-radius: 50%;
+  border-radius: 8px;
 }
 .account-fullname {
+  font-family: "RobotoB2", arial, sans-serif;
+  font-size: 23px;
+  line-height: 30px;
+  font-weight: bold;
+  color: rgba(var(--ptn-color-rgb), 1);
+}
+.account-title {
+  font-family: "RobotoB", arial, sans-serif;
   font-size: 22px;
   line-height: 30px;
   font-weight: bold;
+  color: rgba(var(--ptn-second-blue-rgb), 0.8);
 }
-.account-username {
+.account-data {
   font-size: 20px;
   line-height: 20px;
   font-weight: bold;
+  color: rgba(var(--ptn-color-rgb), 0.8);
+}
+.account-balance {
+  font-family: "RobotoB", arial, sans-serif;
+  font-size: 23px;
+  line-height: 30px;
+  font-weight: bold;
+  color: rgba(var(--ptn-color-rgb), 0.8);
 }
 .account-address {
   font-size: 20px;
   line-height: 20px;
   font-weight: normal;
+  color: rgba(var(--ptn-color-rgb), 0.8);
 }
 .account-edit-icon {
   font-size: 16px;
@@ -262,6 +342,13 @@ export default {
 }
 .profile-menu.active svg {
   color: var(--ptn-blue);
+}
+
+.horizontal-line {
+  height: 1px;
+  background-color: rgba(var(--ptn-color-rgb), 0.6);
+  width: calc(100% - 10px);
+  margin: auto;
 }
 
 /* Start labtop - lg < 1200 */
