@@ -25,12 +25,19 @@ const state = {
   **/
   connection: undefined,
   /**
-  **Main Account Data from BackEnd**
+  **Profile Data from BackEnd**
   gettters: getProfileStoreByKey, getProfileStore
   mutations: setProfileStoreByKey, setProfileStore
   actions: fetchProfile
   **/
   profile: undefined,
+  /**
+  **Profile Balance from Blockchain**
+  gettters: getProfileBalanceStore
+  mutations: setProfileBalanceStore
+  actions: fetchProfileBalance
+  **/
+  profileBalance: undefined,
 }
 
 export default createStore({

@@ -22,7 +22,6 @@ export default {
 
 <style lang="scss" scoped>
 .cls-1 {
-  fill: var(--ptn-viction-default);
   fill: none;
   stroke: var(--ptn-viction-default);
   stroke-width: 40

@@ -50,9 +50,23 @@
             <p>{{ defaultchain.nativeCurrency.symbol }}</p>
             <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
-          <!-- To Do -->
           <button
             class="account-circles-deploy-button mt-2"
+            :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+            @click="circleInfo.circle_payment_token = 'CUSD-token-address'"
+          >
+            <SvgPaymentToken
+              :chainId="circleInfo.circle_chain_id"
+              :paymentToken="'CUSD-token-address'"
+              :tooltip="false"
+              customClass="m-1"
+            />
+            <p>CUSD</p>
+            <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+          </button>
+          <!-- To Do -->
+          <button
+            class="account-circles-deploy-button mt-2 d-none"
             :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
             @click="circleInfo.circle_payment_token = 'PUSD-token-address'"
           >
@@ -279,7 +293,7 @@ export default {
           circle_id: null,
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
           circle_chain_id: this.defaultchain.id,
-          circle_payment_token: 'PUSD-token-address',
+          circle_payment_token: 'CUSD-token-address',
           circle_round_days: 7,
           circle_payment_type: 'fixed_pay',
           circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,

@@ -16,6 +16,9 @@ const getters = {
 	},
 	getProfileStoreByKey: (state) => (key) => {
 		return (state.profile && key in state.profile) ? state.profile[key] : undefined;
+	},
+	getProfileBalanceStore(state) {
+		return state.profileBalance || 0;
 	}
 }
 

@@ -31,6 +31,26 @@
           </span>
           <span class="account-data mt-2 ms-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
           
+          <!-- profile Account -->
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
+            <span class="account-data pe-2">TBA:</span>
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+              <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
+              <span class="account-address">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
+              <span>
+                <el-tooltip
+                  :content="this.copyAddressTooltip"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
+                    <i class="far fa-copy mt-1"></i>
+                  </a>
+                </el-tooltip>
+              </span>
+            </div>
+          </div>
+
           <!-- account social -->
           <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-3 ms-2">
             <!-- account social twitter -->
@@ -79,75 +99,119 @@
               </a>
             </span>
           </div>
+
         </div>
       </div>
 
+      <!-- profile balance -->
       <div class="col-12 col-md-8">
-        <div class="d-flex flex-column justify-content-end align-items-start pt-2 pt-md-4">
-          <!-- profile Account -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
-            <span class="account-title mt-3">Profile Account Address</span>
-            <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-1">
-              <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
-              <span class="account-address">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
-              <span>
-                <el-tooltip
-                  :content="this.copyAddressTooltip"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
-                    <i class="far fa-copy mt-1"></i>
-                  </a>
-                </el-tooltip>
-              </span>
+        <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
+          <!-- Total Assets -->
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
+            <span class="account-title mt-3">Total Assets</span>
+            
+            <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
+              <div class="col-3 d-flex flex-row justify-content-start align-items-center">
+                <span class="account-balance">0.00</span>
+                <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
+                  <SvgPaymentToken
+                    :chainId="this.defaultchain.id"
+                    :paymentToken="this.defaultchain.nativeCurrency.address"
+                    :tooltip="false"
+                    customClass=""
+                  />
+                  <p>{{ defaultchain.nativeCurrency.symbol }}</p>
+                </div>
+              </div>
+              <!-- To Do -->
+              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
+                <!-- Deposit & Withdraw -->
+                <div class="d-flex flex-row justify-content-center align-items-center d-none">
+                  <div
+                    type="button"
+                    @click="getBalance"
+                    class="main-btn"
+                  >
+                    <span class="m-0 p-0">Deposit</span>
+                  </div>
+                  <div
+                    type="button"
+                    @click="getBalance = null"
+                    class="main-btn green-bg ms-2"
+                  >
+                    <span class="m-0 p-0">Withdraw</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
+              <div class="col-3 d-flex flex-row justify-content-start align-items-center">
+                <span class="account-balance">0.00</span>
+                <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
+                  <SvgPaymentToken
+                    :chainId="this.defaultchain.id"
+                    :paymentToken="'CUSD-token-address'"
+                    :tooltip="false"
+                    customClass=""
+                  />
+                  <p>CUSD</p>
+                </div>
+              </div>
+              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
+                <!-- Deposit & Withdraw -->
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                  <div
+                    type="button"
+                    @click="getBalance"
+                    class="main-btn"
+                  >
+                    <span class="m-0 p-0">Top-Up</span>
+                  </div>
+                  <div
+                    type="button"
+                    @click="getBalance = null"
+                    class="main-btn green-bg ms-2"
+                  >
+                    <span class="m-0 p-0">Withdraw</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- profile balance -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
-            <span class="account-title mt-3">Profile Account Balance</span>
-            <div class="d-flex flex-row justify-content-center align-items-center mt-1">
-              <span class="account-balance">0.00</span>
-              <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
-                <SvgPaymentToken
-                  :chainId="this.defaultchain.id"
-                  :paymentToken="this.defaultchain.nativeCurrency.address"
-                  :tooltip="false"
-                  customClass=""
-                />
-                <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-              </div>
-            </div>
-            <div class="d-flex flex-row justify-content-center align-items-center mt-1">
-              <span class="account-balance">0.00</span>
-              <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
-                <SvgPaymentToken
-                  :chainId="this.defaultchain.id"
-                  :paymentToken="'PUSD-token-address'"
-                  :tooltip="false"
-                  customClass=""
-                />
-                <p>PCUSD</p>
-              </div>
-            </div>
 
-            <!-- Top-Up & Withdraw -->
-            <div class="d-flex flex-row justify-content-center align-items-center row mt-3">
-              <div
-                type="button"
-                @click="acceptInviteCode"
-                class="main-btn"
-              >
-                <span class="m-0 p-0">Top-Up</span>
+          <!-- Total Funded Debt -->
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
+            <span class="account-title mt-3">Total Debt</span>
+            
+            <!-- To Do -->
+            <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
+              <div class="col-3 d-flex flex-row justify-content-start align-items-center">
+                <span class="account-balance">0.00</span>
+                <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
+                  <SvgPaymentToken
+                    :chainId="this.defaultchain.id"
+                    :paymentToken="'PUSD-token-address'"
+                    :tooltip="false"
+                    customClass=""
+                  />
+                  <p>USD</p>
+                </div>
               </div>
-              <div
-                type="button"
-                @click="inviteAccount = null"
-                class="main-btn green-bg ms-2"
-              >
-                <span class="m-0 p-0">Withdraw</span>
+              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
+                <!-- Top-Up & Withdraw -->
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                  <div
+                    type="button"
+                    @click="getBalance"
+                    class="main-btn gray-bg"
+                  >
+                    <span class="m-0 p-0">Pay Off</span>
+                  </div>
+                </div>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
@@ -220,7 +284,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import { ethers } from 'ethers'
+// import abi from "@/services/abi";
+import wallets from "@/wallets";
 
 export default {
   name: "AccountProfileHeader",
@@ -242,6 +309,27 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchProfileBalance']),
+    async getBalance() {
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      
+      const balance = await provider.getBalance(this.accountProfile.account_tba_address);
+      console.log(balance);
+      // const signer = await provider.getSigner();
+      // const contract = abi.setAbi(
+      //   this.accountProfile.account_tba_address,
+      //   "ERC6551Account",
+      //   signer
+      // );
+      // // execute ERC1155Contracts addContact
+      // let abiResponse = await contract.interaction("balance", []);
+      // console.log(abiResponse);
+
+      // await this.fetchProfileBalance({
+      //   account_tba_address: this.accountProfile?.account_tba_address,
+      //   signer: signer
+      // });
+    },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.accountProfile?.account_tba_address);
       document.getElementById(id).innerHTML = '<i class="fa fa-check mt-3" style="color: lightgreen;"></i>'
@@ -256,6 +344,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.profile-header-top {
+  min-height: 330px;
+}
 .account-image {
   width: 130px;
   height: 130px;

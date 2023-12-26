@@ -6,14 +6,31 @@
 			<template v-if="tooltip">
 				<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" placement="top" :hide-after="0">
 					<SvgVicIcon
-						:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
+						:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
 						:class="customClass"
 					/>
 				</el-tooltip>
 			</template>
 			<template v-else>
 				<SvgVicIcon
-					:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
+					:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
+					:class="customClass"
+				/>
+			</template>
+		</div>
+		<!-- CUSD -->
+		<div v-if="paymentToken == 'CUSD-token-address'">
+			<template v-if="tooltip">
+				<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" placement="top" :hide-after="0">
+					<SvgCUSDIcon
+						:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
+						:class="customClass"
+					/>
+				</el-tooltip>
+			</template>
+			<template v-else>
+				<SvgCUSDIcon
+					:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
 					:class="customClass"
 				/>
 			</template>
@@ -23,14 +40,14 @@
 			<template v-if="tooltip">
 				<el-tooltip :content="this.defaultchain.nativeCurrency.symbol" placement="top" :hide-after="0">
 					<SvgDollarSign
-						:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
+						:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
 						:class="customClass"
 					/>
 				</el-tooltip>
 			</template>
 			<template v-else>
 				<SvgDollarSign
-					:style="`height: ${height}px; margin-bottom:  ${(24-height)/2}px;`"
+					:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
 					:class="customClass"
 				/>
 			</template>
@@ -48,12 +65,13 @@
 </template>
 
 <script>
-import { SvgVicIcon, SvgDollarSign } from "@/assets/svgs";
+import { SvgVicIcon, SvgCUSDIcon, SvgDollarSign } from "@/assets/svgs";
 
 export default {
   name: "SvgPaymentToken",
   components: {
     SvgVicIcon,
+    SvgCUSDIcon,
 		SvgDollarSign
   },
   props: {

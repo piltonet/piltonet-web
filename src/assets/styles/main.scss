@@ -265,7 +265,7 @@ input[type="submit"],
 	padding: 0;
 }
 .main-btn {
-  font-family: "RobotoB2", arial, sans-serif;
+  font-family: "RobotoB", arial, sans-serif;
   font-size: 16px;
   background: var(--ptn-btn-bg);
   color: var(--ptn-btn-color);
@@ -273,8 +273,9 @@ input[type="submit"],
   border-radius: 8px;
   height: auto;
   width: auto;
+  min-width: 100px;
   margin: 0;
-  padding: 3px 15px;
+  padding: 2px 15px;
 }
 .main-btn.green-bg {
   background: rgba(var(--ptn-green-rgb), 0.8) !important;
@@ -286,7 +287,7 @@ input[type="submit"],
   background: rgba(var(--ptn-red-rgb), 0.8) !important;
 }
 .main-btn.gray-bg {
-  background: rgba(var(--ptn-gray-rgb), 0.8) !important;
+  background: rgba(var(--ptn-third-gray-rgb), 0.8) !important;
 }
 .back-btn {
   font-size: 13px;

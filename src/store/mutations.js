@@ -30,6 +30,9 @@ const mutation = {
 		}
 		state.profile = _state;
 	},
+	setProfileBalanceStore(state, payload) {
+		state.profileBalance = payload;
+	}
 }
 
 export default mutation;
