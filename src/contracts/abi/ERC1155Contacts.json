@@ -5,6 +5,11 @@
         "internalType": "string",
         "name": "baseURI",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_ERC721ProfileImplementation",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -297,12 +302,20 @@
     "type": "event"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "ERC721ProfileImplementation",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "senderTBA",
+        "name": "",
         "type": "address"
-      },
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
         "name": "contactTBA",
@@ -365,9 +378,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
     "name": "contactsOf",

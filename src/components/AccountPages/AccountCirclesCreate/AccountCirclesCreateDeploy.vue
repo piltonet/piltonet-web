@@ -193,7 +193,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { ethers } from 'ethers'
+import { ethers } from 'ethers';
 import api from "@/services/api";
 import abi from "@/services/abi";
 import NotFound from '@/pages/NotFound.vue';
