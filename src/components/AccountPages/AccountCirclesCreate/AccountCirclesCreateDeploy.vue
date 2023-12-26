@@ -19,6 +19,12 @@
           <!-- Circle Contract Chain -->
           <label for="circleContractChain" class="input-label">Blockchain</label>
           <button class="account-circles-deploy-button selected locked">
+            <SvgPaymentToken
+              :chainId="circleInfo.circle_chain_id"
+              :paymentToken="this.defaultchain.nativeCurrency.address"
+              :tooltip="false"
+              customClass="m-1"
+            />
             <p>{{ defaultchain.chainName }}</p>
             <i class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
@@ -31,18 +37,33 @@
             Payment Token
           </label>
           <button
-            class="account-circles-deploy-button selected locked"
-            :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? 'selected' : ''"
+            class="account-circles-deploy-button"
+            :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
             @click="circleInfo.circle_payment_token = this.defaultchain.nativeCurrency.address"
           >
             <SvgPaymentToken
               :chainId="circleInfo.circle_chain_id"
-              :paymentToken="circleInfo.circle_payment_token"
+              :paymentToken="this.defaultchain.nativeCurrency.address"
               :tooltip="false"
               customClass="m-1"
             />
             <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-            <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+            <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+          </button>
+          <!-- // ToDo! -->
+          <button
+            class="account-circles-deploy-button mt-2"
+            :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+            @click="circleInfo.circle_payment_token = 'PUSD-token-address'"
+          >
+            <SvgPaymentToken
+              :chainId="circleInfo.circle_chain_id"
+              :paymentToken="'PUSD-token-address'"
+              :tooltip="false"
+              customClass="m-1"
+            />
+            <p>PCUSD</p>
+            <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
           <p id="circlePaymentTokenHelp" class="help-text mb-3">
             This token is used to pay contributions and receive loans.
@@ -53,10 +74,20 @@
             Round Period
           </label>
           <button
-            class="account-circles-deploy-button selected locked"
+            class="account-circles-deploy-button"
+            :class="circleInfo.circle_round_days == 7 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+            @click="circleInfo.circle_round_days = 7"
+          >
+            <p>Weekly (7 days)</p>
+            <i v-if="circleInfo.circle_round_days == 7 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+          </button>
+          <button
+            class="account-circles-deploy-button mt-2"
+            :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+            @click="circleInfo.circle_round_days = 30"
           >
             <p>Monthly (30 days)</p>
-            <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+            <i v-if="circleInfo.circle_round_days == 30 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
           </button>
           <p id="circleRoundDaysHelp" class="help-text mb-3">
             Duration of each round in days.
@@ -248,8 +279,8 @@ export default {
           circle_id: null,
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
           circle_chain_id: this.defaultchain.id,
-          circle_payment_token: this.defaultchain.nativeCurrency.address,
-          circle_round_days: 30,
+          circle_payment_token: 'PUSD-token-address',
+          circle_round_days: 7,
           circle_payment_type: 'fixed_pay',
           circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,
           circle_creator_earnings: 0
