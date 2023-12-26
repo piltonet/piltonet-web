@@ -48,7 +48,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div
               type="button"
-              @click="acceptWaitingContact(accountContact.contact_id)"
+              @click="acceptWaitingContact(accountContact.contact_id, accountContact.account_tba_address)"
               class="front-btn green-btn ms-0 ms-sm-3"
             >
               <span class="m-0 p-0">Yes, sure!</span>
@@ -149,13 +149,15 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+import { ethers } from 'ethers'
 import api from "@/services/api";
+import abi from "@/services/abi";
 import wallets from "@/wallets";
 
 export default {
   name: "AccountContactsList",
   props: {
-    connectedAccountProps: Object,
     accountContactsProps: Object
   },
   data() {
@@ -171,13 +173,43 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
+    connectedAccount() {
+      return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
+    }
+  },
   mounted() {
     // console.log(this.accountContactsProps);
   },
   methods: {
-    async acceptWaitingContact(contactId) {
-      let personalSign = await this.personalSign();
-      if(personalSign) {
+    ...mapMutations(['setConnectionStore', 'setProfileStore']),
+    async acceptWaitingContact(contactId, contactTBA) {
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        this.accountProfile.account_tba_address, // sender tba address
+        "ERC6551Account",
+        signer
+      );
+      // execute ERC1155Contracts addContact
+      let abiResponse = await contract.interaction("callContacts", [
+        "addContact", // method name
+        ["function addContact(address contactTBA)"], // addContact function ABI
+        [ethers.getAddress(contactTBA)] // function args
+      ]);
+      if(!abiResponse.done) {
+        this.notif({
+          title: "OOPS!",
+          message: abiResponse.message,
+          dangerouslyUseHTMLString: true,
+          type: abiResponse.message_type,
+          duration: 3000,
+        });
+      } else {
         let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
         if(apiResponse.data.done) {
           this.notif({

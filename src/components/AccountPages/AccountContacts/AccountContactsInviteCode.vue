@@ -202,13 +202,15 @@ export default {
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
       const signer = await provider.getSigner();
       const contract = abi.setAbi(
-        "0x", // address fixed in sdk
-        "ERC1155Contacts",
+        this.accountProfile.account_tba_address, // sender tba address
+        "ERC6551Account",
         signer
       );
-      let abiResponse = await contract.interaction('addContact', [
-        ethers.getAddress(this.accountProfile.account_tba_address),
-        ethers.getAddress(this.inviteAccount.account_tba_address)
+      // execute ERC1155Contracts addContact
+      let abiResponse = await contract.interaction("callContacts", [
+        "addContact", // method name
+        ["function addContact(address contactTBA)"], // addContact function ABI
+        [ethers.getAddress(this.inviteAccount.account_tba_address)] // function args
       ]);
       if(!abiResponse.done) {
         this.notif({

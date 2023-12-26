@@ -14,7 +14,6 @@
         Work In Progress ...
       </div>
       <AccountContactsList v-else-if="activePage == 'contactList'"
-        :connectedAccountProps = "connectedAccount"
         :accountContactsProps = "accountContacts"
       />
       <AccountContactsInviteFriends v-else-if="activePage == 'inviteFriends'"
