@@ -196,10 +196,12 @@ export default {
         signer
       );
       // execute ERC1155Contracts addContact
-      let abiResponse = await contract.interaction("callContacts", [
-        "addContact", // method name
-        ["function addContact(address contactTBA)"], // addContact function ABI
-        [ethers.getAddress(contactTBA)] // function args
+      let abiResponse = await contract.interaction("executeFunction", [
+        "ERC1155Contacts", // contract name
+        "addContact", // function name
+        ["function addContact(address contactTBA)"], // function ABI
+        [ethers.getAddress(contactTBA)], // function args
+        0 // value
       ]);
       if(!abiResponse.done) {
         this.notif({

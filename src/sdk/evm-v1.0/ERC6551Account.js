@@ -1,8 +1,10 @@
 const { ethers } = require('ethers')
 const contractAbi = require('@/contracts/abi/ERC6551Account')
 
-const contractDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/ERC1155Contacts.json`)
-const ERC1155Contacts = contractDep.address
+const ERC1155ContactsDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/ERC1155Contacts.json`)
+const contracts = {
+	"ERC1155Contacts": ERC1155ContactsDep.address
+}
 
 class SDK {
 	constructor(contractAddress, signer) {
@@ -25,19 +27,21 @@ class SDK {
 		return await tx.wait();
 	}
 
-	// execute to ERC1155Contacts
-	async callContacts(
-		method,
-		abi,
-		args
+	// execute function in other contracts
+	async executeFunction(
+		contractName,
+		functionName,
+		functionAbi,
+		functionArgs,
+		value
 	) {
-		let iface = new ethers.Interface(abi);
-		let data = iface.encodeFunctionData(method, args);
+		let iface = new ethers.Interface(functionAbi);
+		let data = iface.encodeFunctionData(functionName, functionArgs);
 		return await this.execute(
-			ERC1155Contacts,
-			0,
-			data,
-			0
+			contracts[contractName], // to
+			value, // value
+			data, // data
+			0 // operation
 		)
 	}
 }
