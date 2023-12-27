@@ -15,220 +15,382 @@
       <h3 v-else>CREATE & DEPLOY</h3>
       <div class="account-circles-deploy-form">
         <form @submit.prevent>
-          
-          <!-- Circle Contract Chain -->
-          <label for="circleContractChain" class="input-label">Blockchain</label>
-          <button class="account-circles-deploy-button selected locked">
-            <SvgPaymentToken
-              :chainId="circleInfo.circle_chain_id"
-              :paymentToken="this.defaultchain.nativeCurrency.address"
-              :tooltip="false"
-              customClass="m-1"
-            />
-            <p>{{ defaultchain.chainName }}</p>
-            <i class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <p id="circleContractChainHelp" class="help-text mb-3">
-            All transactions will be done on this chain.
-          </p>
 
-          <!-- Circle Payment Token -->
-          <label for="circlePaymentToken" class="input-label mt-2">
-            Payment Token
-          </label>
-          <button
-            class="account-circles-deploy-button"
-            :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_payment_token = this.defaultchain.nativeCurrency.address"
-          >
-            <SvgPaymentToken
-              :chainId="circleInfo.circle_chain_id"
-              :paymentToken="this.defaultchain.nativeCurrency.address"
-              :tooltip="false"
-              customClass="m-1"
-            />
-            <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-            <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <button
-            class="account-circles-deploy-button mt-2"
-            :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_payment_token = 'CUSD-token-address'"
-          >
-            <SvgPaymentToken
-              :chainId="circleInfo.circle_chain_id"
-              :paymentToken="'CUSD-token-address'"
-              :tooltip="false"
-              customClass="m-1"
-            />
-            <p>CUSD</p>
-            <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <!-- To Do -->
-          <button
-            class="account-circles-deploy-button mt-2 d-none"
-            :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_payment_token = 'PUSD-token-address'"
-          >
-            <SvgPaymentToken
-              :chainId="circleInfo.circle_chain_id"
-              :paymentToken="'PUSD-token-address'"
-              :tooltip="false"
-              customClass="m-1"
-            />
-            <p>PCUSD</p>
-            <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <p id="circlePaymentTokenHelp" class="help-text mb-3">
-            This token is used to pay contributions and receive loans.
-          </p>
+          <!-- Circle Contract Chain -->
+          <template v-if="tabIndex == 1">
+            <label for="circleContractChain" class="input-label">Blockchain</label>
+            <button class="account-circles-deploy-button selected locked">
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="this.defaultchain.nativeCurrency.address"
+                :tooltip="false"
+                customClass="m-1"
+              />
+              <p>{{ defaultchain.chainName }}</p>
+              <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <p id="circleContractChainHelp" class="help-text pt-3 mb-3">
+              All transactions will be done on this chain.
+            </p>
+            <!-- Circle Payment Token -->
+            <label for="circlePaymentToken" class="input-label mt-2">
+              Payment Token
+            </label>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = this.defaultchain.nativeCurrency.address"
+            >
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="this.defaultchain.nativeCurrency.address"
+                :tooltip="false"
+                customClass="m-1"
+              />
+              <p>{{ defaultchain.nativeCurrency.symbol }}</p>
+              <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <button
+              class="account-circles-deploy-button mt-2"
+              :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = 'CUSD-token-address'"
+            >
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="'CUSD-token-address'"
+                :tooltip="false"
+                customClass="m-1"
+              />
+              <p>CUSD</p>
+              <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <!-- To Do -->
+            <button
+              class="account-circles-deploy-button mt-2 d-none"
+              :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = 'PUSD-token-address'"
+            >
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="'PUSD-token-address'"
+                :tooltip="false"
+                customClass="m-1"
+              />
+              <p>PCUSD</p>
+              <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <p id="circlePaymentTokenHelp" class="help-text pt-3 mb-3">
+              This token is used to pay contributions and receive loans.
+            </p>
+          </template>
 
           <!-- Circle Round Days -->
-          <label for="circleRoundDays" class="input-label mt-2">
-            Round Period
-          </label>
-          <button
-            class="account-circles-deploy-button"
-            :class="circleInfo.circle_round_days == 7 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_round_days = 7"
-          >
-            <p>Weekly (7 days)</p>
-            <i v-if="circleInfo.circle_round_days == 7 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <button
-            class="account-circles-deploy-button mt-2"
-            :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_round_days = 30"
-          >
-            <p>Monthly (30 days)</p>
-            <i v-if="circleInfo.circle_round_days == 30 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <p id="circleRoundDaysHelp" class="help-text mb-3">
-            Duration of each round in days.
-          </p>
+          <template v-if="tabIndex == 2">
+            <label for="circleRoundDays" class="input-label mt-2">
+              Round Period
+            </label>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_round_days == 7 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_round_days = 7"
+            >
+              <p>Weekly (7 days)</p>
+              <i v-if="circleInfo.circle_round_days == 7 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <button
+              class="account-circles-deploy-button mt-2"
+              :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_round_days = 30"
+            >
+              <p>Monthly (30 days)</p>
+              <i v-if="circleInfo.circle_round_days == 30 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <p id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+              Duration of each round in days.
+            </p>
+          </template>
 
           <!-- Payment Type -->
-          <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
-          <button
-            class="account-circles-deploy-button"
-            :class="circleInfo.circle_payment_type == 'fixed_pay' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_payment_type = 'fixed_pay'"
-          >
-            <p>Fixed Payment</p>
-            <i v-if="circleInfo.circle_payment_type == 'fixed_pay' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <button
-            class="account-circles-deploy-button mt-2"
-            :class="circleInfo.circle_payment_type == 'fixed_loan' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-            @click="circleInfo.circle_payment_type = 'fixed_loan'"
-          >
-            <p>Fixed Loan</p>
-            <i v-if="circleInfo.circle_payment_type == 'fixed_loan' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text mb-3">
-            In the fixed payment type, the loan amount will be based on the number of members and other rules.
-          </p>
-          <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleRoundDaysHelp" class="help-text mb-3">
-            In the fixed loan type, the contribution amount will be based on the number of members and other rules.
-          </p>
+          <template v-if="tabIndex == 3">
+            <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_payment_type == 'fixed_pay' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_type = 'fixed_pay'"
+            >
+              <p>Fixed Payment</p>
+              <i v-if="circleInfo.circle_payment_type == 'fixed_pay' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <button
+              class="account-circles-deploy-button mt-2"
+              :class="circleInfo.circle_payment_type == 'fixed_loan' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_type = 'fixed_loan'"
+            >
+              <p>Fixed Loan</p>
+              <i v-if="circleInfo.circle_payment_type == 'fixed_loan' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+              In the fixed payment type, the loan amount will be based on the number of members and other rules.
+            </p>
+            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+              In the fixed loan type, the contribution amount will be based on the number of members and other rules.
+            </p>
+          </template>
 
-          <!-- Circle Service Charge -->
-          <label for="circleServiceCharge" class="input-label mt-2">
-            Service Charge
-            <span class="input-label-small">(Fixed Rate)</span>
-          </label>
-          <button
-            class="account-circles-deploy-button selected locked"
-          >
-            <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
-            <i class="fa fa-lock ps-2" aria-hidden="true"></i>
-          </button>
-          <p id="circleServiceChargeHelp" class="help-text mb-3">
-            Piltonet service charge rate that is deducted from the loan amount.
-          </p>
-          
           <!-- Circle Creator Earnings -->
           <!-- To Do -->
-          <div v-if="false">
-            <label for="circleCreatorEarnings" class="input-label mt-2">
-              Creator Earnings
-              <span class="input-label-small">(Percent)</span>
+          <template v-if="tabIndex == 4">
+            <div v-if="true">
+              <label for="circleCreatorEarnings" class="input-label mt-2">
+                Creator Earnings
+                <span class="input-label-small">(Percent)</span>
+              </label>
+              <input
+                ref="circle_creator_earnings"
+                id="circleCreatorEarnings"
+                type="number"
+                placeholder="e.g. 0.5"
+                min=0.00
+                :max="maxCreatorEarnings"
+                step="0.01"
+                class="small-input mb-0"
+                :class="hasError['circle_creator_earnings'] ? 'has-error' : ''"
+                aria-describedby="circleCreatorEarningsHelp"
+                v-model="circleInfo.circle_creator_earnings"
+              />
+              <p id="circleCreatorEarningsHelp" class="help-text pt-3 mb-3">
+                {{ `Earnings of the circle creator, up to ${maxCreatorEarnings}%.` }}
+              </p>
+            </div>
+          </template>
+          
+          <!-- Circle Service Charge -->
+          <template v-if="tabIndex == 4">
+            <label for="circleServiceCharge" class="input-label mt-2">
+              Service Charge
+              <span class="input-label-small">(Fixed Rate)</span>
             </label>
-            <input
-              ref="circle_creator_earnings"
-              id="circleCreatorEarnings"
-              type="number"
-              placeholder="e.g. 0.5"
-              min=0.00
-              :max="maxCreatorEarnings"
-              step="0.01"
-              class="small-input mb-0"
-              :class="hasError['circle_creator_earnings'] ? 'has-error' : ''"
-              aria-describedby="circleCreatorEarningsHelp"
-              v-model="circleInfo.circle_creator_earnings"
-            />
-            <p id="circleCreatorEarningsHelp" class="help-text mb-3">
-              {{ `Earnings of the circle creator, up to ${maxCreatorEarnings}%.` }}
+            <button
+              class="account-circles-deploy-button selected locked"
+            >
+              <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
+              <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+            </button>
+            <p id="circleServiceChargeHelp" class="help-text pt-3 mb-3">
+              Piltonet service charge rate that is deducted from the loan amount.
             </p>
+          </template>
+          
+          <!-- Review & Deploy -->
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <template v-if="tabIndex == 5">
+                <label for="circleContractChain" class="input-label">Blockchain</label>
+                <button class="account-circles-deploy-button selected locked">
+                  <SvgPaymentToken
+                    :chainId="circleInfo.circle_chain_id"
+                    :paymentToken="this.defaultchain.nativeCurrency.address"
+                    :tooltip="false"
+                    customClass="m-1"
+                  />
+                  <p>{{ defaultchain.chainName }}</p>
+                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+                </button>
+                <!-- Circle Payment Token -->
+                <label for="circlePaymentToken" class="input-label mt-2">
+                  Payment Token
+                </label>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? 'selected locked' : 'd-none'"
+                >
+                  <SvgPaymentToken
+                    :chainId="circleInfo.circle_chain_id"
+                    :paymentToken="this.defaultchain.nativeCurrency.address"
+                    :tooltip="false"
+                    customClass="m-1"
+                  />
+                  <p>{{ defaultchain.nativeCurrency.symbol }}</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button mt-2"
+                  :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? 'selected locked' : 'd-none'"
+                >
+                  <SvgPaymentToken
+                    :chainId="circleInfo.circle_chain_id"
+                    :paymentToken="'CUSD-token-address'"
+                    :tooltip="false"
+                    customClass="m-1"
+                  />
+                  <p>CUSD</p>
+                </button>
+              </template>
+
+              <template v-if="tabIndex == 5">
+                <label for="circleRoundDays" class="input-label mt-2">
+                  Round Period
+                </label>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_round_days == 7 ? 'selected locked' : 'd-none'"
+                >
+                  <p>Weekly (7 days)</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button mt-2"
+                  :class="circleInfo.circle_round_days == 30 ? 'selected locked' : 'd-none'"
+                >
+                  <p>Monthly (30 days)</p>
+                </button>
+              </template>
+            </div>
+            <div class="col-12 col-md-6">
+              <template v-if="tabIndex == 5">
+                <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_payment_type == 'fixed_pay' ? 'selected locked' : 'd-none'"
+                >
+                  <p>Fixed Payment</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button mt-2"
+                  :class="circleInfo.circle_payment_type == 'fixed_loan' ? 'selected locked' : 'd-none'"
+                >
+                  <p>Fixed Loan</p>
+                </button>
+              </template>
+    
+              <template v-if="tabIndex == 5">
+                <label for="circleServiceCharge" class="input-label mt-2">
+                  Creator Earnings
+                  <span class="input-label-small">(Percent)</span>
+                </label>
+                <button
+                  class="account-circles-deploy-button selected locked"
+                >
+                  <p>{{ circleInfo.circle_creator_earnings }}</p>
+                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+                </button>
+              </template>
+            
+              <template v-if="tabIndex == 5">
+                <label for="circleServiceCharge" class="input-label mt-2">
+                  Service Charge
+                  <span class="input-label-small">(Fixed Rate)</span>
+                </label>
+                <button
+                  class="account-circles-deploy-button selected locked"
+                >
+                  <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
+                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+                </button>
+              </template>
+            </div>
           </div>
           
+
+        
+
           <!-- Create & Deploy Button -->
-          <div v-if="circleInfo.circle_id">
-            <!-- Contract Address -->
-            <label for="contractAddress" class="input-label mt-2">Contract Address</label>
-            <div class="row">
-              <button
-                class="account-circles-deploy-button selected locked"
-              >
-                <p>{{ utils.truncate(circleInfo.circle_id, 17) }}</p>
-              </button>
-              <div class="col-12 col-sm-3">
-                <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
-                  <!-- Copy Icon -->
-                  <el-tooltip
-                    :content="this.copyAddressTooltip"
-                    placement="top"
-                    :hide-after="0"
-                  >
-                    <a
-                      id="copy-contract-address"
-                      role="button"
-                      @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
-                      class="ms-2"
+          <template v-if="tabIndex == 5">
+            <div v-if="circleInfo.circle_id">
+              <!-- Contract Address -->
+              <label for="contractAddress" class="input-label mt-2">Contract Address</label>
+              <div class="row">
+                <button
+                  class="account-circles-deploy-button selected locked"
+                >
+                  <p>{{ utils.truncate(circleInfo.circle_id, 17) }}</p>
+                </button>
+                <div class="col-12 col-sm-3">
+                  <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
+                    <!-- Copy Icon -->
+                    <el-tooltip
+                      :content="this.copyAddressTooltip"
+                      placement="top"
+                      :hide-after="0"
                     >
-                      <i class="far fa-copy" aria-hidden="true"></i>
-                    </a>
-                  </el-tooltip>
-                  <!-- Explore Icon -->
-                  <el-tooltip
-                    content="View in Explorer"
-                    placement="top"
-                    :hide-after="0"
-                  >
-                    <a
-                      v-if="explorerLink"
-                      :href="explorerLink"
-                      target="_blank"
-                      class="ms-2"
+                      <a
+                        id="copy-contract-address"
+                        role="button"
+                        @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
+                        class="ms-2"
+                      >
+                        <i class="far fa-copy" aria-hidden="true"></i>
+                      </a>
+                    </el-tooltip>
+                    <!-- Explore Icon -->
+                    <el-tooltip
+                      content="View in Explorer"
+                      placement="top"
+                      :hide-after="0"
                     >
-                      <i class="fa fa-external-link" aria-hidden="true"></i>
-                    </a>
-                  </el-tooltip>
+                      <a
+                        v-if="explorerLink"
+                        :href="explorerLink"
+                        target="_blank"
+                        class="ms-2"
+                      >
+                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                      </a>
+                    </el-tooltip>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <input
-              type="submit"
-              value="DEPLOY"
-              @click="deployCircle"
-            />
-          </div>
+            <div v-else class="d-flex flex-row justify-content-start align-items-center">
+              <input
+                type="submit"
+                value="Great! DEPLOY"
+                @click="deployCircle"
+              />
+            </div>
+          </template>
+
 
         </form>
       </div>
       <form action=""></form>
+
+      <!-- Previous & Next -->
+      <div class="d-flex flex-row justify-content-center align-items-center mt-4">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+          <div
+            type="button"
+            @click="tabIndex = 1"
+            class="main-btn blue-bg"
+            :class="tabIndex == 5 ? '' : 'd-none'"
+          >
+            <span class="m-0 p-0">Back to Edit</span>
+          </div>
+          <div
+            type="button"
+            @click="tabIndex = tabIndex > 1 ? tabIndex - 1 : 1"
+            class="main-btn blue-bg"
+            :class="tabIndex == 1 || tabIndex == 5 ? 'd-none' : ''"
+          >
+            <span class="m-0 p-0">Previous</span>
+          </div>
+          <div
+            type="button"
+            @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
+            class="main-btn blue-bg ms-2"
+            :class="tabIndex == 4 || tabIndex == 5 ? 'd-none' : ''"
+          >
+            <span class="m-0 p-0">Next</span>
+          </div>
+          <div
+            type="button"
+            @click="tabIndex = 5"
+            class="main-btn green-bg ms-2"
+            :class="tabIndex == 5 ? 'd-none' : ''"
+          >
+            <span class="m-0 p-0">Review & Deploy</span>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 
@@ -255,6 +417,7 @@ export default {
   emits: ["setActivePage"],
   data() {
     return {
+      tabIndex: 1,
       circleInfo: null,
       maxCreatorEarnings: process.env.VUE_APP_CIRCLES_MAX_CREATOR_EARNINGS / 100,
       hasError: {
@@ -422,6 +585,9 @@ export default {
   width: 96%;
   max-width: 940px;
   min-height: calc(100vh - 240px);
+}
+.account-circles-deploy-form {
+  min-height: 320px;
 }
 .account-circles-deploy-button {
   display: flex;

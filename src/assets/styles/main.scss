@@ -267,6 +267,7 @@ input[type="submit"],
 .main-btn {
   font-family: "RobotoB", arial, sans-serif;
   font-size: 16px;
+  text-align: center;
   background: var(--ptn-btn-bg);
   color: var(--ptn-btn-color);
   border: none;
@@ -275,19 +276,27 @@ input[type="submit"],
   width: auto;
   min-width: 100px;
   margin: 0;
-  padding: 2px 15px;
+  padding: 5px 15px;
+}
+.main-btn.disabled {
+  background: rgba(var(--ptn-gray-rgb), 0.8) !important;
+  cursor: default;
 }
 .main-btn.green-bg {
-  background: rgba(var(--ptn-green-rgb), 0.8) !important;
+  background: rgba(var(--ptn-green-rgb), 0.8);
 }
 .main-btn.blue-bg {
-  background: rgba(var(--ptn-blue-rgb), 0.8) !important;
+  background: rgba(var(--ptn-blue-rgb), 0.8);
 }
 .main-btn.red-bg {
-  background: rgba(var(--ptn-red-rgb), 0.8) !important;
+  background: rgba(var(--ptn-red-rgb), 0.8);
 }
 .main-btn.gray-bg {
   background: rgba(var(--ptn-third-gray-rgb), 0.8) !important;
+}
+.main-btn.small-text {
+  font-size: 13px;
+  line-height: 16px;
 }
 .back-btn {
   font-size: 13px;
