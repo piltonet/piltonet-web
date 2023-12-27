@@ -59,7 +59,7 @@ export default {
 </script>
     
 <style lang="scss" scoped>
-#message_modal {
+#message-modal {
   z-index: 9000;
 }
 .ok-btn,

@@ -159,14 +159,14 @@
                 </div>
               </div>
               <div class="col-9 d-flex flex-row justify-content-start align-items-center">
-                <!-- Deposit & Withdraw -->
+                <!-- Top-up & Withdraw -->
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
-                    @click="getBalance"
+                    @click="topUpCUSD"
                     class="main-btn"
                   >
-                    <span class="m-0 p-0">Top-Up</span>
+                    <span class="m-0 p-0">Top-up</span>
                   </div>
                   <div
                     type="button"
@@ -199,7 +199,7 @@
                 </div>
               </div>
               <div class="col-9 d-flex flex-row justify-content-start align-items-center">
-                <!-- Top-Up & Withdraw -->
+                <!-- Pay Off Debt -->
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
@@ -281,6 +281,11 @@
 
     </div>
   </div>
+
+  <TopUpModal
+    ref="topup_modal"
+  />
+
 </template>
 
 <script>
@@ -288,9 +293,13 @@ import { mapGetters, mapActions } from "vuex";
 import { ethers } from 'ethers'
 // import abi from "@/services/abi";
 import wallets from "@/wallets";
+import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
 
 export default {
   name: "AccountProfileHeader",
+  components: {
+    TopUpModal
+  },
   props: {
     activeTabProps: String
   },
@@ -330,13 +339,16 @@ export default {
       //   signer: signer
       // });
     },
+    async topUpCUSD() {
+      this.$refs.topup_modal.setTopUp();
+    },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.accountProfile?.account_tba_address);
-      document.getElementById(id).innerHTML = '<i class="fa fa-check mt-3" style="color: lightgreen;"></i>'
+      document.getElementById(id).innerHTML = '<i class="fa fa-check mt-1" style="color: lightgreen;"></i>'
       this.copyAddressTooltip = "Copied To Clipboard";
       setTimeout(() => {
           this.copyAddressTooltip = "Copy Address";
-          document.getElementById(id).innerHTML = '<i class="far fa-copy mt-3"></i>';
+          document.getElementById(id).innerHTML = '<i class="far fa-copy mt-1"></i>';
         }, 2000);
     },
   }

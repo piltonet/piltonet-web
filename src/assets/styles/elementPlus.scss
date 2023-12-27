@@ -142,3 +142,16 @@
     margin: max(2rem, 50vh - 100px) auto 0;
     padding: 0;
 }
+#topup-modal .el-dialog__body {
+    padding: 1rem 1.5rem !important;
+}
+.topup-dialog {
+    text-align: center !important;
+    background-color: var(--ptn-bg) !important;
+    border-radius: 0.5rem !important;
+    width: 90%;
+    max-width: 900px;
+    height: 470px;
+    // margin: max(2rem, 50vh - 100px) auto 0;
+    padding: 0;
+}
