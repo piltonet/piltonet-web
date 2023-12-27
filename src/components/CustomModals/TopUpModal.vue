@@ -34,7 +34,7 @@
           >
             <SvgPaymentToken
               :chainId="this.defaultchain.id"
-              :paymentToken="'CUSD-token-address'"
+              :paymentToken="this.defaultchain.CUSD.address"
               :tooltip="false"
               customClass="m-1 me-2"
             />

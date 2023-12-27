@@ -218,8 +218,8 @@ export default {
   data() {
     return {
       circleInfo: this.circleInfoProps,
-      minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VICTION),
-      maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VICTION),
+      minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VIC),
+      maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VIC),
       minMembers: parseInt(process.env.VUE_APP_CIRCLES_MIN_MEMBERS),
       maxMembers: parseInt(process.env.VUE_APP_CIRCLES_MAX_MEMBERS),
       hasError: {

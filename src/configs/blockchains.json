@@ -23,6 +23,14 @@
             "standard": "ERC20",
             "logo": ""
         },
+        "CUSD": {
+            "address": "0xb3008E7156Ae2312b49B5200C3E1C3e80E529feb",
+			"name": "CUSD",
+			"symbol": "CUSD",
+			"decimals": 6,
+            "standard": "VRC25",
+            "logo": ""
+        },
         "supportedTokens": []
     },
     "victestnet": {
@@ -43,6 +51,14 @@
 			"symbol": "VIC",
 			"decimals": 18,
             "standard": "ERC20",
+            "logo": ""
+        },
+        "CUSD": {
+            "address": "0xdbf3CDb8Eed6d143b667B59EE15dE49A68D6DC1f",
+			"name": "CUSD",
+			"symbol": "CUSD",
+			"decimals": 6,
+            "standard": "VRC25",
             "logo": ""
         },
         "supportedTokens": []

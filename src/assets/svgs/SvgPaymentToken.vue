@@ -19,7 +19,7 @@
 			</template>
 		</div>
 		<!-- CUSD -->
-		<div v-if="paymentToken == 'CUSD-token-address'">
+		<div v-if="paymentToken == this.defaultchain.CUSD.address">
 			<template v-if="tooltip">
 				<el-tooltip :content="'CUSD'" placement="top" :hide-after="0">
 					<SvgCUSDIcon

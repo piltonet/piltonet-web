@@ -153,7 +153,7 @@
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
-                    :paymentToken="'CUSD-token-address'"
+                    :paymentToken="this.defaultchain.CUSD.address"
                     :tooltip="false"
                     customClass=""
                   />

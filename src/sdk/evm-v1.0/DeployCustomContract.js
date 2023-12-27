@@ -1,6 +1,6 @@
 const { ContractFactory } = require('ethers')
-const TLCCAbi = require('@/contracts/abi/ERC1155Contacts')
-const TLCCByteCode = require('@/contracts/byteCode/ERC1155Contacts')
+const TLCC = require('@/contracts/abi/TrustedLendingCircle')
+const TLCCByteCode = require('@/contracts/byteCode/TrustedLendingCircle')
 
 class SDK {
 	constructor(contractAddress, signer) {
@@ -11,9 +11,11 @@ class SDK {
 	async deployTLCC(
 		deployArgs
 	) {
-		const factory = new ContractFactory(TLCCAbi, TLCCByteCode, this.signer)
-    return await factory.deploy(deployArgs, {
-			gasLimit: 4000000
+		console.log(deployArgs);
+
+		const factory = new ContractFactory(TLCC, TLCCByteCode, this.signer)
+    return await factory.deploy(...deployArgs, {
+			gasLimit: 6000000
 		})
 	}
 }

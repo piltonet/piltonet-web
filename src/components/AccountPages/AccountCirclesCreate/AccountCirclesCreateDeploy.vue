@@ -52,12 +52,12 @@
             </button>
             <button
               class="account-circles-deploy-button mt-2"
-              :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_token = 'CUSD-token-address'"
+              :class="circleInfo.circle_payment_token == this.defaultchain.CUSD.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = this.defaultchain.CUSD.address"
             >
               <SvgPaymentToken
                 :chainId="circleInfo.circle_chain_id"
-                :paymentToken="'CUSD-token-address'"
+                :paymentToken="this.defaultchain.CUSD.address"
                 :tooltip="false"
                 customClass="m-1"
               />
@@ -214,11 +214,11 @@
                 </button>
                 <button
                   class="account-circles-deploy-button mt-2"
-                  :class="circleInfo.circle_payment_token == 'CUSD-token-address' ? 'selected locked' : 'd-none'"
+                  :class="circleInfo.circle_payment_token == this.defaultchain.CUSD.address ? 'selected locked' : 'd-none'"
                 >
                   <SvgPaymentToken
                     :chainId="circleInfo.circle_chain_id"
-                    :paymentToken="'CUSD-token-address'"
+                    :paymentToken="this.defaultchain.CUSD.address"
                     :tooltip="false"
                     customClass="m-1"
                   />
@@ -289,9 +289,6 @@
             </div>
           </div>
           
-
-        
-
           <!-- Create & Deploy Button -->
           <template v-if="tabIndex == 5">
             <div v-if="circleInfo.circle_id">
@@ -347,7 +344,6 @@
               />
             </div>
           </template>
-
 
         </form>
       </div>
@@ -456,7 +452,7 @@ export default {
           circle_id: null,
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
           circle_chain_id: this.defaultchain.id,
-          circle_payment_token: 'CUSD-token-address',
+          circle_payment_token: this.defaultchain.CUSD.address,
           circle_round_days: 7,
           circle_payment_type: 'fixed_pay',
           circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,
@@ -466,22 +462,12 @@ export default {
     },
     async deployCircle() {
       if(this.checkForm()) {
-        // const circleOwner =  new Address(this.connectedAccount.account_address);
-        // const initParams = {
-        //   version: "A01",
-        //   circleOwner: circleOwner,
-        //   serviceAddress: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS,
-        //   nonce: (Math.random() * 64000).toFixed()
-        // }
-        // const deployArgs = {
-        //   paymentToken: new Address("0:0000000000000000000000000000000000000000000000000000000000000000"),
-        //   roundDays: this.circleInfo.circle_round_days,
-        //   paymentType: this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
-        //   creatorEarnings_x10000: this.circleInfo.circle_creator_earnings * 100
-        // }
-        const deployArgs = [
-          "https://piltonet.com/profile/"
-        ];
+        const deployArgs = [[
+          this.circleInfo.circle_payment_token,
+          this.circleInfo.circle_round_days,
+          this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
+          this.circleInfo.circle_creator_earnings * 100
+        ]];
 
         const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
         const signer = await provider.getSigner();
