@@ -109,12 +109,12 @@
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
             <span class="account-title mt-3">Total Assets
-              <span class="account-smalltext mt-3">~ 24.63</span>
+              <span class="account-smalltext mt-3">~ {{ totalBalance }} $</span>
             </span>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">2.0130</span>
+                <span class="account-balance">{{ vicBalance }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -149,7 +149,7 @@
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">23.00</span>
+                <span class="account-balance">{{ cusdBalance }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -189,7 +189,7 @@
             <!-- To Do -->
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">0.00</span>
+                <span class="account-balance">{{ totalDebt }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -307,6 +307,11 @@ export default {
   },
   data() {
     return {
+      // To Do
+      totalBalance: "0.00",
+      vicBalance: "0.00",
+      cusdBalance: "0.00",
+      totalDebt: "0.00",
       copyAddressTooltip: "Copy Address"
     }
   },
@@ -317,6 +322,20 @@ export default {
     },
     accountProfile() {
       return this.getProfileStore;
+    }
+  },
+  mounted() {
+    if(this.connectedAccount.account_address == "0x34732d8a991dcb0e76a06998b50327e4de98ce8f") {
+      this.totalBalance = "24.63";
+      this.vicBalance = "2.0130";
+      this.cusdBalance = "23.00";
+      this.totalDebt = "0.00";
+    }
+    if(this.connectedAccount.account_address == "0x94688d177029574fe9013006811261377fe52dd2") {
+      this.totalBalance = "9.88";
+      this.vicBalance = "0.00";
+      this.cusdBalance = "109.88";
+      this.totalDebt = "100.00";
     }
   },
   methods: {

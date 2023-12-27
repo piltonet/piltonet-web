@@ -58,15 +58,22 @@ class SDK {
 	}
 
 	async launchCircle(start_date) {
-		return await this.contract.launchCircle(start_date)
+		return await this.contract.launchCircle(start_date, {
+			gasLimit: 6000000
+		})
 	}
 	
 	async addToWhitelist(invited_adrs) {
-		return await this.contract.addToWhitelist(JSON.parse(invited_adrs))
+		console.log(invited_adrs);
+		return await this.contract.addInvites(JSON.parse(invited_adrs), {
+			gasLimit: 6000000
+		})
 	}
 	
 	async removeFromWhitelist(invited_adrs) {
-		return await this.contract.removeFromWhitelist(JSON.parse(invited_adrs))
+		return await this.contract.removeFromWhitelist(JSON.parse(invited_adrs, {
+			gasLimit: 6000000
+		}))
 	}
 }
 

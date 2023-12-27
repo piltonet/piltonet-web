@@ -311,9 +311,9 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
-// import api from "@/services/api";
+import api from "@/services/api";
 // import abi from "@/services/abi";
-// import wallets from "@/wallets";
+import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
 // const { LendingCircleContract } = require('@/contracts');
@@ -376,76 +376,79 @@ export default {
     },
 
     async launchCircle() {
-      // let loadingId = await this.showLoading();
-      // try {
-      //   const circleContractAddress = this.circleInfoProps.circle_id;
-      //   const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
-      //   // const circleOwner = new Address(this.connectedAccount.main_account_address);
-      //   const publicKey = await venomwallet.getPublicKey();
+      let loadingId = await this.showLoading();
+      try {
+        // const circleContractAddress = this.circleInfoProps.circle_id;
+        // const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
+        // // const circleOwner = new Address(this.connectedAccount.main_account_address);
+        // const publicKey = await venomwallet.getPublicKey();
 
-      //   loadingId = await this.showLoading();
+        // loadingId = await this.showLoading();
         
-      //   const { transaction } = await circleContract.methods.launchCircle({
-      //     startDate: this.startDate.getTime() / 1000
-      //   }).sendExternal({
-      //     publicKey: publicKey
-      //   });
+        // const { transaction } = await circleContract.methods.launchCircle({
+        //   startDate: this.startDate.getTime() / 1000
+        // }).sendExternal({
+        //   publicKey: publicKey
+        // });
 
-      //   this.openLoadings[loadingId].close();
+        // this.openLoadings[loadingId].close();
 
-      //   console.log('transaction:', transaction);
+        // console.log('transaction:', transaction);
 
-      //   if(!transaction.aborted) {
-      //     let apiResponse = await api.post_account_circles_creator_launch(
-      //       {
-      //         circle_id: this.circleInfoProps.circle_id,
-      //         start_date: this.startDate
-      //       }
-      //     );
-      //     if(apiResponse.data.done) {
-      //       this.notif({
-      //         title: "SUCCESS!",
-      //         message: apiResponse.data.message,
-      //         dangerouslyUseHTMLString: true,
-      //         type: apiResponse.data.message_type,
-      //         duration: 3000,
-      //         onClose: () => { this.$router.go() }
-      //       })
-      //     } else {
-      //       if(apiResponse.data.status_code == "401") {
-      //         this.setConnectionStore({ is_connected: false });
-      //         this.setProfileStore(null);
-      //         this.$router.go();
-      //       } else {
-      //         this.notif({
-      //           title: "OOPS!",
-      //           message: apiResponse.data.message,
-      //           dangerouslyUseHTMLString: true,
-      //           type: apiResponse.data.message_type,
-      //           duration: 3000,
-      //         })
-      //       }
-      //     }
-      //   } else {
-      //     this.notif({
-      //       title: "OOPS!",
-      //       message: `Transaction failed by code: ${transaction.exitCode}`,
-      //       dangerouslyUseHTMLString: true,
-      //       type: "error",
-      //       duration: 3000,
-      //     })
-      //   }
-      // } catch(err) {
-      //   this.openLoadings[loadingId].close();
-      //   this.notif({
-      //     title: "OOPS!",
-      //     message: "Something went wrong, please try again later.",
-      //     dangerouslyUseHTMLString: true,
-      //     type: "error",
-      //     duration: 3000,
-      //   })
-      //   console.log(err);
-      // }
+        // if(!transaction.aborted) {
+        let personalSign = await this.personalSign();
+        if(personalSign) {
+          let apiResponse = await api.post_account_circles_creator_launch(
+            {
+              circle_id: this.circleInfoProps.circle_id,
+              start_date: this.startDate
+            }
+          );
+          if(apiResponse.data.done) {
+            this.notif({
+              title: "SUCCESS!",
+              message: apiResponse.data.message,
+              dangerouslyUseHTMLString: true,
+              type: apiResponse.data.message_type,
+              duration: 3000,
+              onClose: () => { this.$router.go() }
+            })
+          } else {
+            if(apiResponse.data.status_code == "401") {
+              this.setConnectionStore({ is_connected: false });
+              this.setProfileStore(null);
+              this.$router.go();
+            } else {
+              this.notif({
+                title: "OOPS!",
+                message: apiResponse.data.message,
+                dangerouslyUseHTMLString: true,
+                type: apiResponse.data.message_type,
+                duration: 3000,
+              })
+            }
+          }
+        }
+        // } else {
+        //   this.notif({
+        //     title: "OOPS!",
+        //     message: `Transaction failed by code: ${transaction.exitCode}`,
+        //     dangerouslyUseHTMLString: true,
+        //     type: "error",
+        //     duration: 3000,
+        //   })
+        // }
+      } catch(err) {
+        this.openLoadings[loadingId].close();
+        this.notif({
+          title: "OOPS!",
+          message: "Something went wrong, please try again later.",
+          dangerouslyUseHTMLString: true,
+          type: "error",
+          duration: 3000,
+        })
+        console.log(err);
+      }
     },
     async copyAddress(elementId, copyContent) {
       navigator.clipboard.writeText(copyContent);
@@ -455,6 +458,15 @@ export default {
           this.copyAddressTooltip = "Copy Address";
           document.getElementById(elementId).innerHTML = '<i class="far fa-copy main-text-small" aria-hidden="true"></i>';
         }, 2000);
+    },
+    async personalSign() {
+      let personalSignResult = await wallets[this.connectedAccount.connected_wallet].personalSign(
+        "This request requires your signature. It won't cost you anything." +
+          `\nTimestamp: ${new Date().getTime()}`,
+        this.connectedAccount.account_address,
+				null
+      );
+      return personalSignResult;
     },
     async showLoading() {
       const randomId = Date.now();
