@@ -108,11 +108,13 @@
         <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
-            <span class="account-title mt-3">Total Assets</span>
+            <span class="account-title mt-3">Total Assets
+              <span class="account-smalltext mt-3">~ 24.63</span>
+            </span>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">0.00</span>
+                <span class="account-balance">2.0130</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -147,7 +149,7 @@
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">0.00</span>
+                <span class="account-balance">23.00</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -382,6 +384,12 @@ export default {
 }
 .account-data {
   font-size: 20px;
+  line-height: 20px;
+  font-weight: bold;
+  color: rgba(var(--ptn-color-rgb), 0.8);
+}
+.account-smalltext {
+  font-size: 13px;
   line-height: 20px;
   font-weight: bold;
   color: rgba(var(--ptn-color-rgb), 0.8);
