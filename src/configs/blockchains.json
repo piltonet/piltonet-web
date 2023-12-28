@@ -39,7 +39,7 @@
         "chainName": "Viction Testnet",
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
         "environment": "evm",
-        "rpcUrl": "https://rpc.testnet.tomochain.com",
+        "rpcUrl": "https://rpc-testnet.viction.xyz",
         "blockExplorerUrl": "https://testnet.tomoscan.io",
         "wallets": ["metamask", "coin98", "coinbase"],
         "links": {

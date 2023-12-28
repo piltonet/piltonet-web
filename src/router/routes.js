@@ -11,6 +11,8 @@ import AccountCirclesCreate from '@/pages/account/AccountCirclesCreate.vue';
 
 import TestPage from '@/pages/TestPage'
 
+import DemoVideo from '@/pages/DemoVideo'
+
 const routes = [
 	{
 		path: "/:pathMatch(.*)*",
@@ -159,6 +161,20 @@ const routes = [
 	// 		chain: true
 	// 	}
 	// },
+
+
+	{
+		path: '/docs/demo-video',
+		alias: '/docs/demo-video',
+		name: 'DemoVideo',
+		component: DemoVideo,
+		meta: {
+			title: "Piltonet | Demo Video",
+			auth: false,
+			main: false,
+			chain: false
+		}
+	},
 ]
 
 

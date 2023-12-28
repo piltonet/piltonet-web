@@ -55,7 +55,7 @@
       </div>
       <div>
         <p class="footer-bar-copyright">
-          Piltonet &copy;2023 All Rights Reserved.
+          Piltonet &copy;2024 All Rights Reserved.
         </p>
       </div>
     </div>
