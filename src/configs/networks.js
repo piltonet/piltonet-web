@@ -31,7 +31,7 @@ module.exports = [
         chainId: '0x59',
         chainName: 'Viction Testnet',
         nativeCurrency: { name: 'Viction', symbol: 'VIC', decimals: 18, wrappedToken: '' },
-        rpcUrl: 'https://rpc-testnet.viction.xyz', blockExplorerUrl: 'https://testnet.tomoscan.io',
+        rpcUrl: 'https://rpc-testnet.viction.xyz', blockExplorerUrl: 'https://testnet.vicscan.xyz/',
         isSupported: true,
     }
 ]
