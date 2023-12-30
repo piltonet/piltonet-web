@@ -308,10 +308,10 @@ export default {
   data() {
     return {
       // To Do
-      totalBalance: "0.00",
-      vicBalance: "0.00",
-      cusdBalance: "0.00",
-      totalDebt: "0.00",
+      totalBalance: 0,
+      vicBalance: 0,
+      cusdBalance: 0,
+      totalDebt: 0,
       copyAddressTooltip: "Copy Address"
     }
   },
@@ -325,18 +325,14 @@ export default {
     }
   },
   mounted() {
-    if(this.connectedAccount.account_address == "0x34732d8a991dcb0e76a06998b50327e4de98ce8f") {
-      this.totalBalance = "24.63";
-      this.vicBalance = "2.0130";
-      this.cusdBalance = "23.00";
-      this.totalDebt = "0.00";
-    }
-    if(this.connectedAccount.account_address == "0x94688d177029574fe9013006811261377fe52dd2") {
-      this.totalBalance = "9.88";
-      this.vicBalance = "0.00";
-      this.cusdBalance = "109.88";
-      this.totalDebt = "100.00";
-    }
+    this.getBalance()
+  },
+  created(){
+    this.interval = setInterval(() =>{
+      this.getBalance()},30000) // 30 seconds
+  },
+  unmounted(){
+    clearInterval(this.interval)
   },
   methods: {
     ...mapActions(['fetchProfileBalance']),
@@ -344,7 +340,16 @@ export default {
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
       
       const balance = await provider.getBalance(this.accountProfile.account_tba_address);
-      console.log(balance);
+      
+      // this.totalBalance = "24.63";
+      // this.vicBalance = balance.toString();
+      this.vicBalance = ethers.formatEther(balance);
+      // this.cusdBalance = "23.00";
+      // this.totalDebt = "0.00";
+
+      console.log(this.vicBalance);
+
+
       // const signer = await provider.getSigner();
       // const contract = abi.setAbi(
       //   this.accountProfile.account_tba_address,
