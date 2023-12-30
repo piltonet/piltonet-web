@@ -125,26 +125,7 @@
                   <p>{{ defaultchain.nativeCurrency.symbol }}</p>
                 </div>
               </div>
-              <!-- To Do -->
-              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
-                <!-- Deposit & Withdraw -->
-                <div class="d-flex flex-row justify-content-center align-items-center d-none">
-                  <div
-                    type="button"
-                    @click="getBalance"
-                    class="main-btn"
-                  >
-                    <span class="m-0 p-0">Deposit</span>
-                  </div>
-                  <div
-                    type="button"
-                    @click="getBalance = null"
-                    class="main-btn green-bg ms-2"
-                  >
-                    <span class="m-0 p-0">Withdraw</span>
-                  </div>
-                </div>
-              </div>
+              <div class="col-9"></div>
             </div>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
@@ -205,8 +186,8 @@
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
-                    @click="getBalance"
-                    class="main-btn gray-bg"
+                    @click="payOffDebt"
+                    class="main-btn gray-bg disabled"
                   >
                     <span class="m-0 p-0">Pay Off</span>
                   </div>

@@ -517,6 +517,48 @@ export default {
         }
       }
     },
+    async deployCircleByService() {
+      if(this.checkForm()) {
+        const deployArgs = [[
+          this.circleInfo.circle_payment_token,
+          this.circleInfo.circle_round_days,
+          this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
+          this.circleInfo.circle_creator_earnings * 100
+        ]];
+
+        let personalSign = await this.personalSign();
+        if(personalSign) {
+          // this.circleInfo.circle_id = abiResponse.result.target;
+          // let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
+          let apiResponse = await api.post_account_circles_creator_create_by_service(deployArgs);
+          if(apiResponse.data.done) {
+            this.circleInfo = apiResponse.data.result[0];
+            this.notif({
+              title: "SUCCESS!",
+              message: apiResponse.data.message,
+              dangerouslyUseHTMLString: true,
+              type: apiResponse.data.message_type,
+              duration: 3000,
+              onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
+            })
+          } else {
+            if(apiResponse.data.status_code == "401") {
+              this.setConnectionStore({ is_connected: false });
+              this.setProfileStore(null);
+              this.$router.go();
+            } else {
+              this.notif({
+                title: "OOPS!",
+                message: apiResponse.data.message,
+                dangerouslyUseHTMLString: true,
+                type: apiResponse.data.message_type,
+                duration: 3000,
+              })
+            }
+          }
+        }
+      }
+    },
     checkForm() {
       try {
         Object.keys(this.hasError).forEach(element => {
@@ -552,6 +594,15 @@ export default {
         console.log(err);
         return false;
       }
+    },
+    async personalSign() {
+      let personalSignResult = await wallets[this.connectedAccount.connected_wallet].personalSign(
+        "This request requires your signature. It won't cost you anything." +
+          `\nTimestamp: ${new Date().getTime()}`,
+        this.connectedAccount.account_address,
+				null
+      );
+      return personalSignResult;
     },
     async copyAddress(elementId, copyContent) {
       navigator.clipboard.writeText(copyContent);

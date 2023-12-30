@@ -242,7 +242,6 @@ export default {
     async acceptWaitingContactByService(contactId, contactTBA) {
       let personalSign = await this.personalSign();
       if(personalSign) {
-        // let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
         let apiResponse = await api.post_account_contacts_accept_waiting_contact_by_service({
           profile_tba: this.accountProfile.account_tba_address,
           contact_tba: contactTBA,
