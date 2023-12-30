@@ -109,12 +109,12 @@
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
             <span class="account-title mt-3">Total Assets
-              <span class="account-smalltext mt-3">~ {{ totalBalance }} $</span>
+              <span class="account-smalltext mt-3">~ {{ utils.fixedNumber(totalBalance, 2, 2) }} $</span>
             </span>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">{{ vicBalance }}</span>
+                <span class="account-balance">{{ utils.fixedNumber(vicBalance, 4, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -149,7 +149,7 @@
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">{{ cusdBalance }}</span>
+                <span class="account-balance">{{ utils.fixedNumber(cusdBalance, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -293,7 +293,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { ethers } from 'ethers'
-// import abi from "@/services/abi";
+import abi from "@/services/abi";
 import wallets from "@/wallets";
 import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
 
@@ -329,7 +329,7 @@ export default {
   },
   created(){
     this.interval = setInterval(() =>{
-      this.getBalance()},30000) // 30 seconds
+      this.getBalance()}, 30 * 1000) // 30 seconds
   },
   unmounted(){
     clearInterval(this.interval)
@@ -338,32 +338,36 @@ export default {
     ...mapActions(['fetchProfileBalance']),
     async getBalance() {
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
       
-      const balance = await provider.getBalance(this.accountProfile.account_tba_address);
+      // get tokenbound-acount vicBalance
+      let _vicBalance = await provider.getBalance(this.accountProfile.account_tba_address);
+      this.vicBalance = parseFloat(ethers.formatEther(_vicBalance))
+
+      // get tokenbound-acount pcusdBalance
+      const contract = abi.setAbi(
+        "0x", // fixed as VRC25PCUSD address in sdk
+        "VRC25PCUSD",
+        signer
+      );
+      let abiResponse = await contract.interaction("balanceOf", [
+        this.accountProfile.account_tba_address
+      ], false);
+      if(!abiResponse.done) {
+        this.notif({
+          title: "OOPS!",
+          message: abiResponse.message,
+          dangerouslyUseHTMLString: true,
+          type: abiResponse.message_type,
+          duration: 3000,
+        });
+      } else {
+        this.cusdBalance = parseInt(abiResponse.result.toString()) / 1e6;
+      }
       
-      // this.totalBalance = "24.63";
-      // this.vicBalance = balance.toString();
-      this.vicBalance = ethers.formatEther(balance);
-      // this.cusdBalance = "23.00";
-      // this.totalDebt = "0.00";
+      const vic2usdRatio = 0.78;
+      this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
 
-      console.log(this.vicBalance);
-
-
-      // const signer = await provider.getSigner();
-      // const contract = abi.setAbi(
-      //   this.accountProfile.account_tba_address,
-      //   "ERC6551Account",
-      //   signer
-      // );
-      // // execute ERC1155Contracts addContact
-      // let abiResponse = await contract.interaction("balance", []);
-      // console.log(abiResponse);
-
-      // await this.fetchProfileBalance({
-      //   account_tba_address: this.accountProfile?.account_tba_address,
-      //   signer: signer
-      // });
     },
     async topUpCUSD() {
       this.$refs.topup_modal.setTopUp();

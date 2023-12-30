@@ -13,7 +13,7 @@ class SDK {
 	}
 	
 	async transfer(recipient, amount) {
-		const tx = await this.contract.transfer(_to, 10000000, {
+		const tx = await this.contract.transfer(recipient, amount, {
 			gasLimit: 4000000
 		});
 		return await tx.wait();
