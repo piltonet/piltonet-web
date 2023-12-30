@@ -71,6 +71,7 @@ class api {
 			account_circles_creator_members: `${process.env.VUE_APP_API_URL}v1/account/circles/creator/members`,
 			account_circles_change_round: `${process.env.VUE_APP_API_URL}v1/account/circles/change_round`,
 			account_circles_leave: `${process.env.VUE_APP_API_URL}v1/account/circles/leave`,
+			account_testnet_faucet: `${process.env.VUE_APP_API_URL}v1/account/testnet/faucet`,
 		}
 	}
 	async loadAPI(endPoint, options) {
@@ -253,6 +254,9 @@ class api {
 	}
 	async post_account_circles_leave(formBE, show = true) {
 		return this.postAPI(this.endpoints.account_circles_leave, formBE, this.get_auth(), show)
+	}
+	async post_account_testnet_faucet(formBE, show = true) {
+		return this.postAPI(this.endpoints.account_testnet_faucet, formBE, this.get_auth(), show)
 	}
 }
 

@@ -288,12 +288,18 @@
     ref="topup_modal"
   />
 
+  <MessageModal
+    ref="message_modal"
+    @ok-clicked="testnetFaucet"
+  />
+
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { ethers } from 'ethers'
 import abi from "@/services/abi";
+import api from "@/services/api";
 import wallets from "@/wallets";
 import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
 
@@ -370,7 +376,44 @@ export default {
 
     },
     async topUpCUSD() {
-      this.$refs.topup_modal.setTopUp();
+      // this.$refs.topup_modal.setTopUp();
+      this.$refs.message_modal.setMessage({
+        title: 'Top-up CUSD',
+        message: 'You are using the testnet version. You can request 50 PCUSD to test the app.',
+        okBtn: 'Claim Test Token',
+        cancelBtn: "Close",
+        customStyle: 'width: 430px;'
+      });
+    },
+    async testnetFaucet() {
+      let apiResponse = await api.post_account_testnet_faucet({account_tba_address: this.accountProfile.account_tba_address});
+      if(apiResponse.data.done) {
+        this.cusdBalance = apiResponse.data.result[0];
+        const vic2usdRatio = 0.78;
+        this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+        this.notif({
+          title: "SUCCESS!",
+          message: apiResponse.data.message,
+          dangerouslyUseHTMLString: true,
+          type: apiResponse.data.message_type,
+          duration: 3000,
+          onClose: () => {}
+        })
+      } else {
+        if(apiResponse.data.status_code == "401") {
+          this.setConnectionStore({ is_connected: false });
+          this.setProfileStore(null);
+          this.$router.go();
+        } else {
+          this.notif({
+            title: "OOPS!",
+            message: apiResponse.data.message,
+            dangerouslyUseHTMLString: true,
+            type: apiResponse.data.message_type,
+            duration: 3000,
+          })
+        }
+      }
     },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.accountProfile?.account_tba_address);
