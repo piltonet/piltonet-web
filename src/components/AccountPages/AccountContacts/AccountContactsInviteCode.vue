@@ -121,7 +121,7 @@
         <div class="row">
           <div
             type="button"
-            @click="acceptInviteCode"
+            @click="acceptInviteCodeBySerice"
             class="front-btn green-btn ms-3"
           >
             <span class="m-0 p-0">Yes, sure!</span>
@@ -224,6 +224,42 @@ export default {
         });
       } else {
         let apiResponse = await api.post_account_contacts_accept_invite_code({invite_code: this.inviteAccount.account_invite_code});
+        if(apiResponse.data.done) {
+          this.notif({
+            title: "SUCCESS!",
+            message: apiResponse.data.message,
+            dangerouslyUseHTMLString: true,
+            type: apiResponse.data.message_type,
+            duration: 3000,
+            onClose: () => { this.$router.push("/account/contacts?active_page=contactList") }
+          })
+        } else {
+          if(apiResponse.data.status_code == "401") {
+            this.setConnectionStore({ is_connected: false });
+            this.setProfileStore(null);
+            this.$router.go();
+          } else {
+            this.notif({
+              title: "OOPS!",
+              message: apiResponse.data.message,
+              dangerouslyUseHTMLString: true,
+              type: apiResponse.data.message_type,
+              duration: 3000,
+            })
+          }
+        }
+      }
+    },
+    // To Do
+    // temporarily due to json-rpc error
+    async acceptInviteCodeBySerice() {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        let apiResponse = await api.post_account_contacts_accept_invite_code_by_service({
+          profile_tba: this.accountProfile.account_tba_address,
+          contact_tba: this.inviteAccount.account_tba_address,
+          invite_code: this.inviteAccount.account_invite_code
+        });
         if(apiResponse.data.done) {
           this.notif({
             title: "SUCCESS!",

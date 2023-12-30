@@ -55,7 +55,9 @@ class api {
 			account_contacts_create_invite_code: `${process.env.VUE_APP_API_URL}v1/account/contacts/create_invite_code`,
 			account_contacts_fetch_invite_code: `${process.env.VUE_APP_API_URL}v1/account/contacts/fetch_invite_code`,
 			account_contacts_accept_invite_code: `${process.env.VUE_APP_API_URL}v1/account/contacts/accept_invite_code`,
+			account_contacts_accept_invite_code_by_service: `${process.env.VUE_APP_API_URL}v1/account/contacts/accept_invite_code_by_service`,
 			account_contacts_accept_waiting_contact: `${process.env.VUE_APP_API_URL}v1/account/contacts/accept_waiting_contact`,
+			account_contacts_accept_waiting_contact_by_service: `${process.env.VUE_APP_API_URL}v1/account/contacts/accept_waiting_contact_by_service`,
 			account_contacts_reject_waiting_contact: `${process.env.VUE_APP_API_URL}v1/account/contacts/reject_waiting_contact`,
 			account_circles: `${process.env.VUE_APP_API_URL}v1/account/circles`,
 			account_circles_invited: `${process.env.VUE_APP_API_URL}v1/account/circles/invited`,
@@ -207,8 +209,14 @@ class api {
 	async post_account_contacts_accept_invite_code(formBE, show = true) {
 		return this.postAPI(this.endpoints.account_contacts_accept_invite_code, formBE, this.get_auth(), show)
 	}
+	async post_account_contacts_accept_invite_code_by_service(formBE, show = true) {
+		return this.postAPI(this.endpoints.account_contacts_accept_invite_code_by_service, formBE, this.get_auth(), show)
+	}
 	async post_account_contacts_accept_waiting_contact(formBE, show = true) {
 		return this.postAPI(this.endpoints.account_contacts_accept_waiting_contact, formBE, this.get_auth(), show)
+	}
+	async post_account_contacts_accept_waiting_contact_by_service(formBE, show = true) {
+		return this.postAPI(this.endpoints.account_contacts_accept_waiting_contact_by_service, formBE, this.get_auth(), show)
 	}
 	async post_account_contacts_reject_waiting_contact(formBE, show = true) {
 		return this.postAPI(this.endpoints.account_contacts_reject_waiting_contact, formBE, this.get_auth(), show)

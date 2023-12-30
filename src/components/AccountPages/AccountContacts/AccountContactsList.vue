@@ -48,7 +48,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div
               type="button"
-              @click="acceptWaitingContact(accountContact.contact_id, accountContact.account_tba_address)"
+              @click="acceptWaitingContactByService(accountContact.contact_id, accountContact.account_tba_address)"
               class="front-btn green-btn ms-0 ms-sm-3"
             >
               <span class="m-0 p-0">Yes, sure!</span>
@@ -213,6 +213,41 @@ export default {
         });
       } else {
         let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
+        if(apiResponse.data.done) {
+          this.notif({
+            title: "SUCCESS!",
+            message: apiResponse.data.message,
+            dangerouslyUseHTMLString: true,
+            type: apiResponse.data.message_type,
+            duration: 3000,
+            onClose: () => { this.$router.go() }
+          })
+        } else {
+          if(apiResponse.data.status_code == "401") {
+            this.setConnectionStore({ is_connected: false });
+            this.setProfileStore(null);
+            this.$router.go();
+          } else {
+            this.notif({
+              title: "OOPS!",
+              message: apiResponse.data.message,
+              dangerouslyUseHTMLString: true,
+              type: apiResponse.data.message_type,
+              duration: 3000,
+            })
+          }
+        }
+      }
+    },
+    async acceptWaitingContactByService(contactId, contactTBA) {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        // let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
+        let apiResponse = await api.post_account_contacts_accept_waiting_contact_by_service({
+          profile_tba: this.accountProfile.account_tba_address,
+          contact_tba: contactTBA,
+          contact_id: contactId
+        });
         if(apiResponse.data.done) {
           this.notif({
             title: "SUCCESS!",
