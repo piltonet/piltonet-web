@@ -179,16 +179,16 @@ input[type="submit"],
   border-color: #c90d0def !important;
 }
 .big-input {
-  max-width: 600px;
+  max-width: 600px !important;
 }
 .middle-input {
-  max-width: 450px;
+  max-width: 450px !important;
 }
 .small-input {
-  max-width: 300px;
+  max-width: 300px !important;
 }
 .tiny-input {
-  max-width: 175px;
+  max-width: 175px !important;
 }
 .input-label {
   font-size: 16px;
@@ -321,6 +321,13 @@ input[type="submit"],
   width: auto;
   margin: 0;
   padding: 0;
+}
+.front-btn.small-text {
+  font-size: 13px;
+  line-height: 16px;
+}
+.front-btn.no-border {
+  border: none !important;
 }
 .check-btn {
   font-size: 22px;

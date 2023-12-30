@@ -60,6 +60,22 @@ export default {
     async setup() {},
 
     async onBtn1Click() {
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        "0x", // sender tba address
+        "VRC25PCUSD",
+        signer
+      );
+      // const TBA = "0x7A1887Ae460B3137DdEb7D9BbC2e8e7B673bE606";
+      const recipient = "0x94688d177029574FE9013006811261377FE52DD2";
+
+      // let abiResponse = await contract.interaction("balanceOf", [TBA]);
+      let abiResponse = await contract.interaction("transfer", [recipient, 1000000]);
+      console.log(abiResponse);
+    },
+
+    async _onBtn1Click() {
       let loadingId = await this.showLoading();
       try {
         let ABI = ["function addContact(address contactTBA)"];

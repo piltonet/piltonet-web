@@ -160,8 +160,8 @@
                   <p>CUSD</p>
                 </div>
               </div>
+              <!-- Top-up & Withdraw -->
               <div class="col-9 d-flex flex-row justify-content-start align-items-center">
-                <!-- Top-up & Withdraw -->
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
@@ -172,7 +172,7 @@
                   </div>
                   <div
                     type="button"
-                    @click="getBalance = null"
+                    @click="withdrawCUSD"
                     class="main-btn green-bg ms-2"
                   >
                     <span class="m-0 p-0">Withdraw</span>
@@ -287,6 +287,10 @@
   <TopUpModal
     ref="topup_modal"
   />
+  
+  <WithdrawModal
+    ref="withdraw_modal"
+  />
 
   <MessageModal
     ref="message_modal"
@@ -302,11 +306,13 @@ import abi from "@/services/abi";
 import api from "@/services/api";
 import wallets from "@/wallets";
 import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
+import WithdrawModal from "@/components/CustomModals/WithdrawModal.vue";
 
 export default {
   name: "AccountProfileHeader",
   components: {
-    TopUpModal
+    TopUpModal,
+    WithdrawModal
   },
   props: {
     activeTabProps: String
@@ -360,13 +366,13 @@ export default {
         this.accountProfile.account_tba_address
       ], false);
       if(!abiResponse.done) {
-        this.notif({
-          title: "OOPS!",
-          message: abiResponse.message,
-          dangerouslyUseHTMLString: true,
-          type: abiResponse.message_type,
-          duration: 3000,
-        });
+        // this.notif({
+        //   title: "OOPS!",
+        //   message: abiResponse.message,
+        //   dangerouslyUseHTMLString: true,
+        //   type: abiResponse.message_type,
+        //   duration: 3000,
+        // });
       } else {
         this.cusdBalance = parseInt(abiResponse.result.toString()) / 1e6;
       }
@@ -406,7 +412,7 @@ export default {
           this.$router.go();
         } else {
           this.notif({
-            title: "OOPS!",
+            // title: "OOPS!",
             message: apiResponse.data.message,
             dangerouslyUseHTMLString: true,
             type: apiResponse.data.message_type,
@@ -414,6 +420,13 @@ export default {
           })
         }
       }
+    },
+    async withdrawCUSD() {
+      let totalAssetBalance = {
+        VIC: this.vicBalance,
+        CUSD: this.cusdBalance,
+      }
+      this.$refs.withdraw_modal.setTopUp(totalAssetBalance);
     },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.accountProfile?.account_tba_address);
