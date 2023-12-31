@@ -33,7 +33,7 @@ import Jazzicon from 'vue-jazzicon/src/components'
 app.component('JazzIcon', Jazzicon)
 
 import Avatar from "vue3-avatar";
-app.component('AvatarIcon', Avatar)
+app.component('AvatarImage', Avatar)
 
 import MessageModal from "@/components/CustomModals/MessageModal.vue"
 app.component('MessageModal', MessageModal)

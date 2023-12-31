@@ -276,7 +276,7 @@ export default {
               dangerouslyUseHTMLString: true,
               type: apiResponse.data.message_type,
               duration: 3000,
-              // onClose: () => { this.$router.push("/account/profile") }
+              onClose: () => { this.$router.push("/account/profile") }
             })
           } else {
             if(apiResponse.data.status_code == "401") {
@@ -413,7 +413,7 @@ export default {
   padding: 15px;
 }
 .profile-image {
-  object-fit: cover;
+  object-fit: unset;
   border-radius: 5px;
   height: 148px;
   width: 148px;

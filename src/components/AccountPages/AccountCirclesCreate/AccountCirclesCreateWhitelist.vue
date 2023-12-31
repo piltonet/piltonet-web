@@ -34,7 +34,7 @@
             alt=""
             class="account-image-small"
           />
-          <AvatarIcon
+          <AvatarImage
             v-if="!whitelist.account_image_url"
             :name="whitelist.account_fullname || whitelist.account_nickname"
             :size="40"
@@ -124,7 +124,7 @@
             alt=""
             class="account-image-small"
           />
-          <AvatarIcon
+          <AvatarImage
             v-if="!contact.account_image_url"
             :name="contact.account_fullname || contact.account_nickname"
             :size="40"

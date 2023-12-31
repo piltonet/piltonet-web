@@ -15,7 +15,7 @@
           alt=""
           class="account-image-small mb-1"
         />
-        <AvatarIcon
+        <AvatarImage
           v-if="!circleInfoProps.circle_creator.account_image_url"
           :name="circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname"
           :size="40"

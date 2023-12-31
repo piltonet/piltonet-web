@@ -6,7 +6,7 @@
       <div
         class="d-flex flex-column text-center justify-content-center align-items-center w-100"
       >
-        <AvatarIcon
+        <AvatarImage
           :name="'Farokh'"
           :size="130"
         />

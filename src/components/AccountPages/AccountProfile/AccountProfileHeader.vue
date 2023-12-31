@@ -4,17 +4,12 @@
       <!-- profile info -->
       <div class="col-12 col-md-4">
         <div class="d-flex flex-column justify-content-center align-items-start pt-5">
-          <img
-            v-if="accountProfile?.account_image_url"
-            :src="accountProfile?.account_image_url"
-            alt=""
-            class="account-image"
-          />
-          <AvatarIcon
-            v-if="!accountProfile?.account_image_url"
+          <AvatarImage
+            :imageSrc="accountProfile?.account_image_url"
             :name="accountProfile?.account_fullname || accountProfile?.account_nickname"
             :size="150"
             :rounded="false"
+            :border="accountProfile?.account_image_url ? false : true"
           />
           <span class="account-fullname mt-3 ms-2">
             {{ accountProfile?.account_fullname || '' }}

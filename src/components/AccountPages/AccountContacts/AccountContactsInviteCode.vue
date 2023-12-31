@@ -48,7 +48,7 @@
           alt=""
           class="account-contacts-invite-code-account-image"
         />
-        <AvatarIcon
+        <AvatarImage
           v-if="!inviteAccount?.account_image_url"
           :name="inviteAccount?.account_fullname || inviteAccount?.account_nickname"
           :size="130"

@@ -39,7 +39,7 @@
                 alt=""
                 class="account-image-small d-none d-md-inline-block"
               />
-              <AvatarIcon
+              <AvatarImage
                 v-if="!member.account_image_url"
                 :name="member.account_fullname || member.account_nickname"
                 :size="40"

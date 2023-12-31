@@ -25,7 +25,7 @@
             alt=""
             class="account-image-small"
           />
-          <AvatarIcon
+          <AvatarImage
             v-if="!accountContact?.account_image_url"
             :name="accountContact?.account_fullname || accountContact?.account_nickname"
             :size="40"
@@ -86,7 +86,7 @@
             alt=""
             class="account-image-small"
           />
-          <AvatarIcon
+          <AvatarImage
             v-if="!accountContact?.account_image_url"
             :name="accountContact?.account_fullname || accountContact?.account_nickname"
             :size="40"
@@ -126,7 +126,7 @@
             alt=""
             class="account-image-small"
           />
-          <AvatarIcon
+          <AvatarImage
             v-if="!accountContact?.account_image_url"
             :name="accountContact?.account_fullname || accountContact?.account_nickname"
             :size="40"
