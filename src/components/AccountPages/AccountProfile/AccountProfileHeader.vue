@@ -38,7 +38,7 @@
                   :hide-after="0"
                 >
                   <a id="copy-account" role="button" @click="copyAccount('copy-account')">
-                    <i class="far fa-copy mt-1"></i>
+                    <i class="far fa-copy account-edit-icon mt-1"></i>
                   </a>
                 </el-tooltip>
                 <!-- Explore Icon -->
@@ -53,7 +53,7 @@
                     target="_blank"
                     class="ms-2"
                   >
-                    <i class="fa fa-external-link main-text-small" aria-hidden="true"></i>
+                    <i class="fa fa-external-link account-edit-icon" aria-hidden="true"></i>
                   </a>
                 </el-tooltip>
               </span>
@@ -407,7 +407,7 @@ export default {
       this.copyAddressTooltip = "Copied To Clipboard";
       setTimeout(() => {
           this.copyAddressTooltip = "Copy Address";
-          document.getElementById(id).innerHTML = '<i class="far fa-copy mt-1"></i>';
+          document.getElementById(id).innerHTML = '<i class="far fa-copy account-edit-icon mt-1" style="color: var(--ptn-btn-bg)"></i>';
         }, 2000);
     },
   }

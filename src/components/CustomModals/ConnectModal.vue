@@ -177,6 +177,9 @@ export default {
     async connectWallet(walletName) {
       let connectedWallet = await wallets[walletName].connectWallet(walletName);
       this.showModal = !connectedWallet || false;
+      if(connectedWallet) {
+        this.$router.push("/account/profile");
+      }
     },
     
     // async connectWalletConnect() {
