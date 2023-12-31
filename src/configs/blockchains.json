@@ -40,7 +40,7 @@
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
         "environment": "evm",
         "rpcUrl": "https://rpc-testnet.viction.xyz",
-        "blockExplorerUrl": "https://testnet.vicscan.xyz/",
+        "blockExplorerUrl": "https://testnet.vicscan.xyz",
         "wallets": ["metamask", "coin98", "coinbase"],
         "links": {
             "website": "https://www.viction.xyz/"

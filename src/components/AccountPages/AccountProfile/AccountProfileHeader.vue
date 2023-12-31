@@ -46,6 +46,21 @@
                     <i class="far fa-copy mt-1"></i>
                   </a>
                 </el-tooltip>
+                <!-- Explore Icon -->
+                <el-tooltip
+                  content="View in Explorer"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a
+                    v-if="explorerLink"
+                    :href="explorerLink"
+                    target="_blank"
+                    class="ms-2"
+                  >
+                    <i class="fa fa-external-link main-text-small" aria-hidden="true"></i>
+                  </a>
+                </el-tooltip>
               </span>
             </div>
           </div>
@@ -274,7 +289,8 @@ export default {
       vicBalance: 0,
       cusdBalance: 0,
       totalDebt: 0,
-      copyAddressTooltip: "Copy Address"
+      copyAddressTooltip: "Copy Address",
+      explorerLink: null
     }
   },
   computed: {
@@ -287,6 +303,7 @@ export default {
     }
   },
   created() {
+    this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.accountProfile.account_tba_address}`;
     this.getBalance();
   },
   mounted() {
