@@ -1,28 +1,28 @@
 <template>
   <div v-if="connectedAccount?.is_connected" id="connected">
-    <el-dialog :title="connectionStatus == 'connected' ? '🟢' : '🟡'" v-model="showModal" custom-class="connected-dialog">
+    <el-dialog :title="connectionStatus == 'connected' ? '🟢' : '🟡'" v-model="showModal" class="connected-dialog">
       <div class="mb-4">
         <h5 class="fw-bold">
           <img
-            v-if="walletName === 'metamask'"
+            v-if="walletName == 'metamask'"
             src="@/assets/icons/metamask-logo.svg"
             height="45"
             class="me-2"
           />
           <img
-            v-else-if="walletName === 'coin98'"
+            v-else-if="walletName == 'coin98'"
             src="@/assets/icons/coin98-logo.svg"
             height="45"
             class="me-2"
           />
           <img
-            v-else-if="walletName === 'coinbase'"
+            v-else-if="walletName == 'coinbase'"
             src="@/assets/icons/coinbase-logo.svg"
             height="45"
             class="me-2"
           />
           <img
-            v-else-if="walletName === 'walletconnect'"
+            v-else-if="walletName == 'walletconnect'"
             src="@/assets/icons/walletconnect-logo.svg"
             width="45"
             class="me-2"
@@ -51,7 +51,7 @@
       <p class="mb-3 mt-0">
         Current Network: <strong>{{ `${currentChain?.chainName || 'Undefined'} ${currentChain ? `(${currentChain.nativeCurrency.symbol})` : ''}` }}</strong>
       </p>
-      <p v-if="connectionStatus === 'wrong-network'" class="mb-2">
+      <p v-if="connectionStatus == 'wrong-network'" class="mb-2">
         <i class="fa fa-triangle-exclamation fa-xl pe-1"></i>
         Select
         <strong>{{ this.defaultchain.chainName }}</strong>
@@ -68,7 +68,7 @@
   </div>
 
   <div v-else id="disconnect">
-    <el-dialog v-model="showModal" custom-class="disconnect-dialog">
+    <el-dialog v-model="showModal" class="disconnect-dialog">
       <p class="text-center mb-3">Connect your wallet to get started.</p>
       
       <div
@@ -148,28 +148,29 @@ export default {
     },
     // Wallet() {
     //   if(this.connectedAccount && this.connectedAccount.is_connected) {
-    //     return this.connectedAccount.connected_wallet === 'metamask' ? metamask
-    //     : (this.connectedAccount.connected_wallet === 'coin98' ? coin98 : metamask);
+    //     return this.connectedAccount.connected_wallet == 'metamask' ? metamask
+    //     : (this.connectedAccount.connected_wallet == 'coin98' ? coin98 : metamask);
     //   } else {
     //     return undefined;
     //   }
     // }
   },
   watch: {
-    connectedAccount: function () {
-      this.setup();
+    connectedAccount: async function () {
+      await this.setup();
     }
   },
   methods: {
-    setup() {
+    async setup() {
       this.walletName = this.connectedAccount?.connected_wallet ? this.connectedAccount.connected_wallet : 'metamask';
       const provider = wallets[this.walletName].getProvider();
-      this.connectionStatus = !provider ? 'disconnect' : (provider.chainId === this.defaultchain.chainId ? 'connected' : 'wrong-network');
-      this.currentChain = !provider ? undefined : (networks.find(n => (n.chainId === provider.chainId)) || null);
+      const chainId = await provider.request({ method: "eth_chainId" });
+      this.connectionStatus = !provider ? 'disconnect' : (chainId == this.defaultchain.chainId ? 'connected' : 'wrong-network');
+      this.currentChain = !provider ? undefined : (networks.find(n => (n.chainId == chainId)) || null);
     },
 
     async onConnectButtonClick() {
-      this.setup();
+      await this.setup();
       this.showModal = true;
     },
 

@@ -7,11 +7,8 @@
     <div v-else>
       <AccountProfileHeader
         :activeTabProps="activeTab"
-        @profile-set-active-tab="setActiveTab"
       />
-      <AccountProfileContacts v-if="activeTab == 'contacts'"
-        @profile-set-active-tab="setActiveTab"
-      />
+      <AccountProfileContacts v-if="activeTab == 'contacts'" />
       <AccountProfileCircles v-if="activeTab == 'circles'" />
     </div>
   </div>

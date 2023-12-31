@@ -31,13 +31,6 @@ const state = {
   actions: fetchProfile
   **/
   profile: undefined,
-  /**
-  **Profile Balance from Blockchain**
-  gettters: getProfileBalanceStore
-  mutations: setProfileBalanceStore
-  actions: fetchProfileBalance
-  **/
-  profileBalance: undefined,
 }
 
 export default createStore({

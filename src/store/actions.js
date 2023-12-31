@@ -1,5 +1,4 @@
 import api from "@/services/api";
-import abi from "@/services/abi";
 
 const actions = {
   async fetchAccount({ commit }) {
@@ -29,25 +28,6 @@ const actions = {
     }
   },
   
-  async fetchProfileBalance({ commit }, params) {
-    console.log(params.account_tba_address);
-    const contract = abi.setAbi(
-      params.account_tba_address,
-      "ERC6551Account",
-      params.signer
-    );
-    // execute ERC1155Contracts addContact
-    let abiResponse = await contract.interaction("balance");
-    console.log(abiResponse);
-    
-    
-    if(abiResponse.done) {
-      commit('setProfileBalanceStore', 213);
-    } else {
-      commit('setProfileBalanceStore', null);
-    }
-  },
-
   async logoutAccount({ commit }) {
     commit('setProfileStore', null);
     commit('setConnectionStore', {is_connected: false});

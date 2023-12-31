@@ -198,70 +198,7 @@
           </div>
         </div>
       </div>
-      
       <div class="horizontal-line mt-3"></div>
-      
-      <!-- profile menu -->
-      <!-- To Do -->
-      <div class="container-fluid d-flex flex-row p-0 mt-3">
-        <div v-if="false" class="col-6 d-flex justify-content-start">
-          <!-- account circles -->
-          <div
-            type="button"
-            @click="$emit('profileSetActiveTab', 'circles')"
-            class="profile-menu d-flex flex-row justify-content-center align-items-center px-3 py-2"
-            :class="activeTabProps === 'circles' ? 'active' : ''"
-          >
-            <i class="fa fa-circle me-1" aria-hidden="true"></i>
-            CIRCLES
-            <span class="ms-1">
-              {{ accountProfile?.account_circles_number }}
-            </span>
-          </div>
-          <!-- account contacts -->
-          <div
-            type="button"
-            @click="$emit('profileSetActiveTab', 'contacts')"
-            class="profile-menu last-right d-flex flex-row justify-content-center align-items-center px-3 py-2"
-            :class="activeTabProps === 'contacts' ? 'active' : ''"
-          >
-            <i class="fa fa-user me-1" aria-hidden="true"></i>
-            CONTACTS
-            <span class="ms-1">
-              {{ accountProfile?.account_contacts_number }}
-            </span>
-          </div>
-        </div>
-        <div v-if="true" class="col-12 d-flex justify-content-center justify-content-lg-start">
-          <!-- account circles -->
-          <div
-            type="button"
-            @click="$router.push('/account/circles')"
-            class="profile-link d-flex flex-row justify-content-center align-items-center p-2 mx-2"
-          >
-            <i class="fa fa-circle me-2" aria-hidden="true"></i>
-            Lending Circles
-            <!-- To Do -->
-            <span v-if="false" class="ms-1">
-              {{ accountProfile?.account_circles_number }}
-            </span>
-          </div>
-          <!-- account contacts -->
-          <div
-            type="button"
-            @click="$router.push('/account/contacts')"
-            class="profile-link last-right d-flex flex-row justify-content-center align-items-center p-2 mx-2"
-          >
-            <i class="fa fa-user me-2" aria-hidden="true"></i>
-            Contact List
-            <!-- To Do -->
-            <span v-if="false" class="ms-1">
-              {{ accountProfile?.account_contacts_number }}
-            </span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -281,7 +218,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { ethers } from 'ethers'
 import abi from "@/services/abi";
 import api from "@/services/api";
@@ -300,7 +237,6 @@ export default {
   },
   data() {
     return {
-      // To Do
       totalBalance: 0,
       vicBalance: 0,
       cusdBalance: 0,
@@ -317,49 +253,60 @@ export default {
       return this.getProfileStore;
     }
   },
+  created() {
+    this.getBalance();
+  },
   mounted() {
-    this.getBalance()
+    this.interval = setInterval(() => {
+      this.getBalance()
+    }, 2 * 60 * 1000) // 2 mins
   },
-  created(){
-    this.interval = setInterval(() =>{
-      this.getBalance()}, 30 * 1000) // 30 seconds
-  },
-  unmounted(){
-    clearInterval(this.interval)
+  unmounted() {
+    clearInterval(this.interval);
   },
   methods: {
-    ...mapActions(['fetchProfileBalance']),
     async getBalance() {
+      // To Do
+      console.log('getBalance');
+      const vic2usdRatio = 0.78;
+
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-      const signer = await provider.getSigner();
       
       // get tokenbound-acount vicBalance
-      let _vicBalance = await provider.getBalance(this.accountProfile.account_tba_address);
-      this.vicBalance = parseFloat(ethers.formatEther(_vicBalance))
+      provider.getBalance(this.accountProfile.account_tba_address).then((_vicBalance) => {
+        if(this.vicBalance != _vicBalance) {
+          console.log('_vicBalance', _vicBalance);
+          this.vicBalance = _vicBalance;
+          this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+        }
+      }).catch((err) => {
+        console.log('getSigner.err', err);
+        clearInterval(this.interval);
+      });
 
-      // get tokenbound-acount pcusdBalance
-      const contract = abi.setAbi(
-        "0x", // fixed as VRC25PCUSD address in sdk
-        "VRC25PCUSD",
-        signer
-      );
-      let abiResponse = await contract.interaction("balanceOf", [
-        this.accountProfile.account_tba_address
-      ], false);
-      if(!abiResponse.done) {
-        // this.notif({
-        //   title: "OOPS!",
-        //   message: abiResponse.message,
-        //   dangerouslyUseHTMLString: true,
-        //   type: abiResponse.message_type,
-        //   duration: 3000,
-        // });
-      } else {
-        this.cusdBalance = parseInt(abiResponse.result.toString()) / 1e6;
-      }
+      provider.getSigner().then((signer) => {
+        // get tokenbound-acount pcusdBalance
+        const contract = abi.setAbi(
+          "0x", // fixed as VRC25PCUSD address in sdk
+          "VRC25PCUSD",
+          signer
+        );
+        contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
+          if(abiResponse.done) {
+            let _cusdBalance = parseInt(abiResponse.result.toString()) / 1e6;
+            if(this.cusdBalance != _cusdBalance) {
+              console.log('_cusdBalance', _cusdBalance);
+              this.cusdBalance = _cusdBalance;
+              this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+            }
+          }
+        });
+      }).catch((err) => {
+        console.log('getSigner.err', err);
+        clearInterval(this.interval);
+      });
       
-      const vic2usdRatio = 0.78;
-      this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+      
 
     },
     async topUpCUSD() {

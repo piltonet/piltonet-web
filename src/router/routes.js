@@ -48,7 +48,7 @@ const routes = [
 			title: "Piltonet | Welcome",
 			auth: true,
 			main: false,
-			chain: false
+			chain: true
 		}
 	},
 	{
@@ -60,7 +60,7 @@ const routes = [
 			title: "Piltonet | Welcome",
 			auth: true,
 			main: false,
-			chain: false
+			chain: true
 		}
 	},
 
@@ -87,7 +87,7 @@ const routes = [
 			title: "Piltonet | Profile",
 			auth: true,
 			main: true,
-			chain: false
+			chain: true
 		}
 	},
 	{
@@ -98,7 +98,7 @@ const routes = [
 			title: "Piltonet | Settings",
 			auth: true,
 			main: true,
-			chain: false
+			chain: true
 		}
 	},
 	{
@@ -110,7 +110,7 @@ const routes = [
 			title: "Piltonet | Contact List",
 			auth: true,
 			main: true,
-			chain: false
+			chain: true
 		}
 	},
 	{

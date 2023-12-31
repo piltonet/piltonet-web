@@ -29,9 +29,11 @@ router.beforeEach((to, from, next) => {
 			return next({ name: 'HomePage' });
 		}
 		if('chain' in to.meta && to.meta.chain) {
-			if(!wallets[connectedAccount.connected_wallet].isDefaultNetwork()) {
-				return next({ name: from.name || 'HomePage' });
-			}
+			wallets[connectedAccount.connected_wallet].isDefaultNetwork().then((isDefaultNetwork) => {
+				if(!isDefaultNetwork) {
+					router.push("/");
+				}
+			})
 		}
 		if('main' in to.meta && to.meta.main && ['fresh', 'waiting'].includes(connectedAccount.account_status)) {
 			return next({ name: 'AccountNew' });

@@ -146,7 +146,7 @@ async function connectWallet(walletName) {
 	try {
 		let provider = getProvider(walletName);
 		if(provider) {
-			if(isDefaultNetwork(provider)) {
+			if(await isDefaultNetwork(provider)) {
 				const walletAccounts = await provider.request({ method: "eth_requestAccounts" });
 				let accountExists = await getAccount(walletName, walletAccounts);
 				if(accountExists) setWatchers(walletName);
@@ -171,7 +171,15 @@ async function connectWallet(walletName) {
 
 // SET WATCHERS
 function setWatchers(walletName) {
-	getProvider(walletName).on('accountsChanged', async (walletAccounts) => {
+	const provider = getProvider(walletName);
+	const connectedAccount = store.getters.getConnectionStore;
+	const defaultChain = app.config.globalProperties.defaultchain;
+	provider.on("chainChanged", (chainId) => {
+		if(connectedAccount && connectedAccount.is_connected && chainId != defaultChain.chainId) {
+			router.go();
+		}
+	});
+	provider.on('accountsChanged', async (walletAccounts) => {
 		let connectedAccount = store.getters.getConnectionStore;
 		if(connectedAccount && connectedAccount.is_connected && walletAccounts.length > 0 && walletAccounts[0] != connectedAccount.account_address) {
 			await getAccount(connectedAccount.connected_wallet, walletAccounts);
@@ -180,13 +188,6 @@ function setWatchers(walletName) {
 			await disconnectWallet();
 		}
 	});
-
-	// getProvider(walletName).on('chainChanged', async () => {
-	// 	let connection = store.getters.getConnectionStore;
-	// 	if(connection && connection.is_connected) {
-	// 		await disconnectWallet();
-	// 	}
-	// });
 }
 
 // GET ACCOUNT
@@ -207,7 +208,7 @@ async function getAccount(walletName, metamaskAccounts) {
 				last_connect: connectedAccount.last_connect,
 				expiration_date: connectedAccount.expiration_date
 			});
-			if(connectedAccount.account_status === 'fresh' || connectedAccount.account_status === 'waiting') {
+			if(connectedAccount.account_status == 'fresh' || connectedAccount.account_status == 'waiting') {
 				router.push("/account");
 				return true;
 			} else {
@@ -252,14 +253,15 @@ async function getAccount(walletName, metamaskAccounts) {
 }
 
 // IS DAFAULT NETWORK
-function isDefaultNetwork(provider = undefined, notif = true) {
+async function isDefaultNetwork(provider = undefined, notif = true) {
 	try {
 		if(!provider) {
 			let walletName = store.getters.getConnectionStore?.connected_wallet;
 			provider = getProvider(walletName);
 		}
 		const defaultChain = app.config.globalProperties.defaultchain;
-		if(provider.chainId === defaultChain.chainId) {
+		const chainId = await provider.request({ method: "eth_chainId" });
+		if(chainId == defaultChain.chainId) {
 			return true;
 		} else if(notif) {
 			notification({
@@ -289,7 +291,7 @@ async function switchNetworkToDefault(provider = undefined) {
 			params: [{ chainId: defaultChain.chainId }],
 		});
 	} catch(err) {
-		if(err.code === 4902) {
+		if(err.code == 4902) {
 			try {
 				await provider.request({
 					method: 'wallet_addEthereumChain',
@@ -313,12 +315,12 @@ async function personalSign(challenge, address, deniedMessage) {
 	try {
 		let walletName = store.getters.getConnectionStore?.connected_wallet;
 		const provider = getProvider(walletName);
-		if(isDefaultNetwork(provider)) {
+		if(await isDefaultNetwork(provider)) {
 			personalSign = await provider.send("personal_sign", [challenge, address]);
 		}
 	} catch (err) {
 		console.log(err);
-		if(err.code === 4001 && deniedMessage) {
+		if(err.code == 4001 && deniedMessage) {
 			notification({
 				// title: "OOPS!",
 				message: deniedMessage,

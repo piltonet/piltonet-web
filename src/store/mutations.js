@@ -29,9 +29,6 @@ const mutation = {
 			_state[key] = payload[key];
 		}
 		state.profile = _state;
-	},
-	setProfileBalanceStore(state, payload) {
-		state.profileBalance = payload;
 	}
 }
 
