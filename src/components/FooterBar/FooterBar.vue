@@ -17,7 +17,8 @@
         </p>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex flex-row justify-content-center align-items-center justify-content-md-end pe-0 pe-md-4 my-3 my-md-0">
-        <a href="https://medium.com/piltonet" target="_blank">
+        <!-- Medium account is not active. -->
+        <a v-if="false" href="https://medium.com/piltonet" target="_blank">
           <i class="fab fa-medium footer-bar-social-icon me-2" aria-hidden="true"></i>
         </a>
         <a href="https://github.com/piltonet" target="_blank">
@@ -31,7 +32,8 @@
         <a v-if="false" href="https://www.facebook.com/piltonet" target="_blank">
           <i class="fab fa-facebook footer-bar-social-icon me-2" aria-hidden="true"></i>
         </a>
-        <a href="https://twitter.com/piltonet" target="_blank">
+        <!-- Twitter account is not active. -->
+        <a v-if="false" href="https://twitter.com/piltonet" target="_blank">
           <i class="fab fa-twitter footer-bar-social-icon" aria-hidden="true"></i>
         </a>
         <!-- To Do -->
