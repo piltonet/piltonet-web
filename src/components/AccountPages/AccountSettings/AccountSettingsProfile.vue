@@ -176,15 +176,14 @@
             />
           </div>
           
-					<!-- Main Account Address -->
+					<!-- Token Bound Account -->
           <div class="my-3">
-            <label for="accountAddress" class="input-label mt-2">Main Account</label>
+            <label for="accountAddress" class="input-label mt-2">Token Bound Account</label>
             <input disabled
               id="accountAddress"
               type="text"
               class="big-input mb-0"
-              aria-describedby="usernameHelp"
-              v-model="connectedAccount.main_account_address"
+              v-model="accountProfile.account_tba_address"
             />
           </div>
           
