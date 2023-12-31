@@ -1,7 +1,9 @@
 {
-  "name": "piltonet",
-  "version": "2.0.0",
-  "private": true,
+  "name": "piltonet-web",
+  "version": "2.0.1",
+  "description": "Piltonet Web Application",
+  "author": "Piltonet Team",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve --port 8080",
     "devbuild": "vue-cli-service build --mode development",
