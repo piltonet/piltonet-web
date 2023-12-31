@@ -10,12 +10,11 @@
             alt=""
             class="account-image"
           />
-          <JazzIcon
+          <AvatarIcon
             v-if="!accountProfile?.account_image_url"
-            :address="accountProfile?.account_address"
-            :diameter="130"
-            :colors=jazzColors
-            class="account-image"
+            :name="accountProfile?.account_fullname || accountProfile?.account_nickname"
+            :size="150"
+            :rounded="false"
           />
           <span class="account-fullname mt-3 ms-2">
             {{ accountProfile?.account_fullname || '' }}
@@ -198,7 +197,41 @@
           </div>
         </div>
       </div>
+
       <div class="horizontal-line mt-3"></div>
+
+      <!-- profile menu -->
+      <div class="container-fluid d-flex flex-row p-0 mt-3">
+        <div class="col-12 d-flex justify-content-center justify-content-lg-start">
+          <!-- account contacts -->
+          <div
+            type="button"
+            @click="$router.push('/account/contacts')"
+            class="profile-link last-right d-flex flex-row justify-content-center align-items-center p-2 mx-2"
+          >
+            <i class="fa fa-user me-2" aria-hidden="true"></i>
+            Contact List
+            <!-- To Do -->
+            <span v-if="false" class="ms-1">
+              {{ accountProfile?.account_contacts_number }}
+            </span>
+          </div>
+          <!-- account circles -->
+          <div
+            type="button"
+            @click="$router.push('/account/circles')"
+            class="profile-link d-flex flex-row justify-content-center align-items-center p-2 mx-2"
+          >
+            <i class="fa fa-circle me-2" aria-hidden="true"></i>
+            Lending Circles
+            <!-- To Do -->
+            <span v-if="false" class="ms-1">
+              {{ accountProfile?.account_circles_number }}
+            </span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

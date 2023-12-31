@@ -34,13 +34,21 @@
             alt=""
             class="account-image-small"
           />
-          <JazzIcon
+          <AvatarIcon
+            v-if="!whitelist.account_image_url"
+            :name="whitelist.account_fullname || whitelist.account_nickname"
+            :size="40"
+            :border="false"
+            :rounded="true"
+            class="account-image-small"
+          />
+          <!-- <JazzIcon
             v-if="!whitelist.account_image_url"
             :address="whitelist.whitelist_account_address"
             :diameter="40"
             :colors=jazzColors
             class="account-image-small"
-          />
+          /> -->
           <p class="top-text-small ms-2">
             <span :class="whitelist.whitelist_is_rejected ? 'text-decoration-line-through' : ''">
               {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
@@ -116,13 +124,21 @@
             alt=""
             class="account-image-small"
           />
-          <JazzIcon
+          <AvatarIcon
+            v-if="!contact.account_image_url"
+            :name="contact.account_fullname || contact.account_nickname"
+            :size="40"
+            :border="false"
+            :rounded="true"
+            class="account-image-small"
+          />
+          <!-- <JazzIcon
             v-if="!contact.account_image_url"
             :address="contact.main_account_address"
             :diameter="40"
             :colors=jazzColors
             class="account-image-small"
-          />
+          /> -->
           <p class="top-text-small ms-2">
             <span>
               {{ contact.account_fullname || contact.account_nickname }}

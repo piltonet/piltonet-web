@@ -48,12 +48,13 @@
           alt=""
           class="account-contacts-invite-code-account-image"
         />
-        <JazzIcon
-          v-if="!inviteAccount.account_image_url"
-          :address="inviteAccount.main_account_address"
-          :diameter="130"
-          :colors=jazzColors
-          class="account-contacts-invite-code-account-image"
+        <AvatarIcon
+          v-if="!inviteAccount?.account_image_url"
+          :name="inviteAccount?.account_fullname || inviteAccount?.account_nickname"
+          :size="130"
+          :border="true"
+          :rounded="false"
+          class="account-contacts-invite-code-account-image p-0"
         />
         <p>
           <span class="account-contacts-invite-code-account account-fullname">

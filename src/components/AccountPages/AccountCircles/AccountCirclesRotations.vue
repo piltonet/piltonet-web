@@ -39,13 +39,21 @@
                 alt=""
                 class="account-image-small d-none d-md-inline-block"
               />
-              <JazzIcon
+              <AvatarIcon
+                v-if="!member.account_image_url"
+                :name="member.account_fullname || member.account_nickname"
+                :size="40"
+                :border="false"
+                :rounded="true"
+                class="account-image-small d-none d-md-inline-block"
+              />
+              <!-- <JazzIcon
                 v-if="!member.account_image_url"
                 :address="member.main_account_address"
                 :diameter="40"
                 :colors=jazzColors
                 class="account-image-small d-none d-md-inline-block"
-              />
+              /> -->
               <p v-if="member.main_account_address == mainAccountAddress" class="account-circles-rotations-you ms-2">
                 You
               </p>

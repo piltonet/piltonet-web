@@ -31,18 +31,9 @@ app.component("font-awesome-icon", FontAwesomeIcon)
 
 import Jazzicon from 'vue-jazzicon/src/components'
 app.component('JazzIcon', Jazzicon)
-app.config.globalProperties.jazzColors = [
-  '#f8f6d7', // viction-beige
-  '#231f20', // viction-black
-  '#e0ded8', // viction-gainsboro
-  '#988f86', // viction-gray
-  // '#2347b3', // blue
-  // '#4462be', // second blue
-  // '#3c4a77', // third blue
-  // '#11a97d', // green
-  // '#15cc97', // second green
-  // '#094030', // third green
-]
+
+import Avatar from "vue3-avatar";
+app.component('AvatarIcon', Avatar)
 
 import MessageModal from "@/components/CustomModals/MessageModal.vue"
 app.component('MessageModal', MessageModal)

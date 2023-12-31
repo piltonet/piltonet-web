@@ -25,11 +25,12 @@
             alt=""
             class="account-image-small"
           />
-          <JazzIcon
-            v-if="!accountContact.account_image_url"
-            :address="accountContact.main_account_address"
-            :diameter="40"
-            :colors=jazzColors
+          <AvatarIcon
+            v-if="!accountContact?.account_image_url"
+            :name="accountContact?.account_fullname || accountContact?.account_nickname"
+            :size="40"
+            :border="false"
+            :rounded="true"
             class="account-image-small"
           />
           <p class="top-text-small ms-2">
@@ -85,11 +86,12 @@
             alt=""
             class="account-image-small"
           />
-          <JazzIcon
-            v-if="!accountContact.account_image_url"
-            :address="accountContact.main_account_address"
-            :diameter="40"
-            :colors=jazzColors
+          <AvatarIcon
+            v-if="!accountContact?.account_image_url"
+            :name="accountContact?.account_fullname || accountContact?.account_nickname"
+            :size="40"
+            :border="false"
+            :rounded="true"
             class="account-image-small"
           />
           <p class="top-text-small ms-2">
@@ -124,11 +126,12 @@
             alt=""
             class="account-image-small"
           />
-          <JazzIcon
-            v-if="!accountContact.account_image_url"
-            :address="accountContact.main_account_address"
-            :diameter="40"
-            :colors=jazzColors
+          <AvatarIcon
+            v-if="!accountContact?.account_image_url"
+            :name="accountContact?.account_fullname || accountContact?.account_nickname"
+            :size="40"
+            :border="false"
+            :rounded="true"
             class="account-image-small"
           />
           <p class="top-text-small ms-2">

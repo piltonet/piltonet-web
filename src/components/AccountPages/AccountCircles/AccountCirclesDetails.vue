@@ -15,13 +15,21 @@
           alt=""
           class="account-image-small mb-1"
         />
-        <JazzIcon
+        <AvatarIcon
+          v-if="!circleInfoProps.circle_creator.account_image_url"
+          :name="circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname"
+          :size="40"
+          :border="false"
+          :rounded="true"
+          class="account-image-small"
+        />
+        <!-- <JazzIcon
           v-if="!circleInfoProps.circle_creator.account_image_url"
           :address="circleInfoProps.circle_creator.main_account_address"
           :diameter="40"
           :colors=jazzColors
           class="account-image-small"
-        />
+        /> -->
         <span class="top-text-small ms-2">
           {{ circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname }}
         </span>

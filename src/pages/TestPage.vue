@@ -6,7 +6,10 @@
       <div
         class="d-flex flex-column text-center justify-content-center align-items-center w-100"
       >
-        <p>Twitter Username</p>
+        <AvatarIcon
+          :name="'Farokh'"
+          :size="130"
+        />
         <input
           ref="contract_address"
           type="text"
@@ -127,3 +130,7 @@ console.log(abiResponse);
   },
 };
 </script>
+
+<style>
+
+</style>
