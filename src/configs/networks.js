@@ -28,10 +28,17 @@ module.exports = [
         isSupported: true
     },
     {
-        chainId: '0x59',
+        chainId: '// 0x59',
         chainName: 'Viction Testnet',
         nativeCurrency: { name: 'Viction', symbol: 'VIC', decimals: 18, wrappedToken: '' },
         rpcUrl: 'https://rpc-testnet.viction.xyz', blockExplorerUrl: 'https://testnet.vicscan.xyz',
+        isSupported: true,
+    },
+    {
+        chainId: '0x59',
+        chainName: 'Viction Testnet',
+        nativeCurrency: { name: 'Tomo', symbol: 'TOMO', decimals: 18, wrappedToken: '' },
+        rpcUrl: 'https://rpc.testnet.tomochain.com', blockExplorerUrl: 'https://testnet.tomoscan.io',
         isSupported: true,
     }
 ]

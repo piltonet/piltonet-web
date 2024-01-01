@@ -1,7 +1,8 @@
 {
     "networks": [
         "viction",
-        "victestnet"
+        "victestnet",
+        "tomotestnet"
     ],
     "viction": {
         "id": 88,
@@ -37,7 +38,7 @@
         "id": 89,
 		"chainId": "0x59",
         "chainName": "Viction Testnet",
-        "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
+        "chainLogo": "",
         "environment": "evm",
         "rpcUrl": "https://rpc-testnet.viction.xyz",
         "blockExplorerUrl": "https://testnet.vicscan.xyz",
@@ -57,6 +58,36 @@
             "address": "0xdbf3CDb8Eed6d143b667B59EE15dE49A68D6DC1f",
 			"name": "CUSD",
 			"symbol": "CUSD",
+			"decimals": 6,
+            "standard": "VRC25",
+            "logo": ""
+        },
+        "supportedTokens": []
+    },
+    "tomotestnet": {
+        "id": 89,
+		"chainId": "0x59",
+        "chainName": "Tomo Testnet",
+        "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
+        "environment": "evm",
+        "rpcUrl": "https://rpc.testnet.tomochain.com",
+        "blockExplorerUrl": "https://testnet.tomoscan.io",
+        "wallets": ["metamask", "coin98", "coinbase"],
+        "links": {
+            "website": ""
+        },
+        "nativeCurrency": {
+            "address": "0x0000000000000000000000000000000000000000",
+			"name": "TomoChain",
+			"symbol": "TOMO",
+			"decimals": 18,
+            "standard": "ERC20",
+            "logo": ""
+        },
+        "PCUSD": {
+            "address": "0x093cD3E7806f6EadC76F9578fBF8BaCdf3aC7C3e",
+			"name": "Piltonet CUSD On Testnet",
+			"symbol": "PCUSD",
 			"decimals": 6,
             "standard": "VRC25",
             "logo": ""
