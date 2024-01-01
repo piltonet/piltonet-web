@@ -183,7 +183,7 @@
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
-                    :paymentToken="'PUSD-token-address'"
+                    :paymentToken="'USD-token-address'"
                     :tooltip="false"
                     customClass=""
                   />

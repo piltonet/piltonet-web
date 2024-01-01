@@ -69,10 +69,10 @@
 				/>
 			</template>
 		</div>
-		<!-- PCUSD -->
-		<div v-if="paymentToken == 'PUSD-token-address'">
+		<!-- USD -->
+		<div v-if="paymentToken == 'USD-token-address'">
 			<template v-if="tooltip">
-				<el-tooltip :content="'PCUSD'" placement="top" :hide-after="0">
+				<el-tooltip :content="'USD'" placement="top" :hide-after="0">
 					<SvgDollarSign
 						:style="`height: ${height}px; margin-bottom:  ${(20-height)/2}px;`"
 						:class="customClass"

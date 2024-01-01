@@ -62,22 +62,7 @@
                 customClass="m-1"
               />
               <p>{{ this.defaultchain.CUSD.symbol }}</p>
-              <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-            </button>
-            <!-- To Do -->
-            <button
-              class="account-circles-deploy-button mt-2 d-none"
-              :class="circleInfo.circle_payment_token == 'PUSD-token-address' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_token = 'PUSD-token-address'"
-            >
-              <SvgPaymentToken
-                :chainId="circleInfo.circle_chain_id"
-                :paymentToken="'PUSD-token-address'"
-                :tooltip="false"
-                customClass="m-1"
-              />
-              <p>PCUSD</p>
-              <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
+              <i v-if="circleInfo.circle_payment_token == this.defaultchain.CUSD.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <p id="circlePaymentTokenHelp" class="help-text pt-3 mb-3">
               This token is used to pay contributions and receive loans.
@@ -222,7 +207,7 @@
                     :tooltip="false"
                     customClass="m-1"
                   />
-                  <p>CUSD</p>
+                  <p>{{ this.defaultchain.CUSD.symbol }}</p>
                 </button>
               </template>
 

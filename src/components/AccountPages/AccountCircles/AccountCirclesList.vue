@@ -83,7 +83,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.accountCirclesProps);
+    // console.log(this.accountCirclesProps);
   },
   methods: {
     createNewCircleOnTestnet() {
