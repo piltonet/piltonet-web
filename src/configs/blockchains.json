@@ -87,7 +87,7 @@
         "CUSD": {
             "address": "0x093cD3E7806f6EadC76F9578fBF8BaCdf3aC7C3e",
 			"name": "Piltonet CUSD On Testnet",
-			"symbol": "PCUSD",
+			"symbol": "CUSD",
 			"decimals": 6,
             "standard": "VRC25",
             "logo": ""

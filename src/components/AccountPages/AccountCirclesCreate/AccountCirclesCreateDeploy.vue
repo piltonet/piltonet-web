@@ -61,7 +61,7 @@
                 :tooltip="false"
                 customClass="m-1"
               />
-              <p>CUSD</p>
+              <p>{{ this.defaultchain.CUSD.symbol }}</p>
               <i v-if="circleInfo.circle_round_days == 'PUSD-token-address' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <!-- To Do -->
@@ -339,7 +339,7 @@
             <div v-else class="d-flex flex-row justify-content-start align-items-center">
               <input
                 type="submit"
-                value="Great! DEPLOY"
+                value="DEPLOY CIRCLE"
                 @click="deployCircle"
               />
             </div>
@@ -350,7 +350,7 @@
       <form action=""></form>
 
       <!-- Previous & Next -->
-      <div class="d-flex flex-row justify-content-center align-items-center mt-4">
+      <div v-if="!circleInfo.circle_id" class="d-flex flex-row justify-content-center align-items-center mt-4">
         <div class="d-flex flex-row justify-content-center align-items-center">
           <div
             type="button"
@@ -446,6 +446,7 @@ export default {
       if(this.circleInfoProps) {
         this.circleInfo = this.circleInfoProps;
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfo.circle_id}`;
+        this.tabIndex = 5;
       } else {
         // New Circle
         this.circleInfo = {
