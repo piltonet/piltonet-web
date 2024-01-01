@@ -399,8 +399,8 @@
           <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">Round Period:</span>
             <span class="account-circles-card-creator-fullname ps-2">
-              {{ circleInfo.circle_round_days == 7 ? 'Weekly (7 days)' : 
-               circleInfo.circle_round_days == 30 ? 'Monthly (30 days)' : `${circleInfo.circle_round_days} days`
+              {{ accountCircleProps.circle_round_days == 7 ? 'Weekly (7 days)' : 
+               accountCircleProps.circle_round_days == 30 ? 'Monthly (30 days)' : `${accountCircleProps.circle_round_days} days`
               }}
             </span>
           </div>
