@@ -378,7 +378,7 @@
           <!-- Blockchain -->
           <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">Blockchain:</span>
-            <span class="account-circles-card-creator-fullname ps-2">Viction</span>
+            <span class="account-circles-card-creator-fullname ps-2">{{ defaultchain.chainName }}</span>
           </div>
           
           <!-- Payment Token -->
