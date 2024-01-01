@@ -13,33 +13,37 @@
         <label for="circleRoundDays" class="input-label">
           1. Asset you want to withdraw
         </label>
-        <div class="d-flex flex-row justify-content-center align-items-center">
-          <button
-            class="withdraw-button"
-            :class="withdrawalToken == 'VIC' ? 'selected' : ''"
-            @click="withdrawalToken = 'VIC'; withdrawalAmount = '';"
-          >
-            <SvgPaymentToken
-              :chainId="this.defaultchain.id"
-              :paymentToken="this.defaultchain.nativeCurrency.address"
-              :tooltip="false"
-              customClass="m-1 me-2"
-            />
-            <p>VIC</p>
-          </button>
-          <button
-            class="withdraw-button ms-2"
-            :class="withdrawalToken == 'CUSD' ? 'selected' : ''"
-            @click="withdrawalToken = 'CUSD'; withdrawalAmount = '';"
-          >
-            <SvgPaymentToken
-              :chainId="this.defaultchain.id"
-              :paymentToken="this.defaultchain.CUSD.address"
-              :tooltip="false"
-              customClass="m-1 me-2"
-            />
-            <p>CUSD</p>
-          </button>
+        <div class="d-flex flex-row justify-content-center align-items-center row">
+          <div class="col-12 col-md-6">
+            <button
+              class="withdraw-button"
+              :class="withdrawalToken == 'VIC' ? 'selected' : ''"
+              @click="withdrawalToken = 'VIC'; withdrawalAmount = '';"
+            >
+              <SvgPaymentToken
+                :chainId="this.defaultchain.id"
+                :paymentToken="this.defaultchain.nativeCurrency.address"
+                :tooltip="false"
+                customClass="m-1 me-2"
+              />
+              <p>VIC</p>
+            </button>
+          </div>
+          <div class="col-12 col-md-6">
+            <button
+              class="withdraw-button mt-2 mt-md-0 ms-md-2"
+              :class="withdrawalToken == 'CUSD' ? 'selected' : ''"
+              @click="withdrawalToken = 'CUSD'; withdrawalAmount = '';"
+            >
+              <SvgPaymentToken
+                :chainId="this.defaultchain.id"
+                :paymentToken="this.defaultchain.CUSD.address"
+                :tooltip="false"
+                customClass="m-1 me-2"
+              />
+              <p>CUSD</p>
+            </button>
+          </div>
         </div>
       </div>
       

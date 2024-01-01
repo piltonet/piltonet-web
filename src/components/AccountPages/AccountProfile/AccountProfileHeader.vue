@@ -138,7 +138,7 @@
             </div>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
-              <div class="col-3 d-flex flex-row justify-content-start align-items-center">
+              <div class="col-12 col-md-3 d-flex flex-row justify-content-start align-items-center">
                 <span class="account-balance">{{ utils.fixedNumber(cusdBalance, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
@@ -151,7 +151,7 @@
                 </div>
               </div>
               <!-- Top-up & Withdraw -->
-              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
+              <div class="col-12 col-md-9 d-flex flex-row justify-content-start align-items-center mt-2 mt-md-0">
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
@@ -178,7 +178,7 @@
             
             <!-- To Do -->
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
-              <div class="col-3 d-flex flex-row justify-content-start align-items-center">
+              <div class="col-12 col-md-3 d-flex flex-row justify-content-start align-items-center">
                 <span class="account-balance">{{ totalDebt }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
@@ -190,7 +190,7 @@
                   <p>USD</p>
                 </div>
               </div>
-              <div class="col-9 d-flex flex-row justify-content-start align-items-center">
+              <div class="col-12 col-md-9 d-flex flex-row justify-content-start align-items-center mt-2 mt-md-0">
                 <!-- Pay Off Debt -->
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div

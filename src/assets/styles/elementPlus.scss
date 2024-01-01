@@ -164,7 +164,26 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: 470px;
+    height: 490px;
     // margin: max(2rem, 50vh - 100px) auto 0;
     padding: 0;
+}
+
+/* Start labtop - lg < 1200 */
+@media (max-width: 1199px) {
+}
+
+/* Start Tablet - md < 992px */
+@media (max-width: 991px) {
+}
+
+/* Start Mobile - sm < 768px */
+@media (max-width: 767px) {
+    .withdraw-dialog {
+        height: 530px;
+    }
+}
+
+/* Start Mini Mobile - None < 576px */
+@media (max-width: 575px) {
 }
