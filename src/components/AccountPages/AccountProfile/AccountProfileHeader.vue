@@ -313,12 +313,13 @@ export default {
     async getBalance() {
       // To Do
       console.log('getBalance');
-      const vic2usdRatio = 0.78;
+      const vic2usdRatio = 0.81;
 
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
       
       // get tokenbound-acount vicBalance
-      provider.getBalance(this.accountProfile.account_tba_address).then((_vicBalance) => {
+      provider.getBalance(this.accountProfile.account_tba_address).then((balance) => {
+        let _vicBalance = parseInt(balance.toString()) / 1e18;
         if(this.vicBalance != _vicBalance) {
           console.log('_vicBalance', _vicBalance);
           this.vicBalance = _vicBalance;

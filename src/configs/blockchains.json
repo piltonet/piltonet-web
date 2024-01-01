@@ -67,7 +67,7 @@
     "tomotestnet": {
         "id": 89,
 		"chainId": "0x59",
-        "chainName": "Tomo Testnet",
+        "chainName": "Viction Testnet",
         "chainLogo": "https://cryptologos.cc/logos/tomochain-tomo-logo.png?v=025",
         "environment": "evm",
         "rpcUrl": "https://rpc.testnet.tomochain.com",
@@ -78,13 +78,13 @@
         },
         "nativeCurrency": {
             "address": "0x0000000000000000000000000000000000000000",
-			"name": "TomoChain",
-			"symbol": "TOMO",
+			"name": "Viction",
+			"symbol": "VIC",
 			"decimals": 18,
             "standard": "ERC20",
             "logo": ""
         },
-        "PCUSD": {
+        "CUSD": {
             "address": "0x093cD3E7806f6EadC76F9578fBF8BaCdf3aC7C3e",
 			"name": "Piltonet CUSD On Testnet",
 			"symbol": "PCUSD",

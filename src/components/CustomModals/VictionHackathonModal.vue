@@ -14,9 +14,10 @@
       <div class="viction-hack-body px-1 px-md-2 px-lg-5 py-2">
         <p class="viction-hack-text m-0 px-1 py-1">
           Please note, it is now working on the 
-          <a href="https://viction.xyz/" target="_blank">
+          <a href="https://docs.viction.xyz/general/how-to-connect-to-viction-network" target="_blank">
             <span  class="text-decoration-underline blue-btn">Viction Testnet</span>
           </a>
+          (ChainID=89, RPC=https://rpc.testnet.tomochain.com)
         </p>
         <button
           type="button"
