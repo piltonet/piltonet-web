@@ -29,6 +29,9 @@ library.add(far)
 dom.watch()
 app.component("font-awesome-icon", FontAwesomeIcon)
 
+import { ElLoading } from 'element-plus';
+app.use(ElLoading)
+
 import Jazzicon from 'vue-jazzicon/src/components'
 app.component('JazzIcon', Jazzicon)
 

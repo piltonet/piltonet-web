@@ -24,7 +24,7 @@ class SDK {
 		operation
 	) {
 		const tx = await this.contract.execute(to, value, data, operation, {
-			gasLimit: 6000000
+			gasLimit: 300000
 		})
 		return await tx.wait();
 	}

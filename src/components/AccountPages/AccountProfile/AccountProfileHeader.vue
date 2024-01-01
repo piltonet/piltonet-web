@@ -251,6 +251,7 @@
   
   <WithdrawModal
     ref="withdraw_modal"
+    @get-balance="getBalance"
   />
 
   <MessageModal
@@ -351,9 +352,6 @@ export default {
         console.log('getSigner.err', err);
         clearInterval(this.interval);
       });
-      
-      
-
     },
     async topUpCUSD() {
       // this.$refs.topup_modal.setTopUp();
@@ -400,7 +398,7 @@ export default {
         VIC: this.vicBalance,
         CUSD: this.cusdBalance,
       }
-      this.$refs.withdraw_modal.setTopUp(totalAssetBalance);
+      this.$refs.withdraw_modal.setWithdrawal(totalAssetBalance);
     },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.accountProfile?.account_tba_address);

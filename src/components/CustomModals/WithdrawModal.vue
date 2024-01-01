@@ -51,11 +51,11 @@
         </label>
         <div class="d-flex flex-column justify-content-center align-items-start">
           <input
-            ref="withdrawal_amount"
-            id="withdrawalAmount"
+            ref="withdrawalAmount"
+            id="withdrawal_amount"
             type="number"
             class="small-input mb-0"
-            :class="hasError['withdrawal_amount'] ? 'has-error' : ''"
+            :class="hasError['withdrawalAmount'] ? 'has-error' : ''"
             placeholder="Enter Amount"
             v-model="withdrawalAmount"
           />
@@ -76,14 +76,21 @@
           <span class="input-label-small">(Required)</span>
         </label>
         <input
-          ref="withdrawal_address"
-          id="withdrawalAddress"
+          ref="withdrawalAddress"
+          id="withdrawal_address"
           type="text"
           class="middle-input mb-0"
-          :class="hasError['withdrawal_address'] ? 'has-error' : ''"
+          :class="hasError['withdrawalAddress'] ? 'has-error' : ''"
           placeholder="Enter Address"
           v-model="withdrawalAddress"
         />
+        <div
+          type="button"
+          @click="sendToMainAccount"
+          class="front-btn small-text no-border blue-btn mt-2"
+        >
+          <span class="m-0 p-0">Main Account</span>
+        </div>
       </div>
 
     </div>
@@ -96,9 +103,17 @@
     </template>
 
   </el-dialog>
+
+  <MessageModal
+    ref="message_modal"
+    @ok-clicked="exploreTx"
+    @cancel-clicked="closeModal"
+  />
+  
 </template>
 
 <script>
+import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
 import { ethers } from 'ethers'
 import abi from "@/services/abi";
@@ -112,10 +127,12 @@ export default {
       withdrawalAmount: "",
       withdrawalAddress: "",
       totalAssetBalance: {},
+      txHash: "",
       showModal: false,
+      openLoadings: [],
       hasError: {
-        withdrawal_amount: false,
-        withdrawal_address: false,
+        withdrawalAmount: false,
+        withdrawalAddress: false,
       },
       copyAddressTooltip: "Copy Address"
     };
@@ -130,42 +147,137 @@ export default {
     }
   },
   methods: {
-    async setTopUp(totalAssetBalance) {
+    async setWithdrawal(totalAssetBalance) {
       this.totalAssetBalance = totalAssetBalance;
       this.showModal = true;
     },
     async totalBalance() {
-      console.log(this.totalAssetBalance);
       this.withdrawalAmount = this.totalAssetBalance[this.withdrawalToken] || 0;
     },
+    async sendToMainAccount() {
+      this.withdrawalAddress = this.connectedAccount.account_address;
+    },
     async confirmWithdrawal() {
-      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = abi.setAbi(
-        this.accountProfile.account_tba_address, // sender tba address
-        "ERC6551Account",
-        signer
-      );
-      // execute ERC1155Contracts addContact
-      let abiResponse = await contract.interaction("executeFunction", [
-        "VRC25PCUSD", // contract name
-        "transfer", // function name
-        ["function transfer(address recipient, uint256 amount)"], // function ABI
-        [ethers.getAddress(this.accountProfile.account_tba_address), ethers.toBigInt(100000)], // function args
-        0 // value
-      ]);
-      if(!abiResponse.done) {
-        this.notif({
-          title: "OOPS!",
-          message: abiResponse.message,
-          dangerouslyUseHTMLString: true,
-          type: abiResponse.message_type,
-          duration: 3000,
-        });
+      if(this.checkForm()) {
+        let loadingId = await this.showLoading();
+        try {
+          loadingId = await this.showLoading();
+          const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+          const signer = await provider.getSigner();
+          const contract = abi.setAbi(
+            this.accountProfile.account_tba_address, // sender tba address
+            "ERC6551Account",
+            signer
+          );
+          
+          let abiResponse = {done: false};
+          if(this.withdrawalToken == "VIC") {
+            // execute ERC1155Contracts addContact
+            abiResponse = await contract.interaction("execute", [
+              ethers.getAddress(this.withdrawalAddress), // to
+              ethers.parseEther(this.withdrawalAmount.toString()), // value
+              "0x", // data
+              0 // operation
+            ]);
+          } else {
+            // execute ERC1155Contracts addContact
+            abiResponse = await contract.interaction("executeFunction", [
+              "VRC25PCUSD", // contract name
+              "transfer", // function name
+              ["function transfer(address recipient, uint256 amount)"], // function ABI
+              // [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(this.withdrawalAmount)], // function args
+              [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(parseFloat(this.withdrawalAmount) * 1e6)], // function args
+              0 // value
+            ]);
+          }
+  
+          this.openLoadings[loadingId].close();
+          
+          if(!abiResponse.done) {
+            this.notif({
+              title: "OOPS!",
+              message: abiResponse.message,
+              dangerouslyUseHTMLString: true,
+              type: abiResponse.message_type,
+              duration: 3000,
+            });
+          } else {
+            this.txHash = abiResponse.result.hash;
+            this.$refs.message_modal.setMessage({
+              title: "Withdrawal Successful",
+              message: `Your withdrawal of ${this.withdrawalAmount} ${this.withdrawalToken} has been processed successfully.`,
+              okBtn: 'Explore TX',
+              cancelBtn: "Close",
+              customStyle: 'width: 430px;'
+            })
+          }
+        } catch(err) {
+          this.openLoadings[loadingId].close();
+          this.notif({
+            title: "OOPS!",
+            message: "Something went wrong, please try again later.",
+            dangerouslyUseHTMLString: true,
+            type: "error",
+            duration: 3000,
+          })
+          console.log(err);
+        }
       }
+    },
+    checkForm() {
+      try {
+        Object.keys(this.hasError).forEach(element => {
+          console.log(element, this[element]);
+          if(this[element] == null || this[element].length <= 0) {
+            this.$refs[element].focus();
+            this.hasError[element] = true;
+            this.notif({
+              message: "Make sure all required fields are filled in correctly.",
+              type: "error",
+              duration: 3000,
+              onClose: () => { this.hasError[element] = false }
+            })
+            throw false;
+          }
+          if(element == 'withdrawalAmount') {
+            if(parseFloat(this[element]) > parseFloat(this.totalAssetBalance[this.withdrawalToken])) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The withdrawal amount should not be more than ${this.totalAssetBalance[this.withdrawalToken]} ${this.withdrawalToken}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+        });
+        return true;
+      } catch(err) {
+        console.log(err);
+        return false;
+      }
+    },
+    exploreTx() {
+      let _explorerLink = `${this.defaultchain.blockExplorerUrl}/tx/${this.txHash}`;
+      window.open(_explorerLink, "_blank");
+      this.closeModal();
+    },
+    async showLoading() {
+      const randomId = Date.now();
+      this.openLoadings[randomId] = undefined;
+      this.openLoadings[randomId] = new ElLoading.service({
+        lock: true,
+        text: '',
+        fullscreen: true,
+      });
+      return randomId;
     },
     closeModal() {
       this.showModal = false;
+      this.$emit('getBalance');
     },
     async copyAccount(id) {
       navigator.clipboard.writeText(this.withdrawAddress);
