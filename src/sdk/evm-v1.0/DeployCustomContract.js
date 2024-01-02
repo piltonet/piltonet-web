@@ -11,8 +11,6 @@ class SDK {
 	async deployTLCC(
 		deployArgs
 	) {
-		console.log(deployArgs);
-
 		const factory = new ContractFactory(TLCC, TLCCByteCode, this.signer)
     return await factory.deploy(...deployArgs, {
 			gasLimit: 6000000

@@ -11,8 +11,9 @@
             :rounded="false"
             :border="accountProfile?.account_image_url ? false : true"
           />
-          <span class="account-fullname mt-3 ms-2">
-            {{ accountProfile?.account_fullname || '' }}
+
+          <div v-if="accountProfile?.account_fullname" class="account-fullname mt-3 ms-2">
+            {{ accountProfile?.account_fullname }}
             <el-tooltip
               content="Edit Profile"
               placement="top"
@@ -22,7 +23,17 @@
                 <i class="fa fa-pencil account-edit-icon ms-1" aria-hidden="true"></i>
               </a>
             </el-tooltip> 
-          </span>
+          </div>
+          <div v-else class="mt-3 mb-1 ms-2">
+            <div
+              type="button"
+              @click="$router.push('/account/settings?active_page=profile')"
+              class="main-btn orange-bg"
+            >
+              <span class="m-0 p-0">Enhance Your NFT Profile</span>
+            </div>
+          </div>
+
           <span class="account-data mt-2 ms-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
           
           <!-- profile Account -->
