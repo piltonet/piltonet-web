@@ -86,13 +86,14 @@
             ref="account_fullname"
 						id="accountFullName"
 						type="text"
-						class="small-input mb-0"
+						class="small-input"
             :class="hasError['account_fullname'] ? 'has-error' : ''"
 						placeholder="Enter Your Full Name"
 						aria-describedby="fullnameHelp"
 						v-model="accountProfile.account_fullname"
 					/>
-					<p id="fullnameHelp" class="help-text mb-3">
+					<!-- To Do -->
+          <p v-if="false" id="fullnameHelp" class="help-text mb-3">
             Full name is only visible to your trusted network.
 					</p>
           
@@ -105,13 +106,14 @@
             ref="account_nickname"
 						id="accountNickname"
 						type="text"
-						class="small-input mb-0"
+						class="small-input"
             :class="hasError['account_nickname'] ? 'has-error' : ''"
 						placeholder="Enter A Nickname"
 						aria-describedby="usernameHelp"
 						v-model="accountProfile.account_nickname"
 					/>
-					<p id="usernameHelp" class="help-text mb-3">
+					<!-- To Do -->
+          <p v-if="false" id="usernameHelp" class="help-text mb-3">
 						Nickname is public and it will appear on your profile.
 					</p>
           
@@ -124,13 +126,14 @@
             ref="account_email"
 						id="accountEmail"
 						type="text"
-						class="small-input mb-0"
+						class="small-input"
             :class="hasError['account_email'] ? 'has-error' : ''"
 						placeholder="Enter Your Email"
 						aria-describedby="emailHelp"
 						v-model="accountProfile.account_email"
 					/>
-					<p id="emailHelp" class="help-text mb-3">
+					<!-- To Do -->
+          <p v-if="false" id="emailHelp" class="help-text mb-3">
 						Email is only visible to your trusted network.
 					</p>
 
