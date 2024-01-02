@@ -24,12 +24,17 @@
       </div>
     </div>
   </div>
+  <SwitchTheme class="d-none"/>
 </template>
 
 <script>
+import SwitchTheme from "@/components/NavBar/SwitchTheme.vue";
 
 export default {
-  name: "NotFound"
+  name: "NotFound",
+  components: {
+    SwitchTheme
+  },
 };
 </script>
 
