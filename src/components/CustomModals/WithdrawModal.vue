@@ -267,7 +267,7 @@ export default {
     exploreTx() {
       let _explorerLink = `${this.defaultchain.blockExplorerUrl}/tx/${this.txHash}`;
       window.open(_explorerLink, "_blank");
-      // this.closeModal();
+      this.closeModal();
     },
     async showLoading() {
       const randomId = Date.now();

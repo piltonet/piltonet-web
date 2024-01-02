@@ -110,7 +110,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-1 ms-2">
             <span class="account-midtext pe-2">TokenID</span>
             <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-              <span class="account-address">
+              <span class="account-midtext">
                 #{{ accountProfile?.account_token_id }}
                 <!-- TokenID Info -->
                 <el-tooltip
@@ -188,7 +188,7 @@
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">{{ utils.fixedNumber(vicBalance, 4, 2) }}</span>
+                <span class="account-balance">{{ utils.fixedNumber(vicBalance, 4, 4) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
@@ -244,7 +244,7 @@
             <!-- To Do -->
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
               <div class="col-12 col-md-3 d-flex flex-row justify-content-start align-items-center">
-                <span class="account-balance">{{ totalDebt }}</span>
+                <span class="account-balance">{{ utils.fixedNumber(totalDebt, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
                     :chainId="this.defaultchain.id"
