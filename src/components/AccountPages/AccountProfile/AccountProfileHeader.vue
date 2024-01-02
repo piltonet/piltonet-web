@@ -36,41 +36,6 @@
 
           <span class="account-data mt-2 ms-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
           
-          <!-- profile Account -->
-          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
-            <span class="account-data pe-2">TBA:</span>
-            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-              <!-- <span class="account-address mt-3">Main Account: {{ accountProfile?.account_address ? utils.truncate(accountProfile?.account_address, 12) : '' }}</span> -->
-              <span class="account-address">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
-              <span>
-                <el-tooltip
-                  :content="this.copyAddressTooltip"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
-                    <i class="far fa-copy account-edit-icon mt-1"></i>
-                  </a>
-                </el-tooltip>
-                <!-- Explore Icon -->
-                <el-tooltip
-                  content="View in Explorer"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <a
-                    v-if="explorerLink"
-                    :href="explorerLink"
-                    target="_blank"
-                    class="ms-2"
-                  >
-                    <i class="fa fa-external-link account-edit-icon" aria-hidden="true"></i>
-                  </a>
-                </el-tooltip>
-              </span>
-            </div>
-          </div>
-
           <!-- account social -->
           <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-3 ms-2">
             <!-- account social twitter -->
@@ -120,15 +85,104 @@
             </span>
           </div>
 
+          <!-- profile contact -->
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
+            <span class="account-midtext pe-2">Profile Contract:</span>
+            <span class="account-midtext pe-2">{{ utils.truncate(accountProfile?.profiles_contract_address, 12) }}</span>
+            <span>
+              <!-- Explore Icon -->
+              <el-tooltip
+                content="View Profile Contract in Explorer"
+                placement="top"
+                :hide-after="0"
+              >
+                <a
+                  v-if="explorerProfile"
+                  :href="explorerProfile"
+                  target="_blank"
+                >
+                  <i class="fa fa-external-link account-info-icon" aria-hidden="true"></i>
+                </a>
+              </el-tooltip>
+            </span>
+          </div>
+          <!-- profile TokenID -->
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-1 ms-2">
+            <span class="account-midtext pe-2">TokenID</span>
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+              <span class="account-address">
+                #{{ accountProfile?.account_token_id }}
+                <!-- TokenID Info -->
+                <el-tooltip
+                  content="The NFT Profile Token ID"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <span>
+                    <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
+                  </span>
+                </el-tooltip>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- profile balance -->
+      <!-- Token Bound Account -->
       <div class="col-12 col-md-8">
         <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
+          
+          <!-- TBA Address -->
+          <div class="d-flex flex-column justify-content-center align-items-start w-100">
+            <span class="account-title">Account Address
+              <!-- TokenID Info -->
+              <el-tooltip
+                content="Each profile registered in Piltonet is a<br/>
+                Token Bound Account (ERC-6551) to which all contacts and circles are connected.<br/>
+                It embeds more technical capabilities into the platform and increases the security of your connected wallet."
+                raw-content="true"
+                placement="right"
+                :hide-after="0"
+              >
+                <span>
+                  <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
+                </span>
+              </el-tooltip>
+            </span>
+            <div class="d-flex flex-row justify-content-start align-items-center mt-2">
+              <span class="account-address pe-2">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
+              <span>
+                <el-tooltip
+                  :content="this.copyAddressTooltip"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
+                    <i class="far fa-copy account-edit-icon mt-1"></i>
+                  </a>
+                </el-tooltip>
+                <!-- Explore Icon -->
+                <el-tooltip
+                  content="View in Explorer"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a
+                    v-if="explorerLink"
+                    :href="explorerLink"
+                    target="_blank"
+                    class="ms-2"
+                  >
+                    <i class="fa fa-external-link account-edit-icon" aria-hidden="true"></i>
+                  </a>
+                </el-tooltip>
+              </span>
+            </div>
+          </div>
+          
           <!-- Total Assets -->
-          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
-            <span class="account-title mt-3">Total Assets
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
+            <span class="account-title">Total Assets
               <span class="account-smalltext mt-3">~ {{ utils.fixedNumber(totalBalance, 2, 2) }} $</span>
             </span>
             
@@ -184,8 +238,8 @@
           </div>
 
           <!-- Total Funded Debt -->
-          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
-            <span class="account-title mt-3">Total Debt</span>
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
+            <span class="account-title">Total Debt</span>
             
             <!-- To Do -->
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
@@ -297,6 +351,7 @@ export default {
       cusdBalance: 0,
       totalDebt: 0,
       copyAddressTooltip: "Copy Address",
+      explorerProfile: null,
       explorerLink: null
     }
   },
@@ -310,6 +365,7 @@ export default {
     }
   },
   created() {
+    this.explorerProfile = `${this.defaultchain.blockExplorerUrl}/address/${this.accountProfile.profiles_contract_address}`;
     this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.accountProfile.account_tba_address}`;
     this.getBalance();
   },
@@ -455,6 +511,12 @@ export default {
   font-weight: bold;
   color: rgba(var(--ptn-color-rgb), 0.8);
 }
+.account-midtext {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: normal;
+  color: rgba(var(--ptn-color-rgb), 0.8);
+}
 .account-smalltext {
   font-size: 13px;
   line-height: 20px;
@@ -478,6 +540,11 @@ export default {
   font-size: 16px;
   font-weight: 400;
   color: var(--ptn-btn-bg);
+}
+.account-info-icon {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ptn-gray);
 }
 .account-social-icons {
     font-size: 19px;
