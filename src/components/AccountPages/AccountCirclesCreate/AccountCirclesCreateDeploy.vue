@@ -29,7 +29,7 @@
               <p>{{ defaultchain.chainName }}</p>
               <i class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
-            <p id="circleContractChainHelp" class="help-text pt-3 mb-3">
+            <p id="circleContractChainHelp" class="help-text pt-2 mb-3">
               All transactions will be done on this chain.
             </p>
             <!-- Circle Payment Token -->
@@ -64,7 +64,7 @@
               <p>{{ this.defaultchain.CUSD.symbol }}</p>
               <i v-if="circleInfo.circle_payment_token == this.defaultchain.CUSD.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
-            <p id="circlePaymentTokenHelp" class="help-text pt-3 mb-3">
+            <p id="circlePaymentTokenHelp" class="help-text pt-2 mb-3">
               This token is used to pay contributions and receive loans.
             </p>
           </template>
@@ -90,7 +90,7 @@
               <p>Monthly (30 days)</p>
               <i v-if="circleInfo.circle_round_days == 30 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
-            <p id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
               Duration of each round in days.
             </p>
           </template>
@@ -114,10 +114,10 @@
               <p>Fixed Loan</p>
               <i v-if="circleInfo.circle_payment_type == 'fixed_loan' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
-            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
               In the fixed payment type, the loan amount will be based on the number of members and other rules.
             </p>
-            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleRoundDaysHelp" class="help-text pt-3 mb-3">
+            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
               In the fixed loan type, the contribution amount will be based on the number of members and other rules.
             </p>
           </template>
@@ -143,7 +143,7 @@
                 aria-describedby="circleCreatorEarningsHelp"
                 v-model="circleInfo.circle_creator_earnings"
               />
-              <p id="circleCreatorEarningsHelp" class="help-text pt-3 mb-3">
+              <p id="circleCreatorEarningsHelp" class="help-text pt-2 mb-3">
                 {{ `Earnings of the circle creator, up to ${maxCreatorEarnings}%.` }}
               </p>
             </div>
@@ -161,7 +161,7 @@
               <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
               <i class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
-            <p id="circleServiceChargeHelp" class="help-text pt-3 mb-3">
+            <p id="circleServiceChargeHelp" class="help-text pt-2 mb-3">
               Piltonet service charge rate that is deducted from the loan amount.
             </p>
           </template>
@@ -357,7 +357,7 @@
             type="button"
             @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
             class="main-btn blue-bg ms-2"
-            :class="tabIndex == 4 || tabIndex == 5 ? 'd-none' : ''"
+            :class="tabIndex == 5 ? 'd-none' : ''"
           >
             <span class="m-0 p-0">Next</span>
           </div>

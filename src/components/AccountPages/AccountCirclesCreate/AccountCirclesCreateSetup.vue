@@ -31,7 +31,7 @@
               aria-describedby="circleNameHelp"
               v-model="circleInfo.circle_name"
             />
-            <p id="circleNameHelp" class="help-text pt-3 mb-3">
+            <p id="circleNameHelp" class="help-text pt-2 mb-3">
               Name the circle whatever you want.
             </p>
           </template>
@@ -57,10 +57,10 @@
               aria-describedby="circleFixedAmountHelp"
               v-model="circleInfo.circle_fixed_amount"
             />
-            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-3 mb-3">
+            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
               {{ `Participants contribute the same monthly payment, ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
             </p>
-            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-3 mb-3">
+            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
               {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${paymentToken.symbol}.` }}
             </p>
           </template>
@@ -82,7 +82,7 @@
               aria-describedby="circleMinMembersHelp"
               v-model="circleInfo.circle_min_members"
             />
-            <p id="circleMinMembersHelp" class="help-text pt-3 mb-3">
+            <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
               {{ `The minimum number of participants in the circle, ${minMembers} to ${maxMembers} people.` }}
             </p>
             
@@ -102,7 +102,7 @@
               aria-describedby="circleMaxMembersHelp"
               v-model="circleInfo.circle_max_members"
             />
-            <p id="circleMaxMembersHelp" class="help-text pt-3 mb-3">
+            <p id="circleMaxMembersHelp" class="help-text pt-2 mb-3">
               {{ `The maximum number of participants in the circle, ${Math.max(minMembers, circleInfo.circle_min_members)} to ${maxMembers} people.` }}
             </p>
           </template>
@@ -154,7 +154,7 @@
               aria-describedby="circleWinnersNumberHelp"
               v-model="circleInfo.circle_winners_number"
             />
-            <p id="circleWinnersNumberHelp" class="help-text pt-3 mb-3">
+            <p id="circleWinnersNumberHelp" class="help-text pt-2 mb-3">
               The number of winners are chosen per month, default 1 person.
             </p>
           </template>
@@ -177,7 +177,7 @@
               aria-describedby="circlePatienceBenefitHelp"
               v-model="circleInfo.circle_patience_benefit"
             />
-            <p id="circlePatienceBenefitHelp" class="help-text pt-3 mb-3">
+            <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
               Benefit percentage for members who win in the last months, default 0%.
             </p>
           </template>

@@ -36,7 +36,7 @@
 					<p
 						v-if="!accountProfile.account_image_url"
 						id="profileImageHelp"
-						class="help-text mb-3"
+						class="help-text pt-2 mb-3"
 					>
             Upload a profile image. The suggested aspect ratio is 1:1.
 					</p>
@@ -93,7 +93,7 @@
 						v-model="accountProfile.account_fullname"
 					/>
 					<!-- To Do -->
-          <p v-if="false" id="fullnameHelp" class="help-text mb-3">
+          <p v-if="false" id="fullnameHelp" class="help-text pt-2 mb-3">
             Full name is only visible to your trusted network.
 					</p>
           
@@ -113,7 +113,7 @@
 						v-model="accountProfile.account_nickname"
 					/>
 					<!-- To Do -->
-          <p v-if="false" id="usernameHelp" class="help-text mb-3">
+          <p v-if="false" id="usernameHelp" class="help-text pt-2 mb-3">
 						Nickname is public and it will appear on your profile.
 					</p>
           
@@ -133,7 +133,7 @@
 						v-model="accountProfile.account_email"
 					/>
 					<!-- To Do -->
-          <p v-if="false" id="emailHelp" class="help-text mb-3">
+          <p v-if="false" id="emailHelp" class="help-text pt-2 mb-3">
 						Email is only visible to your trusted network.
 					</p>
 
