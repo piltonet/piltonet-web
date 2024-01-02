@@ -321,7 +321,7 @@
                 <button
                   class="account-circles-deploy-button selected locked"
                 >
-                  <p>{{ circleInfo.circle_patience_benefit }}</p>
+                  <p>{{ circleInfo.circle_patience_benefit }}%</p>
                 </button>
               </template>
             
@@ -331,7 +331,7 @@
                 <button
                   class="account-circles-deploy-button selected locked"
                 >
-                  <p>{{ circleInfo.circle_creator_earnings }}</p>
+                  <p>{{ circleInfo.circle_creator_earnings }}%</p>
                 </button>
               </template>
             
@@ -534,9 +534,10 @@ export default {
       if(this.checkForm()) {
         const deployArgs = [[
           this.circleInfo.circle_payment_token,
-          this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
-          this.circleInfo.circle_round_days,
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
+          this.circleInfo.circle_round_days,
+          this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
+          this.circleInfo.circle_patience_benefit * 100,
           this.circleInfo.circle_creator_earnings * 100
         ]];
 
