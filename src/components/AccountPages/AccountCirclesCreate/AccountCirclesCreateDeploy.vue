@@ -344,7 +344,7 @@
                 <button
                   class="account-circles-deploy-button selected locked"
                 >
-                  <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
+                  <p>{{ `${circleInfo.circle_service_charge / 100} (${circleInfo.circle_service_charge}%)` }}</p>
                   <i class="fa fa-lock ps-2" aria-hidden="true"></i>
                 </button>
                 <p id="circleServiceChargeHelp" class="help-text pt-1">
@@ -518,21 +518,23 @@ export default {
         // New Circle
         this.circleInfo = {
           circle_id: null,
-          circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
+          circle_creator_tba: this.accountProfile.account_tba_address,
           circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.CUSD.address,
-          circle_winners_order: 'random',
-          circle_round_days: 30,
           circle_payment_type: 'fixed_pay',
-          circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,
+          circle_round_days: 30,
+          circle_winners_order: 'random',
           circle_patience_benefit: 0,
-          circle_creator_earnings: 0
+          circle_creator_earnings: 0,
+          circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 100,
+          circle_service_address: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS
         }
       }
     },
     async deployCircle() {
       if(this.checkForm()) {
         const deployArgs = [[
+          // ethers.getAddress(this.circleInfo.circle_payment_token),
           this.circleInfo.circle_payment_token,
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_round_days,
