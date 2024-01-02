@@ -209,7 +209,7 @@ export default {
       );
       // execute ERC1155Contracts addContact
       let abiResponse = await contract.interaction("executeFunction", [
-        "ERC1155Contacts", // contract name
+        "TrustedContacts", // contract name
         "addContact", // function name
         ["function addContact(address contactTBA)"], // function ABI
         [ethers.getAddress(this.inviteAccount.account_tba_address)], // function args
