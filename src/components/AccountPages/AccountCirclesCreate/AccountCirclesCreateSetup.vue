@@ -37,7 +37,7 @@
           </template>
           
           <!-- Fixed Pay -->
-          <template v-if="tabIndex == 2">
+          <template v-if="tabIndex == 1">
             <label v-if="circleInfo.circle_payment_type == 'fixed_pay'" for="circleFixedAmount" class="input-label mt-2">
               Monthly Payments
               <span class="input-label-small">(Required)</span>
@@ -66,7 +66,7 @@
           </template>
 
           <!-- Min Members -->
-          <template v-if="tabIndex == 3">
+          <template v-if="tabIndex == 1">
             <label for="circleMinMembers" class="input-label mt-2">
               Min. Members
               <span class="input-label-small">(Required)</span>
@@ -108,7 +108,7 @@
           </template>
           
           <!-- Number Of Winners -->
-          <template v-if="tabIndex == 4">
+          <template v-if="tabIndex == 1">
             <label for="circleWinnersNumber" class="input-label mt-2">
               Number Of Winners
               <span class="input-label-small">(Required)</span>
@@ -133,7 +133,7 @@
           </template>
 
           <!-- Save Button -->
-          <template v-if="tabIndex == 5">
+          <template v-if="tabIndex == 1">
             <input
               v-if="circleInfo.circle_status == 'deployed'"
               type="submit"
@@ -151,45 +151,6 @@
         </form>
       </div>
       <form action=""></form>
-
-      <!-- Previous & Next -->
-      <div class="d-flex flex-row justify-content-center align-items-center mt-4">
-        <div class="d-flex flex-row justify-content-center align-items-center">
-          <div
-            type="button"
-            @click="tabIndex = 1"
-            class="main-btn blue-bg"
-            :class="tabIndex == 5 ? '' : 'd-none'"
-          >
-            <span class="m-0 p-0">Back to Edit</span>
-          </div>
-          <div
-            type="button"
-            @click="tabIndex = tabIndex > 1 ? tabIndex - 1 : 1"
-            class="main-btn blue-bg"
-            :class="tabIndex == 1 || tabIndex == 5 ? 'd-none' : ''"
-          >
-            <span class="m-0 p-0">Previous</span>
-          </div>
-          <div
-            type="button"
-            @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
-            class="main-btn blue-bg ms-2"
-            :class="tabIndex == 4 ? 'd-none' : ''"
-          >
-            <span class="m-0 p-0">Next</span>
-          </div>
-          <div
-            type="button"
-            @click="setupCircle"
-            class="main-btn green-bg ms-2"
-            :class="tabIndex == 4 ? '' : 'd-none'"
-          >
-            <span class="m-0 p-0">Setup</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
