@@ -5,7 +5,7 @@
 				<span class="d-none d-md-inline-block">CREATE CIRCLE</span>
 			</h3>
       <h4>
-        <i class="fa fa-circle blue-btn d-none d-md-inline-block me-2" aria-hidden="true"></i>
+        <i class="far fa-circle-dot blue-btn d-none d-md-inline-block me-2" aria-hidden="true"></i>
 				<span class="d-none d-md-inline-block">
           {{ circleInfoProps.circle_name || 'New Circle' }}
         </span>
@@ -69,7 +69,7 @@
 				<span class="d-none d-md-inline-block">CREATE CIRCLE</span>
 			</h3>
       <h4>
-        <i class="fa fa-circle blue-btn d-none d-md-inline-block me-2" aria-hidden="true"></i>
+        <i class="far fa-circle-dot blue-btn d-none d-md-inline-block me-2" aria-hidden="true"></i>
 				<span class="d-none d-md-inline-block">New Circle</span>
 			</h4>
       <div class="side-bar-item mt-4">

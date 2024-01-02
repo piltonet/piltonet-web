@@ -353,7 +353,7 @@
         <div class="d-flex flex-column justify-content-center align-items-center pt-3 pb-2">
           <p>
             <span class="account-circles-card-title-icon third-gray-btn">
-              <i class="fa fa-gavel" aria-hidden="true"></i>
+              <i class="fa fa-screwdriver-wrench" aria-hidden="true"></i>
               <span class="account-circles-card-title ms-1">
                 You are creating
               </span>

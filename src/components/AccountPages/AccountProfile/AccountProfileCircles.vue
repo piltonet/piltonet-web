@@ -16,7 +16,7 @@
             @click="$router.push('/account/circles')"
           >
             <h3>
-              <i class="fa fa-gavel" aria-hidden="true"></i>
+              <i class="fa fa-hands-holding-circle" aria-hidden="true"></i>
             </h3>
             <h2>
               MY CIRCLES

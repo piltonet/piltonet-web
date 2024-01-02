@@ -297,7 +297,7 @@
             @click="$router.push('/account/circles')"
             class="profile-link d-flex flex-row justify-content-center align-items-center p-2 mx-2"
           >
-            <i class="fa fa-circle me-2" aria-hidden="true"></i>
+            <i class="far fa-circle-dot me-2" aria-hidden="true"></i>
             Lending Circles
             <!-- To Do -->
             <span v-if="false" class="ms-1">

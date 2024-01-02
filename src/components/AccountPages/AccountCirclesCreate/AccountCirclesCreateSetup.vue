@@ -107,35 +107,8 @@
             </p>
           </template>
           
+          <!-- Number Of Winners -->
           <template v-if="tabIndex == 4">
-            <!-- Order Of Winners -->
-            <label for="circleWinnersOrder" class="input-label mt-2">Order Of Winners</label>
-            <button
-              :disabled="circleInfo.circle_joined_members"
-              class="choosing-winners-button"
-              :class="circleInfo.circle_winners_order == 'random' ? 'selected' : ''"
-              @click="circleInfo.circle_winners_order = 'random'"
-            >
-            <p class="pt-2">
-                <i class="fa fa-dice fa-xl" aria-hidden="true"></i>
-                Random
-              </p>
-              <p class="help-text pt-1 px-1">Winner(s) is/are chosen randomly each month.</p>
-            </button>
-            <button
-              :disabled="circleInfo.circle_joined_members"
-              class="choosing-winners-button mb-3"
-              :class="circleInfo.circle_winners_order == 'fixed' ? 'selected' : ''"
-              @click="circleInfo.circle_winners_order = 'fixed'"
-            >
-              <p class="ps-2 pt-2">
-                <i class="fa fa-calendar-check fa-xl" aria-hidden="true"></i>
-                Fixed
-              </p>
-              <p class="help-text pt-1 px-1">Members can specify their position among the vacant months.</p>
-            </button>
-            
-            <!-- Number Of Winners -->
             <label for="circleWinnersNumber" class="input-label mt-2">
               Number Of Winners
               <span class="input-label-small">(Required)</span>
@@ -159,29 +132,6 @@
             </p>
           </template>
 
-          <!-- Benefit Of Patience -->
-          <template v-if="tabIndex == 2">
-            <label for="circlePatienceBenefit" class="input-label mt-2">
-              Patience Benefit
-              <span class="input-label-small">(Required)</span>
-            </label>
-            <input
-              :disabled="circleInfo.circle_joined_members"
-              ref="circle_patience_benefit"
-              id="circlePatienceBenefit"
-              type="number"
-              step="0.01"
-              placeholder="e.g. 10"
-              class="small-input mb-0"
-              :class="hasError['circle_patience_benefit'] ? 'has-error' : ''"
-              aria-describedby="circlePatienceBenefitHelp"
-              v-model="circleInfo.circle_patience_benefit"
-            />
-            <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
-              Benefit percentage for members who win in the last months, default 0%.
-            </p>
-          </template>
-          
           <!-- Save Button -->
           <template v-if="tabIndex == 5">
             <input
@@ -280,8 +230,7 @@ export default {
         circle_fixed_amount: false,
         circle_min_members: false,
         circle_max_members: false,
-        circle_winners_number: false,
-        circle_patience_benefit: false,
+        circle_winners_number: false
       },
       openLoadings: []
     }
@@ -324,12 +273,9 @@ export default {
           this.circleInfo['circle_fixed_amount'] = '';
           this.circleInfo['circle_min_members'] = '';
           this.circleInfo['circle_max_members'] = '';
-          this.circleInfo['circle_winners_order'] = 'random';
           this.circleInfo['circle_winners_number'] =1;
-          this.circleInfo['circle_patience_benefit'] = 0;
           this.circleInfo['circle_start_date'] = '';
         }
-        this.circleInfo.circle_patience_benefit = this.circleInfo.circle_patience_benefit * 100;
       }
     },
     async setupCircle() {
@@ -348,9 +294,7 @@ export default {
             this.circleInfo.circle_fixed_amount * 100,
             this.circleInfo.circle_min_members,
             this.circleInfo.circle_max_members,
-            this.circleInfo.circle_winners_order == 'random' ? 0 : 1,
-            this.circleInfo.circle_winners_number,
-            this.circleInfo.circle_patience_benefit * 100,
+            this.circleInfo.circle_winners_number
           ]);
           if(!abiResponse.done) {
             this.notif({
@@ -466,18 +410,6 @@ export default {
             })
             throw false;
           }
-          if(element == 'circle_patience_benefit' && (this.circleInfo[element] < 0 || this.circleInfo[element] > 100)) {
-            this.$refs[element].focus();
-            this.hasError[element] = true;
-            this.notif({
-              message: "The benefit of patience must be between 0% and 100%.",
-              dangerouslyUseHTMLString: true,
-              type: "error",
-              duration: 5000,
-              onClose: () => { this.hasError[element] = false }
-            })
-            throw false;
-          }
         });
         return true;
       } catch(err) {
@@ -507,43 +439,6 @@ export default {
 }
 .account-circles-setup-form {
   min-height: 320px;
-}
-.choosing-winners-button,
-.account-circles-setup-button {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  color: rgba(var(--ptn-blue-rgb), 0.3);
-  background: var(--ptn-second-bg);
-  border: 1px solid rgba(var(--ptn-color-rgb), 0.3);
-  border-radius: 8px;
-  width: 200px;
-  height: 40px;
-  margin: 5px 0 0;
-  padding-left: 10px;
-}
-.choosing-winners-button {
-  width: 250px;
-  height: 70px;
-}
-.account-circles-setup-button.selected {
-  color: var(--ptn-second-blue);
-  cursor: default;
-}
-.account-circles-setup-button.locked {
-  color: rgba(var(--ptn-second-blue-rgb), 0.7) !important;
-}
-.choosing-winners-button.selected {
-  color: var(--ptn-second-blue);
-  border: 1px solid var(--ptn-second-blue);
-  cursor: default;
-}
-.choosing-winners-button p {
-  color: var(--ptn-third-gray);
-}
-.choosing-winners-button.selected p {
-  color: var(--ptn-second-blue);
 }
 
 /* Start labtop - lg < 1200 */

@@ -32,7 +32,10 @@
             <p id="circleContractChainHelp" class="help-text pt-2 mb-3">
               All transactions will be done on this chain.
             </p>
-            <!-- Circle Payment Token -->
+          </template>
+
+          <!-- Circle Payment Token -->
+          <template v-if="tabIndex == 1">
             <label for="circlePaymentToken" class="input-label mt-2">
               Payment Token
             </label>
@@ -48,7 +51,6 @@
                 customClass="m-1"
               />
               <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-              <i v-if="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <button
               class="account-circles-deploy-button mt-2"
@@ -62,49 +64,21 @@
                 customClass="m-1"
               />
               <p>{{ this.defaultchain.CUSD.symbol }}</p>
-              <i v-if="circleInfo.circle_payment_token == this.defaultchain.CUSD.address && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <p id="circlePaymentTokenHelp" class="help-text pt-2 mb-3">
               This token is used to pay contributions and receive loans.
             </p>
           </template>
 
-          <!-- Circle Round Days -->
-          <template v-if="tabIndex == 2">
-            <label for="circleRoundDays" class="input-label mt-2">
-              Round Period
-            </label>
-            <button
-              class="account-circles-deploy-button"
-              :class="circleInfo.circle_round_days == 7 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_round_days = 7"
-            >
-              <p>Weekly (7 days)</p>
-              <i v-if="circleInfo.circle_round_days == 7 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-            </button>
-            <button
-              class="account-circles-deploy-button mt-2"
-              :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_round_days = 30"
-            >
-              <p>Monthly (30 days)</p>
-              <i v-if="circleInfo.circle_round_days == 30 && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
-            </button>
-            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
-              Duration of each round in days.
-            </p>
-          </template>
-
           <!-- Payment Type -->
-          <template v-if="tabIndex == 3">
-            <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
+          <template v-if="tabIndex == 2">
+            <label for="circlePaymentType" class="input-label">Payment Type</label>
             <button
               class="account-circles-deploy-button"
               :class="circleInfo.circle_payment_type == 'fixed_pay' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
               @click="circleInfo.circle_payment_type = 'fixed_pay'"
             >
               <p>Fixed Payment</p>
-              <i v-if="circleInfo.circle_payment_type == 'fixed_pay' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <button
               class="account-circles-deploy-button mt-2"
@@ -112,7 +86,6 @@
               @click="circleInfo.circle_payment_type = 'fixed_loan'"
             >
               <p>Fixed Loan</p>
-              <i v-if="circleInfo.circle_payment_type == 'fixed_loan' && circleInfo.circle_id" class="fa fa-lock ps-2" aria-hidden="true"></i>
             </button>
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
               In the fixed payment type, the loan amount will be based on the number of members and other rules.
@@ -122,22 +95,108 @@
             </p>
           </template>
 
-          <!-- Circle Creator Earnings -->
-          <!-- To Do -->
+          <!-- Circle Round Days -->
+          <template v-if="tabIndex == 3">
+            <label for="circleRoundDays" class="input-label">
+              Round Period
+            </label>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_round_days == 7 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_round_days = 7"
+            >
+              <p>Weekly (7 days)</p>
+            </button>
+            <button
+              class="account-circles-deploy-button mt-2"
+              :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_round_days = 30"
+            >
+              <p>Monthly (30 days)</p>
+            </button>
+            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
+              Duration of each round in days.
+            </p>
+          </template>
+
+          <!-- Order Of Winners -->
           <template v-if="tabIndex == 4">
+            <label for="circleWinnersOrder" class="input-label">Order Of Winners</label>
+            <button
+              class="choosing-winners-button mb-2"
+              :class="circleInfo.circle_winners_order == 'random' ? 'selected' : ''"
+              @click="circleInfo.circle_winners_order = 'random'"
+            >
+            <p class="pt-2">
+                <i class="fa fa-dice fa-xl" aria-hidden="true"></i>
+                Random
+              </p>
+              <p class="help-text pt-1 px-1">Winners are chosen in each round at random</p>
+            </button>
+            <button
+              class="choosing-winners-button mb-2"
+              :class="circleInfo.circle_winners_order == 'fixed' ? 'selected' : ''"
+              @click="circleInfo.circle_winners_order = 'fixed'"
+            >
+              <p class="ps-2 pt-2">
+                <i class="fa fa-calendar-check fa-xl" aria-hidden="true"></i>
+                Fixed
+              </p>
+              <p class="help-text pt-1 px-1">Members select their position before starting the circle</p>
+            </button>
+            <button
+              class="choosing-winners-button mb-2"
+              :class="circleInfo.circle_winners_order == 'bidding' ? 'selected' : ''"
+              @click="circleInfo.circle_winners_order = 'bidding'"
+            >
+              <p class="ps-2 pt-2">
+                <i class="fa fa-gavel fa-xl" aria-hidden="true"></i>
+                Bidding
+              </p>
+              <p class="help-text pt-1 px-1">Members bid for the loan and the lowest bidder wins</p>
+            </button>
+          </template>
+
+          <!-- Benefit Of Patience -->
+          <template v-if="tabIndex == 5">
+            <label for="circlePatienceBenefit" class="input-label">
+              Patience Benefit
+              <span class="input-label-small">(default 0%)</span>
+            </label>
+            <input
+              :disabled="circleInfo.circle_joined_members"
+              ref="circle_patience_benefit"
+              id="circlePatienceBenefit"
+              type="number"
+              min=0.00
+              :max="maxPatienceBenefit"
+              step="0.01"
+              placeholder="e.g. 10"
+              class="small-input mb-0"
+              :class="hasError['circle_patience_benefit'] ? 'has-error' : ''"
+              aria-describedby="circlePatienceBenefitHelp"
+              v-model="circleInfo.circle_patience_benefit"
+            />
+            <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
+              {{ `Benefit percentage for members who win later rounds, up to ${maxPatienceBenefit}%.` }}
+            </p>
+          </template>
+
+          <!-- Circle Creator Earnings -->
+          <template v-if="tabIndex == 5">
             <div v-if="true">
               <label for="circleCreatorEarnings" class="input-label mt-2">
                 Creator Earnings
-                <span class="input-label-small">(Percent)</span>
+                <span class="input-label-small">(default 0%)</span>
               </label>
               <input
                 ref="circle_creator_earnings"
                 id="circleCreatorEarnings"
                 type="number"
-                placeholder="e.g. 0.5"
                 min=0.00
                 :max="maxCreatorEarnings"
                 step="0.01"
+                placeholder="e.g. 0.5"
                 class="small-input mb-0"
                 :class="hasError['circle_creator_earnings'] ? 'has-error' : ''"
                 aria-describedby="circleCreatorEarningsHelp"
@@ -149,27 +208,11 @@
             </div>
           </template>
           
-          <!-- Circle Service Charge -->
-          <template v-if="tabIndex == 4">
-            <label for="circleServiceCharge" class="input-label mt-2">
-              Service Charge
-              <span class="input-label-small">(Fixed Rate)</span>
-            </label>
-            <button
-              class="account-circles-deploy-button selected locked"
-            >
-              <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
-              <i class="fa fa-lock ps-2" aria-hidden="true"></i>
-            </button>
-            <p id="circleServiceChargeHelp" class="help-text pt-2 mb-3">
-              Piltonet service charge rate that is deducted from the loan amount.
-            </p>
-          </template>
-          
           <!-- Review & Deploy -->
           <div class="row">
             <div class="col-12 col-md-6">
-              <template v-if="tabIndex == 5">
+              <!-- Blockchain -->
+              <template v-if="tabIndex == 6">
                 <label for="circleContractChain" class="input-label">Blockchain</label>
                 <button class="account-circles-deploy-button selected locked">
                   <SvgPaymentToken
@@ -181,7 +224,10 @@
                   <p>{{ defaultchain.chainName }}</p>
                   <i class="fa fa-lock ps-2" aria-hidden="true"></i>
                 </button>
-                <!-- Circle Payment Token -->
+              </template>
+              
+              <!-- Payment Token -->
+              <template v-if="tabIndex == 6">
                 <label for="circlePaymentToken" class="input-label mt-2">
                   Payment Token
                 </label>
@@ -198,7 +244,7 @@
                   <p>{{ defaultchain.nativeCurrency.symbol }}</p>
                 </button>
                 <button
-                  class="account-circles-deploy-button mt-2"
+                  class="account-circles-deploy-button"
                   :class="circleInfo.circle_payment_token == this.defaultchain.CUSD.address ? 'selected locked' : 'd-none'"
                 >
                   <SvgPaymentToken
@@ -211,26 +257,8 @@
                 </button>
               </template>
 
-              <template v-if="tabIndex == 5">
-                <label for="circleRoundDays" class="input-label mt-2">
-                  Round Period
-                </label>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_round_days == 7 ? 'selected locked' : 'd-none'"
-                >
-                  <p>Weekly (7 days)</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button mt-2"
-                  :class="circleInfo.circle_round_days == 30 ? 'selected locked' : 'd-none'"
-                >
-                  <p>Monthly (30 days)</p>
-                </button>
-              </template>
-            </div>
-            <div class="col-12 col-md-6">
-              <template v-if="tabIndex == 5">
+              <!-- Payment Type -->
+              <template v-if="tabIndex == 6">
                 <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
                 <button
                   class="account-circles-deploy-button"
@@ -239,27 +267,76 @@
                   <p>Fixed Payment</p>
                 </button>
                 <button
-                  class="account-circles-deploy-button mt-2"
+                  class="account-circles-deploy-button"
                   :class="circleInfo.circle_payment_type == 'fixed_loan' ? 'selected locked' : 'd-none'"
                 >
                   <p>Fixed Loan</p>
                 </button>
               </template>
-    
-              <template v-if="tabIndex == 5">
-                <label for="circleServiceCharge" class="input-label mt-2">
-                  Creator Earnings
-                  <span class="input-label-small">(Percent)</span>
-                </label>
+
+              <!-- Round Period -->
+              <template v-if="tabIndex == 6">
+                <label for="circleRoundDays" class="input-label mt-2">Round Period</label>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_round_days == 7 ? 'selected locked' : 'd-none'"
+                >
+                  <p>Weekly (7 days)</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_round_days == 30 ? 'selected locked' : 'd-none'"
+                >
+                  <p>Monthly (30 days)</p>
+                </button>
+              </template>
+            </div>
+            <div class="col-12 col-md-6">
+              <!-- Order Of Winners -->
+              <template v-if="tabIndex == 6">
+                <label for="circlePaymentType" class="input-label">Order Of Winners</label>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_winners_order == 'random' ? 'selected locked' : 'd-none'"
+                >
+                  <p>Random</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_winners_order == 'fixed' ? 'selected locked' : 'd-none'"
+                >
+                  <p>Fixed</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button"
+                  :class="circleInfo.circle_winners_order == 'bidding' ? 'selected locked' : 'd-none'"
+                >
+                  <p>Bidding</p>
+                </button>
+              </template>
+
+              <!-- Patience Benefit -->
+              <template v-if="tabIndex == 6">
+                <label for="circleServiceCharge" class="input-label mt-2">Patience Benefit</label>
+                <button
+                  class="account-circles-deploy-button selected locked"
+                >
+                  <p>{{ circleInfo.circle_patience_benefit }}</p>
+                </button>
+              </template>
+            
+              <!-- Creator Earnings -->
+              <template v-if="tabIndex == 6">
+                <label for="circleServiceCharge" class="input-label mt-2">Creator Earnings</label>
                 <button
                   class="account-circles-deploy-button selected locked"
                 >
                   <p>{{ circleInfo.circle_creator_earnings }}</p>
-                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
                 </button>
               </template>
             
-              <template v-if="tabIndex == 5">
+              <!-- Service Charge -->
+              <template v-if="tabIndex == 6">
                 <label for="circleServiceCharge" class="input-label mt-2">
                   Service Charge
                   <span class="input-label-small">(Fixed Rate)</span>
@@ -270,14 +347,16 @@
                   <p>{{ `${circleInfo.circle_service_charge} (${circleInfo.circle_service_charge * 100}%)` }}</p>
                   <i class="fa fa-lock ps-2" aria-hidden="true"></i>
                 </button>
+                <p id="circleServiceChargeHelp" class="help-text pt-1">
+                  Service charge rate that is deducted from the loan amount.
+                </p>
               </template>
             </div>
           </div>
           
-          <!-- Create & Deploy Button -->
-          <template v-if="tabIndex == 5">
+          <!-- Contract Address -->
+          <template v-if="tabIndex == 6">
             <div v-if="circleInfo.circle_id">
-              <!-- Contract Address -->
               <label for="contractAddress" class="input-label mt-2">Contract Address</label>
               <div class="row">
                 <button
@@ -321,13 +400,6 @@
                 </div>
               </div>
             </div>
-            <div v-else class="d-flex flex-row justify-content-start align-items-center">
-              <input
-                type="submit"
-                value="DEPLOY CIRCLE"
-                @click="deployCircle"
-              />
-            </div>
           </template>
 
         </form>
@@ -335,39 +407,47 @@
       <form action=""></form>
 
       <!-- Previous & Next -->
-      <div v-if="!circleInfo.circle_id" class="d-flex flex-row justify-content-center align-items-center mt-4">
+      <div v-if="!circleInfo.circle_id" class="d-flex flex-row justify-content-start align-items-center mt-4">
         <div class="d-flex flex-row justify-content-center align-items-center">
           <div
             type="button"
             @click="tabIndex = 1"
-            class="main-btn blue-bg"
-            :class="tabIndex == 5 ? '' : 'd-none'"
+            class="main-btn blue-bg middle-text"
+            :class="tabIndex == 6 ? '' : 'd-none'"
           >
             <span class="m-0 p-0">Back to Edit</span>
           </div>
           <div
             type="button"
             @click="tabIndex = tabIndex > 1 ? tabIndex - 1 : 1"
-            class="main-btn blue-bg"
-            :class="tabIndex == 1 || tabIndex == 5 ? 'd-none' : ''"
+            class="main-btn blue-bg middle-text me-2"
+            :class="tabIndex == 1 || tabIndex == 6 ? 'd-none' : ''"
           >
             <span class="m-0 p-0">Previous</span>
           </div>
           <div
             type="button"
-            @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
-            class="main-btn blue-bg ms-2"
-            :class="tabIndex == 5 ? 'd-none' : ''"
+            @click="tabIndex = tabIndex < 6 ? tabIndex + 1 : 6"
+            class="main-btn blue-bg middle-text"
+            :class="tabIndex == 6 ? 'd-none' : ''"
           >
             <span class="m-0 p-0">Next</span>
           </div>
           <div
             type="button"
-            @click="tabIndex = 5"
-            class="main-btn green-bg ms-2"
-            :class="tabIndex == 5 ? 'd-none' : ''"
+            @click="tabIndex = 6"
+            class="main-btn darkblue-bg d-none ms-2"
+            :class="tabIndex == 6 ? '' : 'd-md-flex'"
           >
             <span class="m-0 p-0">Review & Deploy</span>
+          </div>
+          <div
+            type="button"
+            @click="deployCircle"
+            class="main-btn green-bg ms-2"
+            :class="tabIndex == 6 ? '' : 'd-none'"
+          >
+            <span class="m-0 p-0">DEPLOY CIRCLE</span>
           </div>
         </div>
       </div>
@@ -400,9 +480,11 @@ export default {
     return {
       tabIndex: 1,
       circleInfo: null,
-      maxCreatorEarnings: process.env.VUE_APP_CIRCLES_MAX_CREATOR_EARNINGS / 100,
+      maxPatienceBenefit: process.env.VUE_APP_CIRCLES_MAX_PATIENCE_BENEFIT_X10000 / 100,
+      maxCreatorEarnings: process.env.VUE_APP_CIRCLES_MAX_CREATOR_EARNINGS_X10000 / 100,
       hasError: {
-        circle_creator_earnings: false
+        circle_creator_earnings: false,
+        circle_patience_benefit: false
       },
       copyAddressTooltip: "Copy Address",
       explorerLink: null
@@ -431,7 +513,7 @@ export default {
       if(this.circleInfoProps) {
         this.circleInfo = this.circleInfoProps;
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfo.circle_id}`;
-        this.tabIndex = 5;
+        this.tabIndex = 6;
       } else {
         // New Circle
         this.circleInfo = {
@@ -439,9 +521,11 @@ export default {
           circle_contract: process.env.VUE_APP_CIRCLE_CONTRACT,
           circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.CUSD.address,
-          circle_round_days: 7,
+          circle_winners_order: 'random',
+          circle_round_days: 30,
           circle_payment_type: 'fixed_pay',
           circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,
+          circle_patience_benefit: 0,
           circle_creator_earnings: 0
         }
       }
@@ -450,6 +534,7 @@ export default {
       if(this.checkForm()) {
         const deployArgs = [[
           this.circleInfo.circle_payment_token,
+          this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
           this.circleInfo.circle_round_days,
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_creator_earnings * 100
@@ -549,7 +634,8 @@ export default {
       try {
         Object.keys(this.hasError).forEach(element => {
           if(this.circleInfo[element] == null || this.circleInfo[element].length <= 0) {
-            this.$refs[element].focus();
+            this.tabIndex = 5;
+            if(this.$refs[element]) this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
               message: "Make sure all required fields are filled in correctly.",
@@ -559,10 +645,27 @@ export default {
             })
             throw false;
           }
+          if(element == 'circle_patience_benefit') {
+            this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
+            if(parseInt(this.circleInfo[element] * 100) > this.maxPatienceBenefit * 100) {
+              this.tabIndex = 5;
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The benefit of patience must be between 0% and ${this.maxPatienceBenefit}%.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
           if(element == 'circle_creator_earnings') {
             this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
             if(parseInt(this.circleInfo[element] * 100) > this.maxCreatorEarnings * 100) {
-              this.$refs[element].focus();
+              this.tabIndex = 5;
+              if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
                 message: `The creator earnings should not be more than ${this.maxCreatorEarnings}%.`,
@@ -642,6 +745,43 @@ export default {
 }
 .front-icon {
   height: 40px;
+}
+.choosing-winners-button,
+.account-circles-setup-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: rgba(var(--ptn-blue-rgb), 0.3);
+  background: var(--ptn-second-bg);
+  border: 1px solid rgba(var(--ptn-color-rgb), 0.3);
+  border-radius: 8px;
+  width: 200px;
+  height: 40px;
+  margin: 5px 0 0;
+  padding-left: 10px;
+}
+.choosing-winners-button {
+  width: 250px;
+  height: 70px;
+}
+.account-circles-setup-button.selected {
+  color: var(--ptn-second-blue);
+  cursor: default;
+}
+.account-circles-setup-button.locked {
+  color: rgba(var(--ptn-second-blue-rgb), 0.7) !important;
+}
+.choosing-winners-button.selected {
+  color: var(--ptn-second-blue);
+  border: 1px solid var(--ptn-second-blue);
+  cursor: default;
+}
+.choosing-winners-button p {
+  color: var(--ptn-third-gray);
+}
+.choosing-winners-button.selected p {
+  color: var(--ptn-second-blue);
 }
 
 /* Start labtop - lg < 1200 */

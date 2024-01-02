@@ -292,6 +292,9 @@ input[type="submit"],
 .main-btn.blue-bg {
   background: rgba(var(--ptn-blue-rgb), 0.8);
 }
+.main-btn.darkblue-bg {
+  background: rgba(var(--ptn-second-blue-rgb), 0.8);
+}
 .main-btn.red-bg {
   background: rgba(var(--ptn-red-rgb), 0.8);
 }
@@ -301,7 +304,13 @@ input[type="submit"],
 .main-btn.orange-bg {
   background: rgba(var(--ptn-orange-rgb), 1) !important;
 }
+.main-btn.middle-text {
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+}
 .main-btn.small-text {
+  font-family: "Roboto", arial, sans-serif;
   font-size: 13px;
   line-height: 16px;
 }

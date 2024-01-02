@@ -102,7 +102,7 @@
                   role="button"
                   @click="$router.push('/account/circles')"
                 >
-                  <i class="fa fa-circle pe-3" aria-hidden="true"></i>
+                  <i class="far fa-circle-dot pe-3" aria-hidden="true"></i>
                   Lending Circles
                 </a>
               </li>
