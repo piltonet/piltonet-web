@@ -287,6 +287,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "LogTLCCDeployed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "bidder",
@@ -548,6 +561,39 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "circle_name",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fixed_amount_x100",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "min_members",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "max_members",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "winners_number",
+        "type": "uint8"
+      }
+    ],
+    "name": "setupCircle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

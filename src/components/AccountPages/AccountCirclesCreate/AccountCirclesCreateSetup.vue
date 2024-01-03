@@ -39,7 +39,7 @@
           <!-- Fixed Pay -->
           <template v-if="tabIndex == 1">
             <label v-if="circleInfo.circle_payment_type == 'fixed_pay'" for="circleFixedAmount" class="input-label mt-2">
-              Monthly Payments
+              {{ circleRound }} Payments
               <span class="input-label-small">(Required)</span>
             </label>
             <label v-if="circleInfo.circle_payment_type == 'fixed_loan'" for="circleFixedAmount" class="input-label mt-2">
@@ -58,7 +58,7 @@
               v-model="circleInfo.circle_fixed_amount"
             />
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `Participants contribute the same monthly payment, ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
+              {{ `Participants contribute the same amount in each round, ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
             </p>
             <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
               {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${paymentToken.symbol}.` }}
@@ -128,7 +128,7 @@
               v-model="circleInfo.circle_winners_number"
             />
             <p id="circleWinnersNumberHelp" class="help-text pt-2 mb-3">
-              The number of winners are chosen per month, default 1 person.
+              The number of winners are chosen per round, default 1 person.
             </p>
           </template>
 
@@ -182,6 +182,7 @@ export default {
       tabIndex: 1,
       circleInfo: this.circleInfoProps,
       paymentToken: '',
+      circleRound: '',
       minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VIC),
       maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VIC),
       minMembers: parseInt(process.env.VUE_APP_CIRCLES_MIN_MEMBERS),
@@ -229,6 +230,13 @@ export default {
           this.minFixedAmount = this.minFixedAmount * this.minMembers;
           this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
         }
+        if(this.circleInfo.circle_round_days == 7) {
+          this.circleRound = 'Weekly';
+        } else if(this.circleInfo.circle_round_days == 30) {
+          this.circleRound = 'Monthly';
+        } else {
+          this.circleRound = 'Periodic';
+        }
         if(this.circleInfo.circle_status == 'deployed') {
           this.circleInfo['circle_name'] = '';
           this.circleInfo['circle_fixed_amount'] = '';
@@ -246,7 +254,7 @@ export default {
           const signer = await provider.getSigner();
           const contract = abi.setAbi(
             this.circleInfo.circle_id, // TLCC address
-            "TrustedLendingCircle",
+            "TLCC",
             signer
           );
           // execute TrustedLendingCircle addContact
@@ -326,7 +334,7 @@ export default {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ? 'monthly payments' : 'loan amount'} must be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
+              message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} must be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,
@@ -363,7 +371,7 @@ export default {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: 'The number of monthly winners is high compared to the minimum number of participants.',
+              message: 'The number of winners is high compared to the minimum number of participants.',
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,

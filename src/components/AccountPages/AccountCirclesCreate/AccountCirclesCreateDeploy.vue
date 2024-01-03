@@ -534,13 +534,13 @@ export default {
     async deployCircle() {
       if(this.checkForm()) {
         const deployArgs = [[
-          this.accountProfile.account_tba_address,
-          this.circleInfo.circle_payment_token,
+          ethers.getAddress(this.accountProfile.account_tba_address),
+          ethers.getAddress(this.circleInfo.circle_payment_token),
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_round_days,
           this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
-          this.circleInfo.circle_patience_benefit * 100,
-          this.circleInfo.circle_creator_earnings * 100
+          parseInt(this.circleInfo.circle_patience_benefit * 100),
+          parseInt(this.circleInfo.circle_creator_earnings * 100)
         ]];
 
         const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
