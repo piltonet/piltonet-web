@@ -191,10 +191,10 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
-// import { ethers } from 'ethers'
+import { ethers } from 'ethers'
 import api from "@/services/api";
-// import abi from "@/services/abi";
-// import wallets from "@/wallets";
+import abi from "@/services/abi";
+import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
 // const { LendingCircleContract } = require('@/contracts');
@@ -279,6 +279,33 @@ export default {
           //     duration: 3000,
           //   });
           // } else {
+
+          const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+          const signer = await provider.getSigner();
+          const contract = abi.setAbi(
+            this.accountProfile.account_tba_address, // sender tba address
+            "ERC6551Account",
+            signer
+          );
+
+          // execute ERC1155Contracts addContact
+          let abiResponse = await contract.interaction("executeFunction", [
+            "TLCC", // contract name
+            "addToWhitelist", // function name
+            ["function addToWhitelist(address[] memory accounts)"], // function ABI
+            this.contactAdrs, // function args
+            0, // value
+            ethers.getAddress(this.circleInfoProps.circle_id) // Contract Address
+          ]);
+          if(!abiResponse.done) {
+            this.notif({
+              title: "OOPS!",
+              message: abiResponse.message,
+              dangerouslyUseHTMLString: true,
+              type: abiResponse.message_type,
+              duration: 3000,
+            });
+          } else {
             let apiResponse = await api.post_account_circles_creator_whitelists_add(
               {
                 circle_id: this.circleInfoProps.circle_id,
@@ -309,7 +336,7 @@ export default {
                 })
               }
             }
-          // }
+          }
         } catch(err) {
           this.notif({
             title: "OOPS!",
