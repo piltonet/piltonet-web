@@ -534,7 +534,7 @@ export default {
     async deployCircle() {
       if(this.checkForm()) {
         const deployArgs = [[
-          ethers.getAddress(this.accountProfile.account_tba_address),
+          this.accountProfile.account_tba_address,
           this.circleInfo.circle_payment_token,
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_round_days,
