@@ -1,6 +1,6 @@
 const { ContractFactory } = require('ethers')
 const TLCC = require('@/contracts/abi/TLCC')
-const TLCCByteCode = require('@/contracts/byteCode/TLCC')
+const TLCCByteCode = require('@/contracts/bytecode/TLCC')
 
 class SDK {
 	constructor(contractAddress, signer) {
