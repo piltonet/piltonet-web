@@ -207,7 +207,7 @@ export default {
     }
   },
   created() {
-    if(this.circleInfo.payment_token == this.defaultchain.nativeCurrency.address) {
+    if(this.circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address) {
       this.paymentToken = this.defaultchain.nativeCurrency;
     } else {
       this.paymentToken = this.defaultchain.CUSD;
