@@ -253,17 +253,27 @@ export default {
           const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
           const signer = await provider.getSigner();
           const contract = abi.setAbi(
-            this.circleInfo.circle_id, // TLCC address
-            "TLCC",
+            this.accountProfile.account_tba_address, // sender tba address
+            "ERC6551Account",
             signer
           );
-          // execute TrustedLendingCircle addContact
-          let abiResponse = await contract.interaction("setupCircle", [
+
+          const setupArgs = [
             this.circleInfo.circle_name,
-            this.circleInfo.circle_fixed_amount * 100,
-            this.circleInfo.circle_min_members,
-            this.circleInfo.circle_max_members,
-            this.circleInfo.circle_winners_number
+            parseInt(this.circleInfo.circle_fixed_amount * 100),
+            parseInt(this.circleInfo.circle_min_members),
+            parseInt(this.circleInfo.circle_max_members),
+            parseInt(this.circleInfo.circle_winners_number)
+          ];
+
+          // execute ERC1155Contracts addContact
+          let abiResponse = await contract.interaction("executeFunction", [
+            "TLCC", // contract name
+            "setupCircle", // function name
+            ["function setupCircle(string memory circle_name, uint256 fixed_amount_x100, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
+            setupArgs, // function args
+            0, // value
+            ethers.getAddress(this.circleInfo.circle_id) // Contract Address
           ]);
           if(!abiResponse.done) {
             this.notif({

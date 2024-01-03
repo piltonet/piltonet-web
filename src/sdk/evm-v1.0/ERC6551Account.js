@@ -35,12 +35,13 @@ class SDK {
 		functionName,
 		functionAbi,
 		functionArgs,
-		value
+		value,
+		contractAddress = undefined
 	) {
 		let iface = new ethers.Interface(functionAbi);
 		let data = iface.encodeFunctionData(functionName, functionArgs);
 		return await this.execute(
-			contracts[contractName], // to
+			contractAddress || contracts[contractName], // to
 			value, // value
 			data, // data
 			0 // operation
