@@ -1,6 +1,6 @@
 const { ethers } = require('ethers')
-const contractAbi = require('@/contracts/abi/TrustedContacts')
-const contractDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/TrustedContacts.json`)
+const contractAbi = require('@/contracts/abi/ContactList')
+const contractDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/ContactList.json`)
 const contractAddress = contractDep.address
 
 class SDK {

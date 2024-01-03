@@ -2,10 +2,10 @@ const { ethers } = require('ethers')
 const contractAbi = require('@/contracts/abi/ERC6551Account')
 
 const VRC25PCUSDDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/VRC25PCUSD.json`)
-const TrustedContactsDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/TrustedContacts.json`)
+const ContactListDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/ContactList.json`)
 const contracts = {
 	"VRC25PCUSD": VRC25PCUSDDep.address,
-	"TrustedContacts": TrustedContactsDep.address
+	"ContactList": ContactListDep.address
 }
 
 class SDK {

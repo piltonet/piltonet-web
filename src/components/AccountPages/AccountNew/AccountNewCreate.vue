@@ -84,9 +84,6 @@ import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import wallets from "@/wallets";
 
-// const { AccountsContract } = require('@/contracts');
-
-
 export default {
   name: "AccountNewCreate",
   data() {

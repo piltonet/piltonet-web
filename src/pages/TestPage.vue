@@ -98,7 +98,7 @@ export default {
           signer
         );
         let abiResponse = await contract.interaction("execute", [
-          "0x982F6b4C12eb5c48f0d8986841F11E856346135D", // TrustedContacts address
+          "0x982F6b4C12eb5c48f0d8986841F11E856346135D", // ContactList address
           0,
           data,
           0
