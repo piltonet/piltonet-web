@@ -42,24 +42,38 @@
             </span>
           </p>
         </div>
-        <div class="d-flex flex-column flex-sm-row justify-content-start align-items-start mt-2">
-          <div class="d-flex flex-row justify-content-start align-items-center">
-            <p class="main-text">{{ `Is ${accountContact.account_fullname || accountContact.account_nickname} your trusted friend?` }}</p>
+        <div class="d-flex flex-column justify-content-start align-items-start mt-2">
+          <p class="info-text">
+            {{ `${accountContact.account_fullname || accountContact.account_nickname} has requested to be in your trusted contacts.` }}
+          </p>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-start align-items-start mt-2">
+          <div class="d-flex flex-column justify-content-center align-items-start">
+            <p class="main-text">
+              {{ `Mint your Trusted Contact NFT for ${accountContact.account_fullname || accountContact.account_nickname}` }}
+            </p>
           </div>
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div
               type="button"
               @click="acceptWaitingContactByService(accountContact.contact_id, accountContact.account_tba_address)"
-              class="front-btn green-btn ms-0 ms-sm-3"
+              class="front-btn green-btn ms-0 ms-md-3"
             >
-              <span class="m-0 p-0">Yes, sure!</span>
+              <span class="m-0 p-0">Mint Now</span>
             </div>
             <div
               type="button"
               @click="rejectWaitingContact(accountContact.contact_id)"
+              class="front-btn blue-btn ms-3"
+            >
+              <span class="m-0 p-0">Maybe Later!</span>
+            </div>
+            <div
+              type="button"
+              @click="reportWaitingContact(accountContact.contact_id)"
               class="front-btn red-btn ms-3"
             >
-              <span class="m-0 p-0">Reject</span>
+              <span class="m-0 p-0">Spam</span>
             </div>
           </div>
         </div>

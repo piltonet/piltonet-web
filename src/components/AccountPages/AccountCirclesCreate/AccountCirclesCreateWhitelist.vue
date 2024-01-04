@@ -215,9 +215,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getConnectionStore']),
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
     connectedAccount() {
       return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
     }
   },
   mounted() {
@@ -287,13 +290,13 @@ export default {
             "ERC6551Account",
             signer
           );
-
+console.log([...this.contactAdrs]);
           // execute ERC1155Contracts addContact
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
             "addToWhitelist", // function name
             ["function addToWhitelist(address[] memory accounts)"], // function ABI
-            this.contactAdrs, // function args
+            [this.contactAdrs], // function args
             0, // value
             ethers.getAddress(this.circleInfoProps.circle_id) // Contract Address
           ]);

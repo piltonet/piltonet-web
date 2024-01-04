@@ -18,14 +18,59 @@
           {{ circleInfoProps.circle_name }}
         </span>
       </div>
+      <!-- Contract Address -->
+      <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+        <span class="note-text">Contract Address:</span>
+        <span class="top-text-small ps-2">
+          {{ utils.truncate(circleInfoProps.circle_id, 17) }}
+        </span>
+        <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
+          <!-- Copy Icon -->
+          <el-tooltip
+            :content="this.copyAddressTooltip"
+            placement="top"
+            :hide-after="0"
+          >
+            <a
+              id="copy-contract-address"
+              role="button"
+              @click="copyAddress('copy-contract-address', circleInfoProps.circle_id)"
+              class="ms-2"
+            >
+              <i class="far fa-copy main-text-small" aria-hidden="true"></i>
+            </a>
+          </el-tooltip>
+          <!-- Explore Icon -->
+          <el-tooltip
+            content="View in Explorer"
+            placement="top"
+            :hide-after="0"
+          >
+            <a
+              v-if="explorerLink"
+              :href="explorerLink"
+              target="_blank"
+              class="ms-2"
+            >
+              <i class="fa fa-external-link main-text-small" aria-hidden="true"></i>
+            </a>
+          </el-tooltip>
+        </div>
+      </div>
       <div class="col-12 col-lg-6">
         <!-- Round Period -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">
             Round Period:
           </span>
-          <span class="top-text-small ps-2">
+          <span v-if="circleInfoProps.circle_round_days == 7" class="top-text-small ps-2">
+            Weekly<span class="main-text-small ps-2">(7 days)</span>
+          </span>
+          <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text-small ps-2">
             Monthly<span class="main-text-small ps-2">(30 days)</span>
+          </span>
+          <span v-else class="top-text-small ps-2">
+            {{ circleInfoProps.circle_round_days }} days
           </span>
         </div>
         <!-- Payment Type -->
@@ -58,10 +103,12 @@
           </span>
           <span class="main-text-small ps-2">people</span>
         </div>
-        <!-- Monthly Payments & Loan Amount - fixed_pay -->
+        <!-- Payments per Round & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Monthly Payments:</span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
             </span>
@@ -172,7 +219,8 @@
           <span class="note-text">Order Of Winners:</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_order == 'random' ? 'Random' : 
-              circleInfoProps.circle_winners_order == 'fixed' ? 'Fixed' : ''
+              circleInfoProps.circle_winners_order == 'fixed' ? 'Fixed' :
+              circleInfoProps.circle_winners_order == 'bidding' ? 'Bidding' : ''
             }}
           </span>
         </div>
@@ -182,13 +230,21 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_number }}
           </span>
-          <span class="main-text-small ps-2">people / 30 days</span>
+          <span class="main-text-small ps-2">{{ `winner(s) / ${circleInfoProps.circle_round_days} days `}}</span>
         </div>
         <!-- Patience Benefit -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Patience Benefit:</span>
           <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_patience_benefit * 100 }}
+            {{ circleInfoProps.circle_patience_benefit }}
+          </span>
+          <span class="main-text-small ps-1">%</span>
+        </div>
+        <!-- Creator Earnings -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+          <span class="note-text">Creator Earnings:</span>
+          <span class="top-text-small ps-2">
+            {{ circleInfoProps.circle_creator_earnings }}
           </span>
           <span class="main-text-small ps-1">%</span>
         </div>
@@ -196,49 +252,11 @@
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Service Charge:</span>
           <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_service_charge * 100 }}
+            {{ circleInfoProps.circle_service_charge }}
           </span>
           <span class="main-text-small ps-1">%</span>
         </div>
-        <!-- Contract Address -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Contract Address:</span>
-          <span class="top-text-small ps-2">
-            {{ utils.truncate(circleInfoProps.circle_id, 17) }}
-          </span>
-          <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
-            <!-- Copy Icon -->
-            <el-tooltip
-              :content="this.copyAddressTooltip"
-              placement="top"
-              :hide-after="0"
-            >
-              <a
-                id="copy-contract-address"
-                role="button"
-                @click="copyAddress('copy-contract-address', circleInfoProps.circle_id)"
-                class="ms-2"
-              >
-                <i class="far fa-copy main-text-small" aria-hidden="true"></i>
-              </a>
-            </el-tooltip>
-            <!-- Explore Icon -->
-            <el-tooltip
-              content="View in Explorer"
-              placement="top"
-              :hide-after="0"
-            >
-              <a
-                v-if="explorerLink"
-                :href="explorerLink"
-                target="_blank"
-                class="ms-2"
-              >
-                <i class="fa fa-external-link main-text-small" aria-hidden="true"></i>
-              </a>
-            </el-tooltip>
-          </div>
-        </div>
+        
       </div>
 
     </div>
