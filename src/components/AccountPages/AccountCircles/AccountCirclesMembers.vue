@@ -31,8 +31,8 @@
           /> -->
           <p class="top-text-small ms-2">
             <span>
-              {{ member.main_account_address == mainAccountAddress ? (isCircleCreator ? 'You (creator)' : (isCircleModerator ? 'You (moderator)' : 'You'))
-                : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_nickname} (creator)`
+              {{ member.main_account_address == mainAccountAddress ? (isCircleCreator ? 'You (admin)' : (isCircleModerator ? 'You (moderator)' : 'You'))
+                : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_nickname} (admin)`
                 : member.member_is_moderator ? `${member.account_fullname || member.account_nickname} (moderator)` : member.account_fullname || member.account_nickname }}
             </span>
             <span class="note-text ps-2">

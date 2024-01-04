@@ -33,7 +33,7 @@
         <span class="top-text-small ms-2">
           {{ circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname }}
         </span>
-        <span class="main-text-small ps-2">(creator)</span>
+        <span class="main-text-small ps-2">(admin)</span>
       </div>
 
       <div class="col-12 col-lg-6">
@@ -42,8 +42,15 @@
           <span class="note-text">
             Round Period:
           </span>
-          <span class="top-text-small ps-2">Monthly</span>
-          <span class="main-text-small ps-2">(30 days)</span>
+          <span v-if="circleInfoProps.circle_round_days == 7" class="top-text-small ps-2">
+            Weekly<span class="main-text-small ps-2">(7 days)</span>
+          </span>
+          <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text-small ps-2">
+            Monthly<span class="main-text-small ps-2">(30 days)</span>
+          </span>
+          <span v-else class="top-text-small ps-2">
+            {{ circleInfoProps.circle_round_days }} days
+          </span>
         </div>
         <!-- Payment Type -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
@@ -98,13 +105,12 @@
             <span class="main-text-small ps-2">people</span>
           </div>
         </div>
-        <!-- Monthly Payments & Loan Amount - fixed_pay -->
+        <!-- Payments per Round & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">
-              {{ circleInfoProps.circle_round_days == 7 ? 'Weekly' :
-                circleInfoProps.circle_round_days == 30 ? 'Monthly' :  `${circleInfoProps.circle_round_days} days`}} Payments:
-            </span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
             </span>
@@ -149,12 +155,14 @@
             />
           </div>
         </div>
-        <!-- Monthly Payments & Loan Amount - fixed_loan -->
+        <!-- Payments per Round & Loan Amount - fixed_loan -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_loan'">
           <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
             class="d-flex flex-row justify-content-start align-items-center mt-4"
           >
-            <span class="note-text">Monthly Payments:</span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members }}
             </span>
@@ -165,7 +173,9 @@
             />
           </div>
           <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Monthly Payments:</span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
             </span>
@@ -239,6 +249,20 @@
               </span>
             </el-tooltip>
           </div>
+          <div v-if="circleInfoProps.circle_winners_order == 'bidding'">
+            <span class="top-text-small ps-2">
+              Bidding
+            </span>
+            <el-tooltip
+              content="The way to choose the winner in this circle is based on the bidding. At the beginning of each round, members (who have not won so far) bid their requested loan amount and the lowest bid wins."
+              placement="top"
+              :hide-after="0"
+            >
+              <span class="info-text ms-1">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </span>
+            </el-tooltip>
+          </div>
         </div>
         <!-- Number Of Winners -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
@@ -246,13 +270,13 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_number }}
           </span>
-          <span class="main-text-small ps-2">people / round</span>
+          <span class="main-text-small ps-2">{{ `winner(s) / ${circleInfoProps.circle_round_days} days `}}</span>
         </div>
         <!-- Patience Benefit -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Patience Benefit:</span>
           <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_patience_benefit * 100 }}
+            {{ circleInfoProps.circle_patience_benefit }}
           </span>
           <span class="main-text-small ps-1">%</span>
           <el-tooltip
@@ -265,11 +289,28 @@
             </span>
           </el-tooltip>
         </div>
+        <!-- Creator Earnings -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+          <span class="note-text">Creator Earnings:</span>
+          <span class="top-text-small ps-2">
+            {{ circleInfoProps.circle_creator_earnings }}
+          </span>
+          <span class="main-text-small ps-1">%</span>
+          <el-tooltip
+            content="The creator earnings are the portion of each loan reserved for the circle admin."
+            placement="top"
+            :hide-after="0"
+          >
+            <span class="info-text ms-1">
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </span>
+          </el-tooltip>
+        </div>
         <!-- Service Charge -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Service Charge:</span>
           <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_service_charge * 100 }}
+            {{ circleInfoProps.circle_service_charge }}
           </span>
           <span class="main-text-small ps-1">%</span>
           <el-tooltip

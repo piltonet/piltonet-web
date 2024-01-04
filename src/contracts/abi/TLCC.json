@@ -401,6 +401,19 @@
   },
   {
     "inputs": [],
+    "name": "circleStatus",
+    "outputs": [
+      {
+        "internalType": "enum TLCC._circleStatus",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "contactListAddress",
     "outputs": [
       {
@@ -516,7 +529,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "user",
+        "name": "member",
         "type": "address"
       }
     ],
@@ -529,6 +542,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "start_date",
+        "type": "uint256"
+      }
+    ],
+    "name": "launchCircle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -618,6 +644,19 @@
   },
   {
     "inputs": [],
+    "name": "startDate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "startRound",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -644,6 +683,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "whitelistAddresses",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

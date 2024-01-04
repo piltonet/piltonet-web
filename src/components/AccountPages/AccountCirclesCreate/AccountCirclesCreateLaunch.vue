@@ -153,12 +153,14 @@
             />
           </div>
         </div>
-        <!-- Monthly Payments & Loan Amount - fixed_loan -->
+        <!-- Payments per Round & Loan Amount - fixed_loan -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_loan'">
           <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
             class="d-flex flex-row justify-content-start align-items-center mt-4"
           >
-            <span class="note-text">Monthly Payments:</span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members }}
             </span>
@@ -169,7 +171,9 @@
             />
           </div>
           <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Monthly Payments:</span>
+            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
             </span>
@@ -329,8 +333,9 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
+import { ethers } from 'ethers'
 import api from "@/services/api";
-// import abi from "@/services/abi";
+import abi from "@/services/abi";
 import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
@@ -355,9 +360,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getConnectionStore']),
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
     connectedAccount() {
       return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
     }
   },
   mounted() {

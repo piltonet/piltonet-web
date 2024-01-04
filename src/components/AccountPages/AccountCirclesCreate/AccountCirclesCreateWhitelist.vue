@@ -264,25 +264,6 @@ export default {
     async addToWhitelist() {
       if(this.contactAdrs.length > 0) {
         try {
-          // const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-          // const signer = await provider.getSigner();
-          // const contract = abi.setAbi(
-          //   this.circleInfoProps.circle_id, // TLCC address
-          //   "TrustedLendingCircle",
-          //   signer
-          // );
-          // // execute TrustedLendingCircle addContact
-          // let abiResponse = await contract.interaction("addToWhitelist", this.contactAdrs);
-          // if(!abiResponse.done) {
-          //   this.notif({
-          //     title: "OOPS!",
-          //     message: abiResponse.message,
-          //     dangerouslyUseHTMLString: true,
-          //     type: abiResponse.message_type,
-          //     duration: 3000,
-          //   });
-          // } else {
-
           const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
           const signer = await provider.getSigner();
           const contract = abi.setAbi(
@@ -290,7 +271,6 @@ export default {
             "ERC6551Account",
             signer
           );
-console.log([...this.contactAdrs]);
           // execute TLCC addToWhitelist
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
