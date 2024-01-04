@@ -291,7 +291,7 @@ export default {
             signer
           );
 console.log([...this.contactAdrs]);
-          // execute ERC1155Contracts addContact
+          // execute TLCC addToWhitelist
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
             "addToWhitelist", // function name

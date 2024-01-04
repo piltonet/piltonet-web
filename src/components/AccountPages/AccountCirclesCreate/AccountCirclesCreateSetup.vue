@@ -266,7 +266,7 @@ export default {
             parseInt(this.circleInfo.circle_winners_number)
           ];
 
-          // execute ERC1155Contracts addContact
+          // execute TLCC setupCircle
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
             "setupCircle", // function name

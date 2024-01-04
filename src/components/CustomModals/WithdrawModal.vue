@@ -176,7 +176,7 @@ export default {
           
           let abiResponse = {done: false};
           if(this.withdrawalToken == "VIC") {
-            // execute ERC1155Contracts addContact
+            // execute
             abiResponse = await contract.interaction("execute", [
               ethers.getAddress(this.withdrawalAddress), // to
               ethers.parseEther(this.withdrawalAmount.toString()), // value
@@ -184,7 +184,7 @@ export default {
               0 // operation
             ]);
           } else {
-            // execute ERC1155Contracts addContact
+            // execute VRC25PCUSD transfer
             abiResponse = await contract.interaction("executeFunction", [
               "VRC25PCUSD", // contract name
               "transfer", // function name

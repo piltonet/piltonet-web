@@ -396,26 +396,32 @@ export default {
     async launchCircle() {
       let loadingId = await this.showLoading();
       try {
-        // const circleContractAddress = this.circleInfoProps.circle_id;
-        // const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
-        // // const circleOwner = new Address(this.connectedAccount.main_account_address);
-        // const publicKey = await venomwallet.getPublicKey();
+        const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+        const signer = await provider.getSigner();
+        const contract = abi.setAbi(
+          this.accountProfile.account_tba_address, // sender tba address
+          "ERC6551Account",
+          signer
+        );
 
-        // loadingId = await this.showLoading();
-        
-        // const { transaction } = await circleContract.methods.launchCircle({
-        //   startDate: this.startDate.getTime() / 1000
-        // }).sendExternal({
-        //   publicKey: publicKey
-        // });
-
-        // this.openLoadings[loadingId].close();
-
-        // console.log('transaction:', transaction);
-
-        // if(!transaction.aborted) {
-        let personalSign = await this.personalSign();
-        if(personalSign) {
+        // execute TLCC launchCircle
+        let abiResponse = await contract.interaction("executeFunction", [
+          "TLCC", // contract name
+          "launchCircle", // function name
+          ["function launchCircle(uint256 start_date)"], // function ABI
+          [this.startDate.getTime() / 1000], // function args
+          0, // value
+          ethers.getAddress(this.circleInfoProps.circle_id) // Contract Address
+        ]);
+        if(!abiResponse.done) {
+          this.notif({
+            title: "OOPS!",
+            message: abiResponse.message,
+            dangerouslyUseHTMLString: true,
+            type: abiResponse.message_type,
+            duration: 3000,
+          });
+        } else {
           let apiResponse = await api.post_account_circles_creator_launch(
             {
               circle_id: this.circleInfoProps.circle_id,
@@ -447,15 +453,6 @@ export default {
             }
           }
         }
-        // } else {
-        //   this.notif({
-        //     title: "OOPS!",
-        //     message: `Transaction failed by code: ${transaction.exitCode}`,
-        //     dangerouslyUseHTMLString: true,
-        //     type: "error",
-        //     duration: 3000,
-        //   })
-        // }
       } catch(err) {
         this.openLoadings[loadingId].close();
         this.notif({

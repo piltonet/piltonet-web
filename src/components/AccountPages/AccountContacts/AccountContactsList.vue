@@ -212,7 +212,7 @@ export default {
         "ERC6551Account",
         signer
       );
-      // execute ERC1155Contracts addContact
+      // execute ContactList addContact
       let abiResponse = await contract.interaction("executeFunction", [
         "ContactList", // contract name
         "addContact", // function name
