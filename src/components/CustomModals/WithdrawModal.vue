@@ -21,7 +21,7 @@
               @click="withdrawalToken = 'VIC'; withdrawalAmount = '';"
             >
               <SvgPaymentToken
-                :chainId="this.defaultchain.id"
+                :chainId="this.defaultchain.chainId"
                 :paymentToken="this.defaultchain.nativeCurrency.address"
                 :tooltip="false"
                 customClass="m-1 me-2"
@@ -36,7 +36,7 @@
               @click="withdrawalToken = 'CUSD'; withdrawalAmount = '';"
             >
               <SvgPaymentToken
-                :chainId="this.defaultchain.id"
+                :chainId="this.defaultchain.chainId"
                 :paymentToken="this.defaultchain.CUSD.address"
                 :tooltip="false"
                 customClass="m-1 me-2"

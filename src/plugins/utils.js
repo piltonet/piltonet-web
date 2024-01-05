@@ -85,6 +85,12 @@ function nextMonth(firstDate, diff = 1) {
 	}
 }
 
+function nextRound(firstDate, diffDays = 1) {
+	const date = new Date(firstDate);
+	date.setDate(date.getDate() + diffDays);
+	return date;
+}
+
 function objectCleaner(obj) {
   Object.keys(obj).forEach(key => {
 		if(obj[key] === '' || obj[key] === null || obj[key] === undefined) {
@@ -100,6 +106,7 @@ export default {
 	fixedNumber,
 	formatDate,
 	nextMonth,
+	nextRound,
 	objectCleaner,
 	formatLabel,
 	nftIpfsLink

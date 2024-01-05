@@ -191,7 +191,7 @@
                 <span class="account-balance">{{ utils.fixedNumber(vicBalance, 4, 4) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
-                    :chainId="this.defaultchain.id"
+                    :chainId="this.defaultchain.chainId"
                     :paymentToken="this.defaultchain.nativeCurrency.address"
                     :tooltip="false"
                     customClass=""
@@ -207,7 +207,7 @@
                 <span class="account-balance">{{ utils.fixedNumber(cusdBalance, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
-                    :chainId="this.defaultchain.id"
+                    :chainId="this.defaultchain.chainId"
                     :paymentToken="this.defaultchain.CUSD.address"
                     :tooltip="false"
                     customClass=""
@@ -247,7 +247,7 @@
                 <span class="account-balance">{{ utils.fixedNumber(totalDebt, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
-                    :chainId="this.defaultchain.id"
+                    :chainId="this.defaultchain.chainId"
                     :paymentToken="'USD-token-address'"
                     :tooltip="false"
                     customClass=""

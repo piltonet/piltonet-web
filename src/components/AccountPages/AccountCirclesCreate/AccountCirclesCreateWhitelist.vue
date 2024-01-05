@@ -51,10 +51,10 @@
           /> -->
           <p class="top-text-small ms-2">
             <span :class="whitelist.whitelist_is_rejected ? 'text-decoration-line-through' : ''">
-              {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
+              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
             </span>
             <span v-if="!whitelist.whitelist_is_joined && !whitelist.whitelist_is_rejected" class="note-text d-none d-sm-inline-block ps-2">
-              {{ whitelist.main_account_address == connectedAccount.main_account_address ? 'whitelisted as the circle admin.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
+              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'whitelisted as the circle admin.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
               <!-- <i class="fa fa-spinner fa-pulse ms-1" aria-hidden="true"></i> -->
             </span>
             <span v-if="whitelist.whitelist_is_joined" class="note-text d-none d-sm-inline-block ps-2">
@@ -65,9 +65,9 @@
             </span>
           </p>
           <div
-            v-if="circleInfoProps.circle_status == 'setuped' && whitelist.main_account_address != connectedAccount.main_account_address"
+            v-if="circleInfoProps.circle_status == 'setuped' && whitelist.account_tba_address != connectedAccount.account_tba_address"
             type="button"
-            @click="removeFromWhitelist(whitelist.main_account_address)"
+            @click="removeFromWhitelist(whitelist.account_tba_address)"
             class="front-btn red-btn ms-3"
           >
             <span class="m-0 p-0">Remove</span>
@@ -113,7 +113,7 @@
           <div
             :id="`select-contact-${contact.contact_id}`"
             type="button"
-            @click="selectContact(`select-contact-${contact.contact_id}`, contact.main_account_address)"
+            @click="selectContact(`select-contact-${contact.contact_id}`, contact.account_tba_address)"
             class="check-btn me-3"
           >
             <i class="far fa-square" aria-hidden="true" style="color: rgba(var(--ptn-color-rgb), 0.9)"></i>
@@ -134,7 +134,7 @@
           />
           <!-- <JazzIcon
             v-if="!contact.account_image_url"
-            :address="contact.main_account_address"
+            :address="contact.account_tba_address"
             :diameter="40"
             :colors=jazzColors
             class="account-image-small"
@@ -149,7 +149,7 @@
           </p>
           <div
             type="button"
-            @click="inviteContact(contact.main_account_address)"
+            @click="inviteContact(contact.account_tba_address)"
             class="front-btn green-btn ms-3"
           >
             <span class="m-0 p-0">Whitelist</span>
@@ -225,7 +225,7 @@ export default {
   },
   mounted() {
     this.setup();
-    // console.log(this.circleInfoProps);
+    console.log(this.circleInfoProps);
   },
   watch: {
     circleInfoProps: function () {
@@ -236,7 +236,7 @@ export default {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     async setup() {
       for(let contact of this.circleInfoProps.contacts || []) {
-        this.selectedContacts[contact.main_account_address] = false;
+        this.selectedContacts[contact.account_tba_address] = false;
       }
     },
     async inviteContact(contactAdr) {
@@ -246,8 +246,8 @@ export default {
     async inviteSelectedContacts() {
       this.contactAdrs = [];
       for(let contact of this.circleInfoProps.contacts) {
-        if(this.selectedContacts[contact.main_account_address]) {
-          this.contactAdrs.push(contact.main_account_address)
+        if(this.selectedContacts[contact.account_tba_address]) {
+          this.contactAdrs.push(contact.account_tba_address)
         }
       }
       if(this.contactAdrs.length == 0) {
@@ -338,7 +338,7 @@ export default {
       // try {
       //   const circleContractAddress = this.circleInfoProps.circle_id;
       //   const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
-      //   const circleOwner = new Address(this.connectedAccount.main_account_address);
+      //   const circleOwner = new Address(this.connectedAccount.account_tba_address);
       //   loadingId = await this.showLoading();
       //   const transaction = await circleContract.methods.removeFromWhitelist({
       //     delistedAddress: [whitelistedAdr]
@@ -404,13 +404,13 @@ export default {
     },
     async selectAllContacts() {
       for(let contact of this.circleInfoProps.contacts) {
-        this.selectedContacts[contact.main_account_address] = true;
+        this.selectedContacts[contact.account_tba_address] = true;
         document.getElementById(`select-contact-${contact.contact_id}`).innerHTML = '<i class="far fa-check-square" aria-hidden="true" style="color: rgba(var(--ptn-color-rgb), 0.9)"></i>'
       }
     },
     async deselectAllContacts() {
       for(let contact of this.circleInfoProps.contacts) {
-        this.selectedContacts[contact.main_account_address] = false;
+        this.selectedContacts[contact.account_tba_address] = false;
         document.getElementById(`select-contact-${contact.contact_id}`).innerHTML = '<i class="far fa-square" aria-hidden="true" style="color: rgba(var(--ptn-color-rgb), 0.9)"></i>'
       }
     },

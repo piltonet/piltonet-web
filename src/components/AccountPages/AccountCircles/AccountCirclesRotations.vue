@@ -91,7 +91,11 @@
           <!-- Due Date -->
           <div class="col-md-3 col-lg-2 col-xl-2 d-none d-md-block d-flex flex-row text-center align-items-center">
             <p class="main-text-tiny">
-              {{ circleInfo.circle_start_date ? utils.formatDate(utils.nextMonth(circleInfo.circle_start_date, roundNumber(index) - 1), 'DD Month YYYY') : 'Open' }}
+              {{ circleInfo.circle_start_date ? utils.formatDate(
+                utils.nextRound(
+                  circleInfo.circle_start_date,
+                  (roundNumber(index) - 1) * circleInfo.circle_round_days
+                ), 'DD Month YYYY') : 'Open' }}
             </p>
           </div>
 
@@ -147,7 +151,7 @@ export default {
     return {
       circleInfo: this.circleInfoProps,
       circleMembers: this.circleMembersProps,
-      circleFee: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000,
+      circleFee: (process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000) + (this.circleInfoProps.circle_creator_earnings / 100),
       selectedRound: this.selectedRoundProps
     }
   },
@@ -185,7 +189,7 @@ export default {
     loanAmount(index) {
       const memberMonth = parseInt((index + parseInt(this.circleInfo.circle_winners_number)) / parseInt(this.circleInfo.circle_winners_number));
       const totalMonths = parseInt(this.circleInfo.circle_max_members) / parseInt(this.circleInfo.circle_winners_number);
-      const memberBenefit = ((memberMonth - ((totalMonths + 1) / 2)) * (this.circleInfo.circle_patience_benefit / 12)) * this.totalPayments();
+      const memberBenefit = ((memberMonth - ((totalMonths + 1) / 2)) * ((this.circleInfo.circle_patience_benefit / 100) / 12)) * this.totalPayments();
       return (this.totalPayments() + memberBenefit) * (1 - this.circleFee);
     },
     selectVacantRound(index) {

@@ -20,7 +20,7 @@
             @click="topupToken = 'USDT'; topupNetwork = 'ERC20'; topupAddress = '0x5ea04c1ba419d1ad1b26a515258b70bc8240db37'"
           >
             <SvgPaymentToken
-              :chainId="this.defaultchain.id"
+              :chainId="this.defaultchain.chainId"
               :paymentToken="'USDT-token-address'"
               :tooltip="false"
               customClass="m-1 me-2"
@@ -33,7 +33,7 @@
             @click="topupToken = 'CUSD'; topupNetwork = 'VRC20'; topupAddress = '0x94688d177029574FE9013006811261377FE52DD2'"
           >
             <SvgPaymentToken
-              :chainId="this.defaultchain.id"
+              :chainId="this.defaultchain.chainId"
               :paymentToken="this.defaultchain.CUSD.address"
               :tooltip="false"
               customClass="m-1 me-2"
@@ -46,7 +46,7 @@
             @click="nothing"
           >
             <SvgPaymentToken
-              :chainId="this.defaultchain.id"
+              :chainId="this.defaultchain.chainId"
               :paymentToken="'DAI-token-address'"
               :tooltip="false"
               customClass="m-1 me-2"

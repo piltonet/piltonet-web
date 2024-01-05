@@ -1,6 +1,6 @@
 <template>
 	<!-- Viction -->
-	<div v-if="chainId == 88 || chainId == 89">
+	<div v-if="chainId == '88' || chainId == '0x58' || chainId == '89' || chainId == '0x59'">
 		<!-- VIC -->
 		<div v-if="paymentToken == this.defaultchain.nativeCurrency.address">
 			<template v-if="tooltip">
@@ -111,7 +111,7 @@ export default {
 		SvgDollarSign
   },
   props: {
-    chainId: Number,
+    chainId: String,
 		paymentToken: String,
 		tooltip: {
 			type: Boolean,
