@@ -11,6 +11,17 @@ class SDK {
 	balanceOf(owner) {
 		return this.contract.balanceOf(owner)
 	}
+
+	allowance(owner, spender) {
+		return this.contract.allowance(owner, spender);
+	}
+	
+	async approve(spender, amount) {
+		const tx = await this.contract.approve(spender, amount, {
+			gasLimit: 4000000
+		});
+		return await tx.wait();
+	}
 	
 	async transfer(recipient, amount) {
 		const tx = await this.contract.transfer(recipient, amount, {

@@ -17,6 +17,8 @@
           v-model="username"
         />
         <button class="submit-btn" @click="onBtn1Click">BTN 1</button>
+        <button class="submit-btn" @click="onBtn2Click">BTN 2</button>
+        <button class="submit-btn" @click="onBtn3Click">BTN 3</button>
       </div>
     </div>
   </div>
@@ -63,6 +65,59 @@ export default {
     async setup() {},
 
     async onBtn1Click() {
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        "0x", // sender tba address
+        "VRC25PCUSD",
+        signer
+      );
+      const spender = "0x94688d177029574FE9013006811261377FE52DD2";
+
+      let abiResponse = await contract.interaction("approve", [spender, 50000000]);
+      console.log(abiResponse);
+    },
+    
+    async onBtn2Click() {
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        "0x", // sender tba address
+        "VRC25PCUSD",
+        signer
+      );
+      // const owner = "0x2B27F8c647872BC0f5E4C7cA8e3aEAEe19A28f3A";
+      const owner = "0x046962DebEFf06Fa0C4730994968Aa3Ff38555b4"; // tba
+      const spender = "0x94688d177029574FE9013006811261377FE52DD2";
+
+      let abiResponse = await contract.interaction("allowance", [owner, spender]);
+      console.log(abiResponse);
+    },
+
+    async onBtn3Click() {
+      const owner = "0x046962DebEFf06Fa0C4730994968Aa3Ff38555b4"; // tba
+      const spender = "0x94688d177029574FE9013006811261377FE52DD2";
+
+      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = abi.setAbi(
+        owner, // sender tba address
+        "ERC6551Account",
+        signer
+      );
+      
+      let abiResponse = await contract.interaction("executeFunction", [
+        "VRC25PCUSD", // contract name
+        "approve", // function name
+        ["function approve(address spender, uint256 value)"], // function ABI
+        // [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(this.paymentAmount)], // function args
+        [spender, 50 * 1e6], // function args
+        0 // value
+      ]);
+      console.log(abiResponse);
+    },
+    
+    async onBtn1Click_() {
       const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
       const signer = await provider.getSigner();
       const contract = abi.setAbi(
