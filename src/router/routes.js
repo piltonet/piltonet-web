@@ -9,6 +9,8 @@ import AccountContacts from '@/pages/account/AccountContacts';
 import AccountCircles from '@/pages/account/AccountCircles';
 import AccountCirclesCreate from '@/pages/account/AccountCirclesCreate.vue';
 
+// import ProfilePage from '@/pages/ProfilePage'
+
 import TestPage from '@/pages/TestPage'
 
 import DemoVideo from '@/pages/DemoVideo'
@@ -149,19 +151,29 @@ const routes = [
 			chain: true
 		}
 	},
+
+	// public routes
+	// profile nft >> redirect to api server
+	{
+		path: '/profile/:tbaAddress',
+		name: 'profileNFT',
+		beforeEnter(to) {
+			const tbaAddress = to.fullPath.split('/')[2];
+			console.log(tbaAddress);
+			window.location.href = `${process.env.VUE_APP_API_URL}v1/profile/nft/${tbaAddress}`;
+    }
+	},
+
+	// // profile
 	// {
-	// 	path: '/account/circles/:cid',
-	// 	alias: '/account/circles/:cid',
-	// 	name: 'AccountCircles',
-	// 	component: AccountCircles,
+	// 	path: '/@:nickname(.*)',
+	// 	name: 'ProfilePage',
+	// 	component: ProfilePage,
 	// 	meta: {
-	// 		title: "Piltonet | Lending Circles",
-	// 		auth: true,
-	// 		main: true,
-	// 		chain: true
+	// 			title: "Piltonet.com | Profile",
+	// 			auth: false,
 	// 	}
 	// },
-
 
 	{
 		path: '/docs/demo-video',
