@@ -328,15 +328,6 @@ export default {
   border: 1px solid rgba(var(--ptn-color-rgb), 0.1);
   cursor: default;
 }
-.withdraw-address {
-  font-size: 18px;
-  line-height: 20px;
-  font-weight: normal;
-  color: rgba(var(--ptn-color-rgb), 0.8);
-  border: 2px solid var(--ptn-second-blue);
-  border-radius: 8px;
-  padding: 7px 15px;
-}
 .footer-btn {
   min-width: 120px;
   height: 32px;

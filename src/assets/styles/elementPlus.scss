@@ -168,6 +168,33 @@
     // margin: max(2rem, 50vh - 100px) auto 0;
     padding: 0;
 }
+#circle-approve-modal .el-dialog__body {
+    padding: 1rem 1.5rem !important;
+}
+.circle-approve-dialog {
+    text-align: center !important;
+    background-color: var(--ptn-bg) !important;
+    border-radius: 0.5rem !important;
+    width: 90%;
+    max-width: 500px;
+    height: 450px;
+    // margin: max(2rem, 50vh - 100px) auto 0;
+    padding: 0;
+}
+
+#circle-join-modal .el-dialog__body {
+    padding: 1rem 1.5rem !important;
+}
+.circle-join-dialog {
+    text-align: center !important;
+    background-color: var(--ptn-bg) !important;
+    border-radius: 0.5rem !important;
+    width: 90%;
+    max-width: 500px;
+    height: 400px;
+    // margin: max(2rem, 50vh - 100px) auto 0;
+    padding: 0;
+}
 
 /* Start labtop - lg < 1200 */
 @media (max-width: 1199px) {
@@ -179,6 +206,9 @@
 
 /* Start Mobile - sm < 768px */
 @media (max-width: 767px) {
+    .el-dialog {
+        width: 100%;
+    }
     .withdraw-dialog {
         height: 530px;
     }
