@@ -30,7 +30,7 @@
               @click="$router.push('/account/settings?active_page=profile')"
               class="main-btn orange-bg"
             >
-              <span class="m-0 p-0">Enhance Your NFT Profile</span>
+              <span class="m-0 p-0">Enhance Your Profile NFT</span>
             </div>
           </div>
 
@@ -85,9 +85,67 @@
             </span>
           </div>
 
+          <!-- TBA Address -->
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
+            <span class="account-midtext pe-2">Account Address
+              <!-- TokenID Info -->
+              <el-tooltip
+                content="Each profile registered in Piltonet is a<br/>
+                Token Bound Account (ERC-6551) to which all contacts and circles are connected.<br/>
+                It embeds more technical capabilities into the platform and increases the security of your connected wallet."
+                raw-content="true"
+                placement="right"
+                :hide-after="0"
+              >
+                <span>
+                  <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
+                </span>
+              </el-tooltip>
+            </span>
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <span class="account-midtext pe-2">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
+              <span>
+                <el-tooltip
+                  :content="this.copyAddressTooltip"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
+                    <i class="far fa-copy account-info-icon mt-1"></i>
+                  </a>
+                </el-tooltip>
+                <!-- Explore Icon -->
+                <el-tooltip
+                  content="View in Explorer"
+                  placement="top"
+                  :hide-after="0"
+                >
+                  <a
+                    v-if="explorerLink"
+                    :href="explorerLink"
+                    target="_blank"
+                    class="ms-2"
+                  >
+                    <i class="fa fa-external-link account-info-icon" aria-hidden="true"></i>
+                  </a>
+                </el-tooltip>
+              </span>
+            </div>
+          </div>
           <!-- profile contact -->
           <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
-            <span class="account-midtext pe-2">Profile Contract:</span>
+            <span class="account-midtext pe-2">Profile Contract
+              <!-- TokenID Info -->
+              <el-tooltip
+                content="ERC721 Profile Contract"
+                placement="top"
+                :hide-after="0"
+              >
+                <span>
+                  <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
+                </span>
+              </el-tooltip>
+            </span>
             <span class="account-midtext pe-2">{{ utils.truncate(accountProfile?.profiles_contract_address, 12) }}</span>
             <span>
               <!-- Explore Icon -->
@@ -108,20 +166,21 @@
           </div>
           <!-- profile TokenID -->
           <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-1 ms-2">
-            <span class="account-midtext pe-2">TokenID</span>
+            <span class="account-midtext pe-2">TokenID
+              <!-- TokenID Info -->
+              <el-tooltip
+                content="The Profile NFT Token ID"
+                placement="top"
+                :hide-after="0"
+              >
+                <span>
+                  <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
+                </span>
+              </el-tooltip>
+            </span>
             <div class="d-flex flex-row justify-content-center align-items-center gap-2">
               <span class="account-midtext">
                 #{{ accountProfile?.account_token_id }}
-                <!-- TokenID Info -->
-                <el-tooltip
-                  content="The NFT Profile Token ID"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <span>
-                    <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
-                  </span>
-                </el-tooltip>
               </span>
             </div>
           </div>
@@ -131,54 +190,6 @@
       <!-- Token Bound Account -->
       <div class="col-12 col-md-8">
         <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
-          
-          <!-- TBA Address -->
-          <div class="d-flex flex-column justify-content-center align-items-start w-100">
-            <span class="account-title">Account Address
-              <!-- TokenID Info -->
-              <el-tooltip
-                content="Each profile registered in Piltonet is a<br/>
-                Token Bound Account (ERC-6551) to which all contacts and circles are connected.<br/>
-                It embeds more technical capabilities into the platform and increases the security of your connected wallet."
-                raw-content="true"
-                placement="right"
-                :hide-after="0"
-              >
-                <span>
-                  <i class="fa fa-info-circle account-info-icon" aria-hidden="true"></i>
-                </span>
-              </el-tooltip>
-            </span>
-            <div class="d-flex flex-row justify-content-start align-items-center mt-2">
-              <span class="account-address pe-2">{{ utils.truncate(accountProfile?.account_tba_address, 14) }}</span>
-              <span>
-                <el-tooltip
-                  :content="this.copyAddressTooltip"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <a id="copy-account" role="button" @click="copyAccount('copy-account')">
-                    <i class="far fa-copy account-edit-icon mt-1"></i>
-                  </a>
-                </el-tooltip>
-                <!-- Explore Icon -->
-                <el-tooltip
-                  content="View in Explorer"
-                  placement="top"
-                  :hide-after="0"
-                >
-                  <a
-                    v-if="explorerLink"
-                    :href="explorerLink"
-                    target="_blank"
-                    class="ms-2"
-                  >
-                    <i class="fa fa-external-link account-edit-icon" aria-hidden="true"></i>
-                  </a>
-                </el-tooltip>
-              </span>
-            </div>
-          </div>
           
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
@@ -473,7 +484,7 @@ export default {
       this.copyAddressTooltip = "Copied To Clipboard";
       setTimeout(() => {
           this.copyAddressTooltip = "Copy Address";
-          document.getElementById(id).innerHTML = '<i class="far fa-copy account-edit-icon mt-1" style="color: var(--ptn-btn-bg)"></i>';
+          document.getElementById(id).innerHTML = '<i class="far fa-copy account-info-icon mt-1" style="color: var(--ptn-third-gray)"></i>';
         }, 2000);
     },
   }

@@ -59,7 +59,7 @@
                   Enter the number of members in the circle.
                 </p>
               </div>
-              <div class="col-12 col-xl-7">
+              <div v-if="circleInfo.circle_winners_order != 'fixed'" class="col-12 col-xl-7">
                 <!-- Additional Members -->
                 <label for="circleMaxMembers" class="input-label mt-2">
                   Additional Members Limit

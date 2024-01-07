@@ -21,7 +21,7 @@
         >
           <!-- Round -->
           <div class="col-2 col-md-1 col-lg-1 col-xl-1 fw-bold text-center align-items-center">
-            <p v-if="member.main_account_address == mainAccountAddress" class="account-circles-rotations-you">
+            <p v-if="circleInfo.circle_winners_order == 'fixed' && member.main_account_address == mainAccountAddress" class="account-circles-rotations-you">
                 {{ selectedRound = roundNumber(index) }}
               </p>
               <p v-else class="main-text-tiny">
@@ -81,10 +81,17 @@
             </div>
           </div>
           
-          <div v-else class="col-4 col-md-4 col-lg-4 col-xl-3 ps-1 ps-md-2 ps-lg-3 ps-xl-4 ps-lg-3 align-items-start">
+          <div v-else-if="circleInfo.circle_winners_order == 'random'" class="col-4 col-md-4 col-lg-4 col-xl-3 ps-1 ps-md-2 ps-lg-3 ps-xl-4 ps-lg-3 align-items-start">
             <p class="main-text-tiny py-2">
               <i class="fa fa-dice fa-xl third-gray-btn me-2" aria-hidden="true"></i>
               Random
+            </p>
+          </div>
+          
+          <div v-else-if="circleInfo.circle_winners_order == 'bidding'" class="col-4 col-md-4 col-lg-4 col-xl-3 ps-1 ps-md-2 ps-lg-3 ps-xl-4 ps-lg-3 align-items-start">
+            <p class="main-text-tiny py-2">
+              <i class="fa fa-gavel fa-xl third-gray-btn me-2" aria-hidden="true"></i>
+              Bidding
             </p>
           </div>
           
