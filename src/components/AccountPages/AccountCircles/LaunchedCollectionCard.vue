@@ -247,14 +247,6 @@ export default {
   margin: 0;
   padding: 0;
 }
-.price-token-icon {
-  width: 23px;
-  height: 23px;
-}
-.price-token-icon.small {
-  width: 18px;
-  height: 18px;
-}
 .collection-floor-price {
   min-width: 78px;
 }

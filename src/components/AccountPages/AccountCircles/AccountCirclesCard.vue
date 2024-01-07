@@ -58,10 +58,10 @@
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
 
-          <!-- Circle Monthly Payments & Loan Amount -->
+          <!-- Circle Round Payment & Loan Amount -->
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_pay'">
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ accountCircleProps.circle_fixed_amount }}
               </span>
@@ -115,7 +115,7 @@
               v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>
@@ -129,7 +129,7 @@
               v-else  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>
@@ -229,10 +229,10 @@
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
 
-          <!-- Circle Monthly Payments & Loan Amount -->
+          <!-- Circle Round Payment & Loan Amount -->
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_pay'">
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ accountCircleProps.circle_fixed_amount }}
               </span>
@@ -286,7 +286,7 @@
               v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>
@@ -300,7 +300,7 @@
               v-else  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>
@@ -487,10 +487,10 @@
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
 
-          <!-- Circle Monthly Payments & Loan Amount -->
+          <!-- Circle Round Payment & Loan Amount -->
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_pay'">
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ accountCircleProps.circle_fixed_amount }}
               </span>
@@ -544,7 +544,7 @@
               v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>
@@ -558,7 +558,7 @@
               v-else  
               class="d-flex flex-row justify-content-start align-items-center pt-2"
             >
-              <span class="account-circles-card-note">Monthly Payments:</span>
+              <span class="account-circles-card-note">Round Payment:</span>
               <span class="account-circles-card-text ps-2">
                 {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
               </span>

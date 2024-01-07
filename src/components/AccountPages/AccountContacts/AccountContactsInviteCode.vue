@@ -20,7 +20,7 @@
             ref="invite_code"
 						id="inviteCode"
 						type="text"
-						class="tiny-input mb-0"
+						class="smaller-input mb-0"
             :class="hasError['invite_code'] ? 'has-error' : ''"
             placeholder="e.g. AbC123"
 						aria-describedby="fullnameHelp"

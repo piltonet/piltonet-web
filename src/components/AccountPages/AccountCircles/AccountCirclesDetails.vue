@@ -84,17 +84,17 @@
             </el-tooltip>
           </div>
         </div>
-        <!-- Number Of Members -->
+        <!-- Circle Size -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members">
-            <span class="note-text">Number Of Members</span>
+            <span class="note-text">Circle Size:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_max_members }}
             </span>
             <span class="main-text-small ps-2">people</span>
           </div>
           <div v-else>
-            <span class="note-text">Number Of Members</span>
+            <span class="note-text">Circle Size:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_min_members }}
             </span>
@@ -109,7 +109,7 @@
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payment:</span>
             <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
@@ -161,7 +161,7 @@
             class="d-flex flex-row justify-content-start align-items-center mt-4"
           >
             <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payment:</span>
             <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members }}
@@ -174,7 +174,7 @@
           </div>
           <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Monthly Payments:</span>
+            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payment:</span>
             <span v-else class="note-text">Payments per Round:</span>
             <span class="top-text-small ps-2">
               {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
@@ -218,9 +218,9 @@
         </div>
       </div>
       <div class="col-12 col-lg-6">
-        <!-- Order Of Winners -->
+        <!-- Winner Selection Method -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Order Of Winners:</span>
+          <span class="note-text">Winner Selection Method:</span>
           <div v-if="circleInfoProps.circle_winners_order == 'random'">
             <span class="top-text-small ps-2">
               Random
@@ -264,13 +264,13 @@
             </el-tooltip>
           </div>
         </div>
-        <!-- Number Of Winners -->
+        <!-- Round Winners Quantity -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Number Of Winners:</span>
+          <span class="note-text">Round Winners Quantity:</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_number }}
           </span>
-          <span class="main-text-small ps-2">{{ `winner(s) / ${circleInfoProps.circle_round_days} days `}}</span>
+          <span class="main-text-small ps-2">winner(s)</span>
         </div>
         <!-- Patience Benefit -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">

@@ -32,86 +32,102 @@
               v-model="circleInfo.circle_name"
             />
             <p id="circleNameHelp" class="help-text pt-2 mb-3">
-              Name the circle whatever you want.
+              Enter the circle name. Choose a unique and meaningful name for your circle.
             </p>
+          </template>
+
+          <!-- Number of Members -->
+          <template v-if="tabIndex == 1">
+            <div class="row">
+              <div class="col-12 col-xl-5">
+                <label for="circleMinMembers" class="input-label mt-2">
+                  Circle Size
+                  <span class="input-label-small">{{ `(Minimum ${minMembers}) `}}</span>
+                </label>
+                <input
+                  :disabled="circleInfo.circle_joined_members"
+                  ref="circle_min_members"
+                  id="circleMinMembers"
+                  type="number"
+                  placeholder="e.g. 5"
+                  class="tiny-input mb-0"
+                  :class="hasError['circle_min_members'] ? 'has-error' : ''"
+                  aria-describedby="circleMinMembersHelp"
+                  v-model="circleInfo.circle_min_members"
+                />
+                <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
+                  Enter the number of members in the circle.
+                </p>
+              </div>
+              <div class="col-12 col-xl-7">
+                <!-- Additional Members -->
+                <label for="circleMaxMembers" class="input-label mt-2">
+                  Additional Members Limit
+                  <span class="input-label-small">(Default 0)</span>
+                </label>
+                <input
+                  :disabled="circleInfo.circle_joined_members"
+                  ref="circle_extra_members"
+                  id="circleExtraMembers"
+                  type="number"
+                  placeholder="e.g. 0"
+                  class="tiny-input mb-0"
+                  :class="hasError['circle_extra_members'] ? 'has-error' : ''"
+                  aria-describedby="circleMaxMembersHelp"
+                  v-model="circle_extra_members"
+                />
+                <p id="circleExtraMembersHelp" class="help-text pt-2 mb-3">
+                  Enter the number of extra members allowed, up to 20% of the circle size, rounded down.
+                </p>
+              </div>
+            </div>
           </template>
           
           <!-- Fixed Pay -->
           <template v-if="tabIndex == 1">
             <label v-if="circleInfo.circle_payment_type == 'fixed_pay'" for="circleFixedAmount" class="input-label mt-2">
-              {{ circleRound }} Payments
+              Round Payment
               <span class="input-label-small">(Required)</span>
             </label>
             <label v-if="circleInfo.circle_payment_type == 'fixed_loan'" for="circleFixedAmount" class="input-label mt-2">
               Loan Amount
               <span class="input-label-small">(Required)</span>
             </label>
-            <input
-              :disabled="circleInfo.circle_joined_members"
-              ref="circle_fixed_amount"
-              id="circleFixedAmount"
-              type="number"
-              :placeholder="`e.g. ${minFixedAmount}`"
-              class="small-input mb-0"
-              :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
-              aria-describedby="circleFixedAmountHelp"
-              v-model="circleInfo.circle_fixed_amount"
-            />
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <input
+                :disabled="circleInfo.circle_joined_members"
+                ref="circle_fixed_amount"
+                id="circleFixedAmount"
+                type="number"
+                :placeholder="`e.g. ${minFixedAmount}`"
+                class="tiny-input mb-0"
+                :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
+                aria-describedby="circleFixedAmountHelp"
+                v-model="circleInfo.circle_fixed_amount"
+              />
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="circleInfo.circle_payment_token"
+                :tooltip="false"
+                :height="20"
+                customClass="price-token-icon mt-1 ms-2"
+              />
+              <p class="info-text mt-1">{{ `${paymentToken.symbol} / ${circleRound}` }}</p>
+            </div>
+
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `Participants contribute the same amount in each round, ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
+              {{ `Enter the fixed amount that each participant will contribute in every round, ranging from ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
             </p>
             <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
               {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${paymentToken.symbol}.` }}
             </p>
           </template>
 
-          <!-- Min Members -->
-          <template v-if="tabIndex == 1">
-            <label for="circleMinMembers" class="input-label mt-2">
-              Min. Members
-              <span class="input-label-small">(Required)</span>
-            </label>
-            <input
-              :disabled="circleInfo.circle_joined_members"
-              ref="circle_min_members"
-              id="circleMinMembers"
-              type="number"
-              placeholder="e.g. 5"
-              class="small-input mb-0"
-              :class="hasError['circle_min_members'] ? 'has-error' : ''"
-              aria-describedby="circleMinMembersHelp"
-              v-model="circleInfo.circle_min_members"
-            />
-            <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
-              {{ `The minimum number of participants in the circle, ${minMembers} to ${maxMembers} people.` }}
-            </p>
-            
-            <!-- Max Members -->
-            <label for="circleMaxMembers" class="input-label mt-2">
-              Max. Members
-              <span class="input-label-small">(Required)</span>
-            </label>
-            <input
-              :disabled="circleInfo.circle_joined_members"
-              ref="circle_max_members"
-              id="circleMaxMembers"
-              type="number"
-              placeholder="e.g. 5"
-              class="small-input mb-0"
-              :class="hasError['circle_max_members'] ? 'has-error' : ''"
-              aria-describedby="circleMaxMembersHelp"
-              v-model="circleInfo.circle_max_members"
-            />
-            <p id="circleMaxMembersHelp" class="help-text pt-2 mb-3">
-              {{ `The maximum number of participants in the circle, ${Math.max(minMembers, circleInfo.circle_min_members)} to ${maxMembers} people.` }}
-            </p>
-          </template>
-          
-          <!-- Number Of Winners -->
+          <!-- Round Winners Quantity -->
           <template v-if="tabIndex == 1">
             <label for="circleWinnersNumber" class="input-label mt-2">
-              Number Of Winners
-              <span class="input-label-small">(Required)</span>
+              Round Winners
+              <span class="input-label-small">(Default 1)</span>
             </label>
             <input
               :disabled="circleInfo.circle_joined_members"
@@ -120,15 +136,15 @@
               type="number"
               placeholder="e.g. 1"
               min="1"
-              :max="Math.max(parseInt(circleInfo.circle_max_members /  3), 1)"
+              :max="Math.max(parseInt(circleInfo.circle_min_members /  3), 1)"
               step="1"
-              class="small-input mb-0"
+              class="tiny-input mb-0"
               :class="hasError['circle_winners_number'] ? 'has-error' : ''"
               aria-describedby="circleWinnersNumberHelp"
               v-model="circleInfo.circle_winners_number"
             />
             <p id="circleWinnersNumberHelp" class="help-text pt-2 mb-3">
-              The number of winners are chosen per round, default 1 person.
+              Enter the number of winners chosen per round.
             </p>
           </template>
 
@@ -181,6 +197,7 @@ export default {
     return {
       tabIndex: 1,
       circleInfo: this.circleInfoProps,
+      circle_extra_members: 0,
       paymentToken: '',
       circleRound: '',
       minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VIC),
@@ -191,7 +208,7 @@ export default {
         circle_name: false,
         circle_fixed_amount: false,
         circle_min_members: false,
-        circle_max_members: false,
+        circle_extra_members: false,
         circle_winners_number: false
       },
       openLoadings: []
@@ -225,6 +242,10 @@ export default {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     setup() {
       this.circleInfo = this.circleInfoProps;
+
+      // To Do
+      this.circle_extra_members = parseInt(this.circleInfo.circle_max_members) - parseInt(this.circleInfo.circle_min_members);
+
       if(this.circleInfo) {
         if(this.circleInfo.circle_payment_type == 'fixed_loan') {
           this.minFixedAmount = this.minFixedAmount * this.minMembers;
@@ -232,17 +253,19 @@ export default {
         }
         if(this.circleInfo.circle_round_days == 7) {
           this.circleRound = 'Weekly';
+        } else if(this.circleInfo.circle_round_days == 14) {
+          this.circleRound = 'Biweekly';
         } else if(this.circleInfo.circle_round_days == 30) {
           this.circleRound = 'Monthly';
         } else {
-          this.circleRound = 'Periodic';
+          this.circleRound = `${this.circleInfo.circle_round_days} days`;
         }
         if(this.circleInfo.circle_status == 'deployed') {
           this.circleInfo['circle_name'] = '';
           this.circleInfo['circle_fixed_amount'] = '';
           this.circleInfo['circle_min_members'] = '';
           this.circleInfo['circle_max_members'] = '';
-          this.circleInfo['circle_winners_number'] =1;
+          this.circleInfo['circle_winners_number'] = 1;
           this.circleInfo['circle_start_date'] = '';
         }
       }
@@ -250,6 +273,9 @@ export default {
     async setupCircle() {
       if(this.checkForm()) {
         try {
+          // To Do
+          this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_min_members) + this.circle_extra_members).toString();
+
           const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
           const signer = await provider.getSigner();
           const contract = abi.setAbi(
@@ -327,6 +353,9 @@ export default {
       }
     },
     checkForm() {
+      // To Do
+      this.circleInfo['circle_extra_members'] = this.circle_extra_members;
+
       try {
         Object.keys(this.hasError).forEach(element => {
           if(this.circleInfo[element] == null || this.circleInfo[element].length <= 0) {
@@ -364,12 +393,26 @@ export default {
             })
             throw false;
           }
-          if(element == 'circle_max_members' && (parseInt(this.circleInfo[element]) < parseInt(this.circleInfo['circle_min_members']) || parseInt(this.circleInfo[element]) > this.maxMembers)) {
+          // if(element == 'circle_max_members' && (parseInt(this.circleInfo[element]) < parseInt(this.circleInfo['circle_min_members']) || parseInt(this.circleInfo[element]) > this.maxMembers)) {
+          //   console.log(parseInt(this.circleInfo[element]));
+          //   this.$refs[element].focus();
+          //   this.hasError[element] = true;
+          //   this.notif({
+          //     message: `The maximum number of members must be between ${this.circleInfo['circle_min_members']} and ${this.maxMembers}.`,
+          //     dangerouslyUseHTMLString: true,
+          //     type: "error",
+          //     duration: 5000,
+          //     onClose: () => { this.hasError[element] = false }
+          //   })
+          //   throw false;
+          // }
+          if(element == 'circle_extra_members' && 
+            (parseInt(this.circleInfo[element]) < 0 || parseInt(this.circleInfo[element]) > parseInt(parseInt(this.circleInfo['circle_min_members'] * 0.2)))) {
             console.log(parseInt(this.circleInfo[element]));
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: `The maximum number of members must be between ${this.circleInfo['circle_min_members']} and ${this.maxMembers}.`,
+              message: `The extra number of members must be up to 20% of the circle size, rounded down`,
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,

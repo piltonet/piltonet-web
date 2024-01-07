@@ -87,11 +87,10 @@
             >
               <p>Fixed Loan</p>
             </button>
-            <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
-              In the fixed payment type, the loan amount will be based on the number of members and other rules.
-            </p>
-            <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
-              In the fixed loan type, the contribution amount will be based on the number of members and other rules.
+            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
+              Select the payment type for the circle.<br>
+              In the Fixed Payment type, the loan amount will be based on the number of members and other rules.<br>
+              In the Fixed Loan type, the contribution amount will be based on the number of members and other rules."
             </p>
           </template>
 
@@ -108,6 +107,13 @@
               <p>Weekly (7 days)</p>
             </button>
             <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_round_days == 14 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_round_days = 14"
+            >
+              <p>Biweekly (14 days)</p>
+            </button>
+            <button
               class="account-circles-deploy-button mt-2"
               :class="circleInfo.circle_round_days == 30 ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
               @click="circleInfo.circle_round_days = 30"
@@ -115,13 +121,14 @@
               <p>Monthly (30 days)</p>
             </button>
             <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
-              Duration of each round in days.
+              Select the duration of each round, indicating the frequency as weekly, biweekly, or monthly.<br>
+              The input specifies the duration of each round in days based on the selected frequency.
             </p>
           </template>
 
-          <!-- Order Of Winners -->
+          <!-- Winner Selection Method -->
           <template v-if="tabIndex == 4">
-            <label for="circleWinnersOrder" class="input-label">Order Of Winners</label>
+            <label for="circleWinnersOrder" class="input-label">Winner Selection Method</label>
             <button
               class="choosing-winners-button mb-2"
               :class="circleInfo.circle_winners_order == 'random' ? 'selected' : ''"
@@ -161,7 +168,7 @@
           <template v-if="tabIndex == 5">
             <label for="circlePatienceBenefit" class="input-label">
               Patience Benefit
-              <span class="input-label-small">(default 0%)</span>
+              <span class="input-label-small">(Default 0%)</span>
             </label>
             <input
               :disabled="circleInfo.circle_joined_members"
@@ -172,7 +179,7 @@
               :max="maxPatienceBenefit"
               step="0.01"
               placeholder="e.g. 10"
-              class="small-input mb-0"
+              class="tiny-input mb-0"
               :class="hasError['circle_patience_benefit'] ? 'has-error' : ''"
               aria-describedby="circlePatienceBenefitHelp"
               v-model="circleInfo.circle_patience_benefit"
@@ -187,7 +194,7 @@
             <div v-if="true">
               <label for="circleCreatorEarnings" class="input-label mt-2">
                 Creator Earnings
-                <span class="input-label-small">(default 0%)</span>
+                <span class="input-label-small">(Default 0%)</span>
               </label>
               <input
                 ref="circle_creator_earnings"
@@ -197,7 +204,7 @@
                 :max="maxCreatorEarnings"
                 step="0.01"
                 placeholder="e.g. 0.5"
-                class="small-input mb-0"
+                class="tiny-input mb-0"
                 :class="hasError['circle_creator_earnings'] ? 'has-error' : ''"
                 aria-describedby="circleCreatorEarningsHelp"
                 v-model="circleInfo.circle_creator_earnings"
@@ -285,6 +292,12 @@
                 </button>
                 <button
                   class="account-circles-deploy-button"
+                  :class="circleInfo.circle_round_days == 14 ? 'selected locked' : 'd-none'"
+                >
+                  <p>Biweekly (14 days)</p>
+                </button>
+                <button
+                  class="account-circles-deploy-button"
                   :class="circleInfo.circle_round_days == 30 ? 'selected locked' : 'd-none'"
                 >
                   <p>Monthly (30 days)</p>
@@ -292,9 +305,9 @@
               </template>
             </div>
             <div class="col-12 col-md-6">
-              <!-- Order Of Winners -->
+              <!-- Winner Selection Method -->
               <template v-if="tabIndex == 6">
-                <label for="circlePaymentType" class="input-label">Order Of Winners</label>
+                <label for="circlePaymentType" class="input-label">Winner Selection Method</label>
                 <button
                   class="account-circles-deploy-button"
                   :class="circleInfo.circle_winners_order == 'random' ? 'selected locked' : 'd-none'"

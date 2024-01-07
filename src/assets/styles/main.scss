@@ -187,8 +187,11 @@ input[type="submit"],
 .small-input {
   max-width: 300px !important;
 }
-.tiny-input {
+.smaller-input {
   max-width: 175px !important;
+}
+.tiny-input {
+  max-width: 100px !important;
 }
 .input-label {
   font-size: 16px;
@@ -242,7 +245,8 @@ input[type="submit"],
   font-weight: 400;
   line-height: 20px;
   overflow-wrap: break-word;
-  color: rgba(var(--ptn-second-blue-rgb), 0.7);
+  // color: rgba(var(--ptn-second-blue-rgb), 0.7);
+  color: rgba(var(--ptn-third-gray-rgb), 0.9);
   width: auto;
   margin: 0;
   padding: 0;
@@ -434,6 +438,19 @@ input[type="submit"],
   color: var(--ptn-third-gray);
   margin: 0;
   padding: 10px 0 30px;
+}
+
+.price-token-icon {
+  width: 23px;
+  height: 23px;
+}
+.price-token-icon.big {
+  width: 40px;
+  height: 40px;
+}
+.price-token-icon.small {
+  width: 18px;
+  height: 18px;
 }
 
 @keyframes blink {
