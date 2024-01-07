@@ -16,7 +16,7 @@
     </div>
     
     <!-- Whitelisted -->
-    <div class="my-4 row">
+    <!-- <div class="my-4 row">
       <div
         v-for="circle in accountCirclesProps.whitelisted || []"
         :key="circle.circle_id"
@@ -27,9 +27,22 @@
           accountRoleProps="whitelisted"
         />
       </div>
+    </div> -->
+    <div class="my-4 row">
+      <div
+        v-for="circle in accountCirclesProps.whitelisted || []"
+        :key="circle.circle_id"
+        :id="`circle-whitelisted-${index}`"
+        class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
+      >
+        <AccountCirclesCardN
+          :accountCircleProps="circle"
+          accountRoleProps="whitelisted"
+        />
+      </div>
     </div>
     <!-- Joined -->
-    <div class="my-4 row">
+    <!-- <div class="my-4 row">
       <div
         v-for="circle in accountCirclesProps.joined || []"
         :key="circle.circle_id"
@@ -40,7 +53,7 @@
           accountRoleProps="joined"
         />
       </div>
-    </div>
+    </div> -->
     <div class="my-4 row">
       <div
         v-for="(circle, index) in accountCirclesProps.joined || []"

@@ -6,13 +6,13 @@ import wallets from "@/wallets";
 
 const router = createRouter({
 	history: createWebHistory(),
-	// scrollBehavior(to, from, savedPosition) {
-	// 	if(savedPosition && from.fullPath == '/account/settings') {
-	// 		return savedPosition
-	// 	} else {
-	// 		return { top: 0 }
-	// 	}
-	// },
+	scrollBehavior(to, from, savedPosition) {
+		if(savedPosition && from.fullPath == '/account/settings') {
+			return savedPosition
+		} else {
+			return { top: 0 }
+		}
+	},
 	routes
 });
 

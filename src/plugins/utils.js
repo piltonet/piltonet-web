@@ -22,6 +22,11 @@ const fixedNumber = (fullNumber, toFixed = 5, minDecimals = 2) => {
   return Number(fixedNumber).toFixed(len)
 }
 
+function formatPrice(price, decimals = 2) {
+	if(typeof price === 'string') price = parseFloat(price);
+	return price.toFixed(decimals);
+}
+
 function formatLabel(labelValue, fixed = 1) {
 	return Math.abs(Number(labelValue)) >= 1.0e+12
 		? (Math.abs(Number(labelValue)) / 1.0e+12).toFixed(fixed) + 'T'
@@ -91,6 +96,12 @@ function nextRound(firstDate, diffDays = 1) {
 	return date;
 }
 
+function diffDays(date1, date2) {
+	const time_difference = date2.getTime() - date1.getTime();
+	const days_difference = parseInt(time_difference / (1000 * 60 * 60 * 24));
+	return days_difference;
+}
+
 function objectCleaner(obj) {
   Object.keys(obj).forEach(key => {
 		if(obj[key] === '' || obj[key] === null || obj[key] === undefined) {
@@ -100,13 +111,14 @@ function objectCleaner(obj) {
   return obj
 }
 
-
 export default {
 	truncate,
 	fixedNumber,
+	formatPrice,
 	formatDate,
 	nextMonth,
 	nextRound,
+	diffDays,
 	objectCleaner,
 	formatLabel,
 	nftIpfsLink

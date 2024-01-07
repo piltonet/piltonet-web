@@ -1,71 +1,100 @@
 <template>
   <div v-if="accountCircleProps" id="account-circles-card">
-    <!-- Whitelisted -->
-    <div v-if="accountRoleProps == 'whitelisted'"
-      role="button"
-      @click="$router.push({path: '/account/circles/invited', query: {circle_id: accountCircleProps.circle_id}})"
-    >
-    </div>
-  
-    <!-- Joined -->
-    <div v-else-if="accountRoleProps == 'joined'"
+    <div
       role="button"
       @mouseover="mouseOver = true"
       @mouseleave="mouseOver = false"
-      class="d-flex flex-column justify-content-start align-items-center collections-card p-2"
+      class="d-flex flex-column justify-content-start align-items-center collections-card px-3 py-3"
       :class="{'mouse-over': mouseOver}"
-      @click="$router.push({path: '/account/circles/joined', query: {circle_id: accountCircleProps.circle_id}})"
+      @click="accountRoleProps == 'whitelisted' ?
+        $router.push({path: '/account/circles/invited', query: {circle_id: accountCircleProps.circle_id}}) :
+        $router.push({path: '/account/circles/joined', query: {circle_id: accountCircleProps.circle_id}})"
     >
       <div v-if="accountCircleProps && accountCircleProps.circle_id" class="collections-container row">
   
         <div class="d-flex flex-row justify-content-center align-items-center collections-img-container">
         </div>
   
-        <div class="d-flex flex-column justify-content-center align-items-start text-start mb-2 px-4">
-          <div class="d-flex flex-row justify-content-start align-items-center text-start">
+        <div class="d-flex flex-column justify-content-center align-items-start text-start">
+          <div class="d-flex flex-row justify-content-start align-items-start row w-100">
+            <div class="col-6 text-start">
+              <div v-if="accountRoleProps == 'joined'" class="trusted-circles-key green-btn pb-2">
+                <!-- <i class="far fa-calendar" aria-hidden="true"></i> -->
+                You have joined
+              </div>
+              <div v-else class="trusted-circles-key red-btn pb-2">
+                <i class="far fa-envelope fa-shake" style="--fa-animation-duration: 2s;" aria-hidden="true"></i>
+                You are invited
+              </div>
+              <p class="circle-name">{{ accountCircleProps.circle_name }}</p>
+            </div>
+            <div class="col-6 text-end">
+              <p class="trusted-circles-info">START DATE</p>
+              <p class="top-text-tiny">{{ utils.formatDate(accountCircleProps.circle_start_date, 'DD Month YYYY') || 'Open' }}</p>
+            </div>
           </div>
-          <pre class="circle-name">{{ accountCircleProps.circle_name }}</pre>
         </div>
   
-        <div class="d-flex flex-row justify-content-center align-items-end px-4">
+        <div class="d-flex flex-column justify-content-center align-items-start text-start mb-2">
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            <AvatarImage
+              :imageSrc="accountCircleProps.circle_creator.account_image_url"
+              :name="accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_nickname"
+              :size="20"
+              :border="false"
+              :rounded="true"
+              class="account-image-tiny"
+            />
+            <span class="top-text-tiny ms-1">
+              {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_nickname }}
+            </span>
+            <span class="main-text-tiny ps-1">(admin)</span>
+          </div>
+        </div>
+  
+        <div class="d-flex flex-row justify-content-center align-items-end row w-100 mt-2">
           
-          <div class="d-flex flex-row justify-content-start align-items-center w-100">
-            <div class="d-flex flex-column justify-content-center align-items-center pe-3">
-              <!-- <p class="trend-collections-value">{{ accountCircleProps.launch_max_supply }}</p> -->
-              <p class="trend-collections-key">ITEMS</p>
-            </div>
-            <div class="d-flex flex-column justify-content-center align-items-center pe-3">
-              <!-- <p class="trend-collections-value">{{ accountCircleProps.launch_total_supply }}</p> -->
-              <p class="trend-collections-key">MINTED</p>
-            </div>
-            <div v-if="accountCircleProps.collection_floor_price" class="d-flex flex-column justify-content-center align-items-center circle-floor-price">
+          <div class="col-10 d-flex flex-row justify-content-start align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center pe-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
-                <p class="trend-collections-value">{{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}</p>
+                <p class="trusted-circles-value">{{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}</p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
                   customClass="price-token-icon small ps-1"
                 />
               </div>
-              <p class="trend-collections-key">FLOOR PRICE</p>
+              <p class="trusted-circles-key">PAYMENT</p>
             </div>
+            <p class="trusted-circles-value pb-1 mb-3">x</p>
+            <div class="d-flex flex-column justify-content-center align-items-center px-1">
+              <div class="d-flex flex-row justify-content-end align-items-center">
+                <p class="trusted-circles-value">{{ accountCircleProps.circle_min_members }}</p>
+                <!-- <p class="trusted-circles-value">{{ accountCircleProps.circle_round_days }}</p> -->
+                <!-- <p class="trusted-circles-info ps-1">(Monthly)</p> -->
+              </div>
+              <p class="trusted-circles-key">ROUNDS</p>
+            </div>
+            <p class="trusted-circles-value mb-3">=</p>
+            <div class="d-flex flex-column justify-content-center align-items-center ps-1">
+              <div class="d-flex flex-row justify-content-end align-items-center">
+                <p class="trusted-circles-value">{{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}</p>
+                <SvgPaymentToken
+                  :chainId="accountCircleProps.circle_chain_id"
+                  :paymentToken="accountCircleProps.circle_payment_token"
+                  customClass="price-token-icon small ps-1"
+                />
+              </div>
+              <p class="trusted-circles-key">LOAN AMOUNT</p>
+            </div>
+            
           </div>
-  
-          <div class="d-flex flex-row justify-content-end align-items-end w-100">
-            <div v-if="parseFloat(accountCircleProps.circle_fixed_amount) > 0"
-              class="d-flex flex-row justify-content-end align-items-center"
-            >
-              <p class="trend-collections-price">{{ accountCircleProps.circle_fixed_amount }}</p>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                customClass="price-token-icon ps-1"
-              />
-            </div>
-            <div v-else class="d-flex flex-row justify-content-end align-items-center">
-              <p class="trend-collections-free">FREE TO MINT</p>
-            </div>
+
+          <div class="col-2 text-end">
+            <p class="top-text-big">{{ utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="trusted-circles-info">DAYS LEFT</p>
           </div>
+          
         </div>
       </div>
     </div>
@@ -75,7 +104,7 @@
 
 <script>
 export default {
-  name: "AccountCirclesCard",
+  name: "AccountCirclesCardN",
   props: {
     accountCircleProps: Object,
     accountRoleProps: String
@@ -178,24 +207,32 @@ export default {
   height: 25px;
 }
 
-.trend-collections-key {
+.trusted-circles-info {
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--ptn-third-gray);
+  margin: 0;
+  padding: 0;
+}
+.trusted-circles-key {
   font-family: "Circular", arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   letter-spacing: 1px;
-  color: #888888;
+  color: rgba(var(--ptn-third-gray-rgb), 0.7);
   margin: 0;
   padding: 0;
 }
-.trend-collections-value {
+.trusted-circles-value {
   font-family: "Circular", arial, sans-serif;
   font-size: 16px;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 24px;
   margin: 0;
   padding: 0;
 }
-.trend-collections-price {
+.trusted-circles-price {
   font-family: "Circular", arial, sans-serif;
   font-size: 23px;
   font-weight: normal;
@@ -203,7 +240,7 @@ export default {
   margin: 0;
   padding: 0;
 }
-.trend-collections-free {
+.trusted-circles-free {
   font-family: "Circular", arial, sans-serif;
   font-size: 20px;
   font-weight: normal;
@@ -239,7 +276,7 @@ export default {
 
 /* Start Mobile - sm < 768px */
 @media (max-width: 767px) {
-  .trend-collections-free {
+  .trusted-circles-free {
   font-size: 18px;
   letter-spacing: 0.5px;
 }

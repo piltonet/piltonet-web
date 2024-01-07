@@ -32,9 +32,10 @@
         <div
           v-for="circle in accountCircles.whitelisted || []"
           :key="circle.circle_id"
-          class="col-12 col-md-6 col-lg-4 col-xl-3"
+          :id="`circle-whitelisted-${index}`"
+          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
         >
-          <AccountCirclesCard
+          <AccountCirclesCardN
             :accountCircleProps="circle"
             accountRoleProps="whitelisted"
           />
@@ -45,9 +46,10 @@
         <div
           v-for="circle in accountCircles.joined || []"
           :key="circle.circle_id"
-          class="col-12 col-md-6 col-lg-4 col-xl-3"
+          :id="`circle-joined-${index}`"
+          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
         >
-          <AccountCirclesCard
+          <AccountCirclesCardN
             :accountCircleProps="circle"
             accountRoleProps="joined"
           />
@@ -60,12 +62,12 @@
 <script>
 import { mapMutations } from "vuex";
 import api from "@/services/api";
-import AccountCirclesCard from "@/components/AccountPages/AccountCircles/AccountCirclesCard.vue";
+import AccountCirclesCardN from "@/components/AccountPages/AccountCircles/AccountCirclesCardN.vue";
 
 export default {
   name: "AccountProfileCircles",
   components: {
-    AccountCirclesCard,
+    AccountCirclesCardN,
   },
   data () {
       return {
