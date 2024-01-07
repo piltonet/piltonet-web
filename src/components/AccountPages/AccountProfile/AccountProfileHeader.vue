@@ -544,7 +544,7 @@ export default {
 .account-info-icon {
   font-size: 14px;
   font-weight: 400;
-  color: var(--ptn-gray);
+  color: var(--ptn-third-gray);
 }
 .account-social-icons {
     font-size: 19px;

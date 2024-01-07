@@ -608,7 +608,7 @@
 
 <script>
 export default {
-  name: "AccountCirclesCard",
+  name: "AccountCirclesCard1",
 	props: {
     accountCircleProps: Object,
     accountRoleProps: String

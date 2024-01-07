@@ -158,7 +158,7 @@ export default {
   color: rgba(var(--ptn-color-rgb), 0.7);
   border: none;
   border-radius: 8px;
-  width: calc(100% - 31px);
+  width: calc(100% - 10px);
   max-width: 230px;
   height: 50px;
   margin: 0;
@@ -201,7 +201,7 @@ export default {
 
 @media (max-width: 991px) {
   .side-bar-btn {
-    max-width: 160px;
+    // max-width: 160px;
   }
 }
 

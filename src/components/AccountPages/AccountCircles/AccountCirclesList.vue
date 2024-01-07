@@ -41,6 +41,19 @@
         />
       </div>
     </div>
+    <div class="my-4 row">
+      <div
+        v-for="(circle, index) in accountCirclesProps.joined || []"
+        :key="circle.circle_id"
+        :id="`circle-joined-${index}`"
+        class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
+      >
+        <AccountCirclesCardN
+          :accountCircleProps="circle"
+          accountRoleProps="joined"
+        />
+      </div>
+    </div>
     <!-- Creating -->
     <div class="my-4 row">
       <div
@@ -67,11 +80,13 @@
 <script>
 import { mapGetters } from "vuex";
 import AccountCirclesCard from "@/components/AccountPages/AccountCircles/AccountCirclesCard.vue";
+import AccountCirclesCardN from "@/components/AccountPages/AccountCircles/AccountCirclesCardN.vue";
 
 export default {
   name: "AccountCirclesList",
   components: {
-    AccountCirclesCard
+    AccountCirclesCard,
+    AccountCirclesCardN
   },
   props: {
     accountCirclesProps: Object,
