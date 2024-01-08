@@ -2,7 +2,7 @@
   <el-dialog 
     id="topup-modal"
     v-model="showModal"
-    title="Top-up Your Profile Account"
+    title="Top-up Your Account"
     class="topup-dialog pt-3"
     :style="''"
   >
@@ -30,7 +30,7 @@
           <button
             class="topup-button ms-2"
             :class="topupToken == 'CUSD' ? 'selected' : ''"
-            @click="topupToken = 'CUSD'; topupNetwork = 'VRC20'; topupAddress = '0x94688d177029574FE9013006811261377FE52DD2'"
+            @click="topupToken = 'CUSD'; topupNetwork = 'VRC20'; topupAddress = accountProfile.account_tba_address"
           >
             <SvgPaymentToken
               :chainId="this.defaultchain.chainId"
@@ -83,7 +83,7 @@
           <button
             class="topup-button"
             :class="topupNetwork == 'VRC20' ? 'selected' : ''"
-            @click="topupNetwork = 'VRC20'; topupAddress = '0x94688d177029574FE9013006811261377FE52DD2'"
+            @click="topupNetwork = 'VRC20'; topupAddress = accountProfile.account_tba_address"
           >
             <p>Viction</p>
           </button>
@@ -123,6 +123,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "TopUpModal",
   data() {
@@ -133,6 +135,15 @@ export default {
       showModal: false,
       copyAddressTooltip: "Copy Address"
     };
+  },
+  computed: {
+    ...mapGetters(['getConnectionStore', 'getProfileStore']),
+    connectedAccount() {
+      return this.getConnectionStore;
+    },
+    accountProfile() {
+      return this.getProfileStore;
+    }
   },
   methods: {
     async setTopUp() {

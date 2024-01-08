@@ -243,6 +243,13 @@
                   >
                     <span class="m-0 p-0">Withdraw</span>
                   </div>
+                  <div
+                    type="button"
+                    @click="faucetCUSD"
+                    class="main-btn gray-bg ms-2"
+                  >
+                    <span class="m-0 p-0">Faucet</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -272,7 +279,7 @@
                   <div
                     type="button"
                     @click="payOffDebt"
-                    class="main-btn gray-bg disabled"
+                    class="main-btn blue-bg disabled"
                   >
                     <span class="m-0 p-0">Pay Off</span>
                   </div>
@@ -432,9 +439,11 @@ export default {
       });
     },
     async topUpCUSD() {
-      // this.$refs.topup_modal.setTopUp();
+      this.$refs.topup_modal.setTopUp();
+    },
+    async faucetCUSD() {
       this.$refs.message_modal.setMessage({
-        title: 'Top-up CUSD',
+        title: 'Faucet',
         message: 'You are using the testnet version. You can request 50 PCUSD to test the app.',
         okBtn: 'Claim Test Token',
         cancelBtn: "Close",
