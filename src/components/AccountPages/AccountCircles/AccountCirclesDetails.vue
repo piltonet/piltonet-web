@@ -45,7 +45,7 @@
           <span v-if="circleInfoProps.circle_round_days == 7" class="top-text-small ps-2">
             Weekly<span class="main-text-small ps-2">(7 days)</span>
           </span>
-          <span v-if="circleInfoProps.circle_round_days == 14" class="top-text-small ps-2">
+          <span v-else-if="circleInfoProps.circle_round_days == 14" class="top-text-small ps-2">
             Biweekly<span class="main-text-small ps-2">(14 days)</span>
           </span>
           <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text-small ps-2">

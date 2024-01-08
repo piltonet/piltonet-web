@@ -59,7 +59,9 @@
                   Enter the number of members in the circle.
                 </p>
               </div>
-              <div v-if="circleInfo.circle_winners_order != 'fixed'" class="col-12 col-xl-7">
+              <!-- To Do -->
+              <!-- <div v-if="circleInfo.circle_winners_order != 'fixed'" class="col-12 col-xl-7"> -->
+              <div class="col-12 col-xl-7">
                 <!-- Additional Members -->
                 <label for="circleMaxMembers" class="input-label mt-2">
                   Additional Members Limit
@@ -112,7 +114,7 @@
                 :height="20"
                 customClass="price-token-icon mt-1 ms-2"
               />
-              <p class="info-text mt-1">{{ `${paymentToken.symbol} / ${circleRound}` }}</p>
+              <p class="info-text mt-1">{{ `${paymentToken.symbol} - ${circleRound}` }}</p>
             </div>
 
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
