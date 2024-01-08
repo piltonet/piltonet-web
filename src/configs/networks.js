@@ -37,7 +37,7 @@ module.exports = [
     {
         chainId: '0x59',
         chainName: 'Viction Testnet',
-        nativeCurrency: { name: 'Tomo', symbol: 'TOMO', decimals: 18, wrappedToken: '' },
+        nativeCurrency: { name: 'Tomo', symbol: 'VIC', decimals: 18, wrappedToken: '' },
         rpcUrl: 'https://rpc.testnet.tomochain.com', blockExplorerUrl: 'https://testnet.tomoscan.io',
         isSupported: true,
     }

@@ -2,7 +2,7 @@
   <div id="account-profile-header">
     <div class="d-flex flex-row justify-content-center align-items-start row">
       <!-- profile info -->
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-4 mt-5">
         <div class="d-flex flex-column justify-content-center align-items-start pt-5">
           <AvatarImage
             :imageSrc="accountProfile?.account_image_url"
@@ -191,6 +191,44 @@
       <div class="col-12 col-md-8">
         <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
           
+          <!-- To Do -->
+          <!-- Badges -->
+          <template v-if="connectedAccount.account_address == '0x2b27f8c647872bc0f5e4c7ca8e3aeaee19a28f3a'">
+            <div class="d-flex flex-row justify-content-center align-items-start row w-100">
+              <span class="account-title text-start">Your Badges</span>
+  
+              <div class="col-2 text-start mt-3">
+                <div class="d-flex flex-column justify-content-center align-items-center badge">
+                  <img src="@/assets/images/kyc-badge-l1.png" height="100" />
+                  <span class="badge-text">KYC - L1</span>
+                </div>
+                <div class="d-none d-flex flex-column justify-content-center align-items-center mt-2 badge-title minted">
+                  <span class="m-0 p-0">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Minted
+                  </span>
+                </div>
+              </div>
+              <div class="col-2 text-start mt-3">
+                <div class="d-flex flex-column justify-content-center align-items-center badge claim">
+                  <img src="@/assets/images/kyc-badge-l2.png" height="100" class="p-2" />
+                  <span class="badge-text claim">KYC - L2</span>
+                </div>
+                <div class="d-none d-flex flex-column justify-content-center align-items-center mt-2 badge-title claim">
+                  <span class="m-0 p-0">
+                    <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+                    Claim
+                  </span>
+                </div>
+              </div>
+              <div class="col-8"></div>
+            </div>
+            <div class="horizontal-line mt-3"></div>
+          </template>
+          <template v-else>
+            <div style="height:200px"></div>
+          </template>
+
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
             <span class="account-title">Total Assets
@@ -256,7 +294,7 @@
           </div>
 
           <!-- Total Funded Debt -->
-          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-3">
             <span class="account-title">Total Debt</span>
             
             <!-- To Do -->
@@ -614,6 +652,42 @@ export default {
   background-color: rgba(var(--ptn-color-rgb), 0.6);
   width: calc(100% - 10px);
   margin: auto;
+}
+.badge {
+  background-color: var(--ptn-yellow);
+  border-radius: 16px;
+  width: 110px;
+  height: 125px;
+}
+.badge.claim {
+  background-color: var(--ptn-red) !important;
+}
+.badge-text {
+  font-size: 15px;
+  color: #000;
+}
+.badge-text.claim {
+  color: #fff;
+}
+.badge-title {
+  font-family: "Circular", arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+  background-color: var(--ptn-green);
+  color: var(--ptn-btn-color);
+  width: 90px;
+  margin: 0 10px;
+  height: 18px;
+  border-radius: 2px;
+}
+.badge-title.minted {
+  background-color: var(--ptn-green);
+  color: var(--ptn-btn-color);
+}
+.badge-title.claim {
+  background-color: var(--ptn-orange);
+  color: var(--ptn-btn-color);
 }
 
 /* Start labtop - lg < 1200 */
