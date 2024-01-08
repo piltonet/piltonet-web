@@ -45,10 +45,10 @@
               :rounded="true"
               class="account-image-tiny"
             />
-            <span class="top-text-tiny ms-1">
+            <span class="top-text-tiny mx-1">
               {{ accountCircleProps.circle_creator.account_fullname || accountCircleProps.circle_creator.account_nickname }}
             </span>
-            <span class="main-text-tiny ps-1">(admin)</span>
+            <span class="host-badge">HOST</span>
           </div>
         </div>
   

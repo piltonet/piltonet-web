@@ -54,7 +54,7 @@
               {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
             </span>
             <span v-if="!whitelist.whitelist_is_joined && !whitelist.whitelist_is_rejected" class="note-text d-none d-sm-inline-block ps-2">
-              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'whitelisted as the circle admin.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
+              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'whitelisted as the circle host.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
               <!-- <i class="fa fa-spinner fa-pulse ms-1" aria-hidden="true"></i> -->
             </span>
             <span v-if="whitelist.whitelist_is_joined" class="note-text d-none d-sm-inline-block ps-2">

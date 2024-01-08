@@ -155,6 +155,19 @@
     // margin: max(2rem, 50vh - 100px) auto 0;
     padding: 0;
 }
+#calculator-modal .el-dialog__body {
+    padding: 1rem 1.5rem !important;
+}
+.calculator-dialog {
+    text-align: center !important;
+    background-color: var(--ptn-bg) !important;
+    border-radius: 0.5rem !important;
+    width: 90%;
+    max-width: 500px;
+    height: 450px;
+    // margin: max(2rem, 50vh - 100px) auto 0;
+    padding: 0;
+}
 #withdraw-modal .el-dialog__body {
     padding: 1rem 1.5rem !important;
 }

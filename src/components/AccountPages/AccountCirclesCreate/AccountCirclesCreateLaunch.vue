@@ -226,7 +226,7 @@
           <span class="note-text">Winner Selection Method:</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_order == 'random' ? 'Random' : 
-              circleInfoProps.circle_winners_order == 'fixed' ? 'Fixed' :
+              circleInfoProps.circle_winners_order == 'fixed' ? 'FCFS' :
               circleInfoProps.circle_winners_order == 'bidding' ? 'Bidding' : ''
             }}
           </span>

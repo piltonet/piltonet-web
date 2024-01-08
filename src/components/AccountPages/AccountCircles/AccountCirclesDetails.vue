@@ -30,10 +30,10 @@
           :colors=jazzColors
           class="account-image-small"
         /> -->
-        <span class="top-text-small ms-2">
+        <span class="top-text-small mx-2">
           {{ circleInfoProps.circle_creator.account_fullname || circleInfoProps.circle_creator.account_nickname }}
         </span>
-        <span class="main-text-small ps-2">(admin)</span>
+        <span class="host-badge">HOST</span>
       </div>
 
       <div class="col-12 col-lg-6">
@@ -240,10 +240,10 @@
           </div>
           <div v-if="circleInfoProps.circle_winners_order == 'fixed'">
             <span class="top-text-small ps-2">
-              Fixed
+              FCFS
             </span>
             <el-tooltip
-              content="The order of winners in this circle is fixed. It means the members choose their desired round among the vacant rounds at the time of joining."
+              content="The order of winners in this circle is First-Come First-Served. This means that members choose their desired round from the available vacant rounds at the time of joining."
               placement="top"
               :hide-after="0"
             >
@@ -300,7 +300,7 @@
           </span>
           <span class="main-text-small ps-1">%</span>
           <el-tooltip
-            content="The creator earnings are the portion of each loan reserved for the circle admin."
+            content="The creator earnings are the portion of each loan reserved for the circle host."
             placement="top"
             :hide-after="0"
           >

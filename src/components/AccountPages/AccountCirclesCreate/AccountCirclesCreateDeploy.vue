@@ -147,9 +147,9 @@
             >
               <p class="ps-2 pt-2">
                 <i class="fa fa-calendar-check fa-xl" aria-hidden="true"></i>
-                Fixed
+                FCFS
               </p>
-              <p class="help-text pt-1 px-1">Members select their position before starting the circle</p>
+              <p class="help-text pt-1 px-1">Members choose their desired round when joining the circle</p>
             </button>
             <button
               class="choosing-winners-button mb-2"
@@ -170,22 +170,31 @@
               Patience Benefit
               <span class="input-label-small">(Default 0%)</span>
             </label>
-            <input
-              :disabled="circleInfo.circle_joined_members"
-              ref="circle_patience_benefit"
-              id="circlePatienceBenefit"
-              type="number"
-              min=0.00
-              :max="maxPatienceBenefit"
-              step="0.01"
-              placeholder="e.g. 10"
-              class="tiny-input mb-0"
-              :class="hasError['circle_patience_benefit'] ? 'has-error' : ''"
-              aria-describedby="circlePatienceBenefitHelp"
-              v-model="circleInfo.circle_patience_benefit"
-            />
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <input
+                :disabled="circleInfo.circle_joined_members"
+                ref="circle_patience_benefit"
+                id="circlePatienceBenefit"
+                type="number"
+                min=0.00
+                :max="maxPatienceBenefit"
+                step="0.01"
+                placeholder="e.g. 18"
+                class="tiny-input mb-0"
+                :class="hasError['circle_patience_benefit'] ? 'has-error' : ''"
+                aria-describedby="circlePatienceBenefitHelp"
+                v-model="circleInfo.circle_patience_benefit"
+              />
+              <div
+                type="button"
+                @click="patienceBenefitCalc"
+                class="main-btn gray-bg middle-text ms-3"
+              >
+                <span class="m-0 p-0">Calculator</span>
+              </div>
+            </div>
             <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
-              {{ `Benefit percentage for members who win later rounds, up to ${maxPatienceBenefit}%.` }}
+              {{ `Percentage of benefits for members who win in subsequent rounds, up to ${maxPatienceBenefit}%.` }}
             </p>
           </template>
 
@@ -210,7 +219,7 @@
                 v-model="circleInfo.circle_creator_earnings"
               />
               <p id="circleCreatorEarningsHelp" class="help-text pt-2 mb-3">
-                {{ `Earnings of the circle creator, up to ${maxCreatorEarnings}%.` }}
+                {{ `You can earn a share of up to ${maxCreatorEarnings}% from each loan.` }}
               </p>
             </div>
           </template>
@@ -318,7 +327,7 @@
                   class="account-circles-deploy-button"
                   :class="circleInfo.circle_winners_order == 'fixed' ? 'selected locked' : 'd-none'"
                 >
-                  <p>Fixed</p>
+                  <p>FCFS</p>
                 </button>
                 <button
                   class="account-circles-deploy-button"
@@ -424,7 +433,7 @@
         <div class="d-flex flex-row justify-content-center align-items-center">
           <div
             type="button"
-            @click="tabIndex = 1"
+            @click="tabIndex = 5"
             class="main-btn blue-bg middle-text"
             :class="tabIndex == 6 ? '' : 'd-none'"
           >
@@ -470,6 +479,11 @@
 
   <NotFound v-else />
 
+  <PatienceBenefitCalcModal
+    ref="calc_modal"
+    @get-balance="getBalance"
+  />
+
 </template>
 
 <script>
@@ -479,10 +493,12 @@ import api from "@/services/api";
 import abi from "@/services/abi";
 import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
+import PatienceBenefitCalcModal from "@/components/CustomModals/PatienceBenefitCalcModal.vue";
 
 export default {
   name: "AccountCirclesCreateDeploy",
   components: {
+    PatienceBenefitCalcModal,
     NotFound
   },
   props: {
@@ -645,6 +661,9 @@ export default {
           }
         }
       }
+    },
+    async patienceBenefitCalc() {
+      this.$refs.calc_modal.setCalculator(this.circleInfo);
     },
     checkForm() {
       try {

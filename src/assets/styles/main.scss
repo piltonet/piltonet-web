@@ -468,6 +468,23 @@ input[type="submit"],
   height: 18px;
 }
 
+.host-badge {
+  font-family: "Circular", arial, sans-serif;
+  font-size: 7px;
+  font-weight: bold;
+  line-height: 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border: none;
+  border-radius: 2px;
+  background: var(--ptn-green);
+  color: var(--ptn-btn-color);
+  height: auto;
+  width: auto;
+  margin: 0;
+  padding: 0 3px;
+}
+
 @keyframes blink {
 	0% {
 		opacity: 1;

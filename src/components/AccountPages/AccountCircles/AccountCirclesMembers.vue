@@ -9,32 +9,24 @@
           :class="'member_id' in member ? 'align-items-center row my-2 ms-2 ms-md-4' : 'd-none'"
         >
           <template v-if="member.main_account_address">
-            <img
-              v-if="member.account_image_url"
-              :src="member.account_image_url"
-              alt=""
-              class="account-image-small"
-            />
             <AvatarImage
-              v-if="!member.account_image_url"
+              :imageSrc="member.account_image_url"
               :name="member.account_fullname || member.account_nickname"
               :size="40"
               :border="false"
               :rounded="true"
+              :status="member.main_account_address == connectedAccount.account_address ? 'online' : false"
               class="account-image-small"
             />
-            <!-- <JazzIcon
-              v-if="!member.account_image_url"
-              :address="member.main_account_address"
-              :diameter="40"
-              :colors=jazzColors
-              class="account-image-small"
-            /> -->
             <p class="top-text-small ms-2">
-              <span>
-                {{ member.main_account_address == connectedAccount.account_address ? (isCircleCreator ? 'You (admin)' : (isCircleModerator ? 'You (moderator)' : 'You'))
-                  : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_nickname} (admin)`
+              <!-- To Do -->
+              <span v-if="false">
+                {{ member.main_account_address == connectedAccount.account_address ? (isCircleCreator ? 'You (HOST)' : (isCircleModerator ? 'You (moderator)' : 'You'))
+                  : member.main_account_address == circleInfoProps.circle_creator_main ? `${member.account_fullname || member.account_nickname} (HOST)`
                   : member.member_is_moderator ? `${member.account_fullname || member.account_nickname} (moderator)` : member.account_fullname || member.account_nickname }}
+              </span>
+              <span>
+                {{ member.account_fullname || member.account_nickname }}
               </span>
               <span class="note-text ps-2">
                 {{ `joined on ${utils.formatDate(member.created_at, 'DD Month YYYY', 'HH:MM')}` }}
