@@ -146,14 +146,17 @@ async function connectWallet(walletName) {
 	try {
 		let provider = getProvider(walletName);
 		if(provider) {
-			if(await isDefaultNetwork(provider)) {
+			let _isDefaultNetwork = await isDefaultNetwork(provider);
+			if(!_isDefaultNetwork) {
+				await switchNetworkToDefault(provider);
+			}
+			if(await isDefaultNetwork(provider, false)) {
+				loading = show_loading();
 				const walletAccounts = await provider.request({ method: "eth_requestAccounts" });
 				let accountExists = await getAccount(walletName, walletAccounts);
 				if(accountExists) setWatchers(walletName);
 				loading.close();
 				return accountExists;
-			} else {
-				await switchNetworkToDefault(provider);
 			}
 		}
 	} catch (err) {

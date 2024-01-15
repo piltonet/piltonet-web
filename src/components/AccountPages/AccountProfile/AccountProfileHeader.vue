@@ -193,7 +193,7 @@
           
           <!-- To Do -->
           <!-- Badges -->
-          <template v-if="connectedAccount.account_address == '0x2b27f8c647872bc0f5e4c7ca8e3aeaee19a28f3a'">
+          <template v-if="connectedAccount.account_address == '0x5d974bff1da2ad1325ba5c7c6bf9ee09f0915557'">
             <div class="d-flex flex-row justify-content-center align-items-start row w-100">
               <span class="account-title text-start">Your Badges</span>
   
