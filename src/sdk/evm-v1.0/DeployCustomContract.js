@@ -12,9 +12,10 @@ class SDK {
 		deployArgs
 	) {
 		const factory = new ContractFactory(TLCC, TLCCByteCode, this.signer)
-    return await factory.deploy(...deployArgs, {
+    const tx = await factory.deploy(...deployArgs, {
 			gasLimit: 6000000
 		})
+		return await tx.waitForDeployment()
 	}
 }
 

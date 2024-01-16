@@ -119,9 +119,7 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
-import { ethers } from 'ethers'
 import abi from "@/services/abi";
-import wallets from "@/wallets";
 
 export default {
   name: "WithdrawModal",
@@ -163,49 +161,28 @@ export default {
     },
     async confirmWithdrawal() {
       if(this.checkForm()) {
-        let loadingId = await this.showLoading();
         try {
-          loadingId = await this.showLoading();
-          const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-          const signer = await provider.getSigner();
-          const contract = abi.setAbi(
+          const contract = await abi.setAbi(
             this.accountProfile.account_tba_address, // sender tba address
-            "ERC6551Account",
-            signer
+            "ERC6551Account"
           );
           
           let abiResponse = {done: false};
           if(this.withdrawalToken == "VIC") {
             // execute
-            abiResponse = await contract.interaction("execute", [
-              ethers.getAddress(this.withdrawalAddress), // to
-              ethers.parseEther(this.withdrawalAmount.toString()), // value
-              "0x", // data
-              0 // operation
+            abiResponse = await contract.interaction("transferVIC", [
+              this.withdrawalAddress, // address
+              this.withdrawalAmount // amount
             ]);
           } else {
             // execute VRC25PCUSD transfer
-            abiResponse = await contract.interaction("executeFunction", [
-              "VRC25PCUSD", // contract name
-              "transfer", // function name
-              ["function transfer(address recipient, uint256 amount)"], // function ABI
-              // [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(this.withdrawalAmount)], // function args
-              [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(parseFloat(this.withdrawalAmount) * 1e6)], // function args
-              0 // value
+            abiResponse = await contract.interaction("transferCUSD", [
+              this.withdrawalAddress, // address
+              this.withdrawalAmount // amount
             ]);
           }
   
-          this.openLoadings[loadingId].close();
-          
-          if(!abiResponse.done) {
-            this.notif({
-              title: "OOPS!",
-              message: abiResponse.message,
-              dangerouslyUseHTMLString: true,
-              type: abiResponse.message_type,
-              duration: 3000,
-            });
-          } else {
+          if(abiResponse.done) {
             this.txHash = abiResponse.result.hash;
             this.$refs.message_modal.setMessage({
               title: "Withdrawal Successful",
@@ -216,7 +193,6 @@ export default {
             })
           }
         } catch(err) {
-          this.openLoadings[loadingId].close();
           this.notif({
             title: "OOPS!",
             message: "Something went wrong, please try again later.",

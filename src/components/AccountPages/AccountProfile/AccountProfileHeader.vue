@@ -384,7 +384,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { ethers } from 'ethers'
 import abi from "@/services/abi";
 import api from "@/services/api";
 import wallets from "@/wallets";
@@ -439,14 +438,11 @@ export default {
       console.log('getBalance');
       const vic2usdRatio = 0.81;
 
-      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-      
       // get tokenbound-acount vicBalance
-      provider.getBalance(this.accountProfile.account_tba_address).then((balance) => {
-        let _vicBalance = parseInt(balance.toString()) / 1e18;
-        if(this.vicBalance != _vicBalance) {
-          console.log('_vicBalance', _vicBalance);
-          this.vicBalance = _vicBalance;
+      wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address).then((balance) => {
+        if(this.vicBalance != balance) {
+          console.log('New VIC Balance', balance);
+          this.vicBalance = balance;
           this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
         }
       }).catch((err) => {
@@ -454,25 +450,21 @@ export default {
         clearInterval(this.interval);
       });
 
-      provider.getSigner().then((signer) => {
-        // get tokenbound-acount pcusdBalance
-        const contract = abi.setAbi(
-          "0x", // fixed as VRC25PCUSD address in sdk
-          "VRC25PCUSD",
-          signer
-        );
+      abi.setAbi(
+        "0x", // fixed as VRC25PCUSD address in sdk
+        "VRC25PCUSD"
+      ).then((contract) => {
         contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
           if(abiResponse.done) {
-            let _cusdBalance = parseInt(abiResponse.result.toString()) / 1e6;
-            if(this.cusdBalance != _cusdBalance) {
-              console.log('_cusdBalance', _cusdBalance);
-              this.cusdBalance = _cusdBalance;
+            if(this.cusdBalance != abiResponse.result) {
+              console.log('New CUSD Balance', abiResponse.result);
+              this.cusdBalance = abiResponse.result;
               this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
             }
           }
         });
       }).catch((err) => {
-        console.log('getSigner.err', err);
+        console.log('abi.err', err);
         clearInterval(this.interval);
       });
     },

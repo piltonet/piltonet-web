@@ -91,9 +91,7 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
-import { ethers } from 'ethers'
 import abi from "@/services/abi";
-import wallets from "@/wallets";
 
 export default {
   name: "CircleApproveModal",
@@ -134,57 +132,32 @@ export default {
       this.approvalAmount = this.maxAmount;
     },
     async getAllowance(circleAddress) {
-      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = abi.setAbi(
+      const contract = await abi.setAbi(
         "0x", // sender tba address
-        "VRC25PCUSD",
-        signer
+        "VRC25PCUSD"
       );
       const owner = this.accountProfile.account_tba_address; // tba
       const spender = circleAddress;
       let abiResponse = await contract.interaction("allowance", [owner, spender]);
-      if(!abiResponse.done) {
-          this.notif({
-            title: "OOPS!",
-            message: abiResponse.message,
-            dangerouslyUseHTMLString: true,
-            type: abiResponse.message_type,
-            duration: 3000,
-          });
-        } else {
-          return parseInt(abiResponse.result.toString()) / 1e6; // return allowance amount
-        }
+      return abiResponse.done ? abiResponse.result : 0; // return allowance amount
     },
     async confirmApprove() {
       if(this.checkForm()) {
         let loadingId = await this.showLoading();
         try {
-          const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-          const signer = await provider.getSigner();
-          const contract = abi.setAbi(
+          const contract = await abi.setAbi(
             this.accountProfile.account_tba_address, // sender tba address
-            "ERC6551Account",
-            signer
+            "ERC6551Account"
           );
           
           let abiResponse = await contract.interaction("executeFunction", [
             "VRC25PCUSD", // contract name
             "approve", // function name
             ["function approve(address spender, uint256 value)"], // function ABI
-            // [ethers.getAddress(this.withdrawalAddress), ethers.toBigInt(this.paymentAmount)], // function args
             [this.circleAddress, this.approvalAmount * 1e6], // function args
-            0 // value
+            0 // VIC amount
           ]);
-          if(!abiResponse.done) {
-            this.notif({
-              title: "OOPS!",
-              message: abiResponse.message,
-              dangerouslyUseHTMLString: true,
-              type: abiResponse.message_type,
-              duration: 3000,
-            });
-          } else {
+          if(abiResponse.done) {
             this.closeModal();
           }
 

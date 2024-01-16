@@ -488,7 +488,6 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { ethers } from 'ethers';
 import api from "@/services/api";
 import abi from "@/services/abi";
 import NotFound from '@/pages/NotFound.vue';
@@ -563,8 +562,8 @@ export default {
     async deployCircle() {
       if(this.checkForm()) {
         const deployArgs = [[
-          ethers.getAddress(this.accountProfile.account_tba_address),
-          ethers.getAddress(this.circleInfo.circle_payment_token),
+          this.accountProfile.account_tba_address,
+          this.circleInfo.circle_payment_token,
           this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_round_days,
           this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
@@ -572,24 +571,13 @@ export default {
           parseInt(this.circleInfo.circle_creator_earnings * 100)
         ]];
 
-        const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = abi.setAbi(
+        const contract = await abi.setAbi(
           "0x", // deploy new contract
-          "DeployCustomContract",
-          signer
+          "DeployCustomContract"
         );
         // deploy TLCC
         let abiResponse = await contract.interaction('deployTLCC', deployArgs);
-        if(!abiResponse.done) {
-          this.notif({
-            title: "OOPS!",
-            message: abiResponse.message,
-            dangerouslyUseHTMLString: true,
-            type: abiResponse.message_type,
-            duration: 3000,
-          });
-        } else {
+        if(abiResponse.done) {
           this.circleInfo.circle_id = abiResponse.result.target;
           let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
           if(apiResponse.data.done) {

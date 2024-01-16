@@ -167,7 +167,6 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { ethers } from 'ethers'
 import api from "@/services/api";
 import abi from "@/services/abi";
 import wallets from "@/wallets";
@@ -205,30 +204,19 @@ export default {
   methods: {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     async acceptWaitingContact(contactId, contactTBA) {
-      const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = abi.setAbi(
+      const contract = await abi.setAbi(
         this.accountProfile.account_tba_address, // sender tba address
-        "ERC6551Account",
-        signer
+        "ERC6551Account"
       );
       // execute ContactList addContact
       let abiResponse = await contract.interaction("executeFunction", [
         "ContactList", // contract name
         "addContact", // function name
         ["function addContact(address contactTBA)"], // function ABI
-        [ethers.getAddress(contactTBA)], // function args
-        0 // value
+        [contactTBA], // function args
+        0 // VIC amount
       ]);
-      if(!abiResponse.done) {
-        this.notif({
-          title: "OOPS!",
-          message: abiResponse.message,
-          dangerouslyUseHTMLString: true,
-          type: abiResponse.message_type,
-          duration: 3000,
-        });
-      } else {
+      if(abiResponse.done) {
         let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
         if(apiResponse.data.done) {
           this.notif({

@@ -179,10 +179,8 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
-import { ethers } from 'ethers'
 import api from "@/services/api";
 import abi from "@/services/abi";
-import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
 // const { LendingCircleContract } = require('@/contracts');
@@ -278,12 +276,9 @@ export default {
           // To Do
           this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_min_members) + this.circle_extra_members).toString();
 
-          const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-          const signer = await provider.getSigner();
-          const contract = abi.setAbi(
+          const contract = await abi.setAbi(
             this.accountProfile.account_tba_address, // sender tba address
-            "ERC6551Account",
-            signer
+            "ERC6551Account"
           );
 
           const setupArgs = [
@@ -300,18 +295,10 @@ export default {
             "setupCircle", // function name
             ["function setupCircle(string memory circle_name, uint256 fixed_amount_x100, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
             setupArgs, // function args
-            0, // value
-            ethers.getAddress(this.circleInfo.circle_id) // Contract Address
+            0, // VIC amount
+            this.circleInfo.circle_id // Contract Address
           ]);
-          if(!abiResponse.done) {
-            this.notif({
-              title: "OOPS!",
-              message: abiResponse.message,
-              dangerouslyUseHTMLString: true,
-              type: abiResponse.message_type,
-              duration: 3000,
-            });
-          } else {
+          if(abiResponse.done) {
             let apiResponse = await api.post_account_circles_creator_update(this.circleInfo);
             if(apiResponse.data.done) {
               this.notif({

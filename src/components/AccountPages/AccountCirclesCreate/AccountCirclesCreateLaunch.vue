@@ -336,7 +336,6 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
-import { ethers } from 'ethers'
 import api from "@/services/api";
 import abi from "@/services/abi";
 import wallets from "@/wallets";
@@ -407,12 +406,9 @@ export default {
     async launchCircle() {
       let loadingId = await this.showLoading();
       try {
-        const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = abi.setAbi(
+        const contract = await abi.setAbi(
           this.accountProfile.account_tba_address, // sender tba address
-          "ERC6551Account",
-          signer
+          "ERC6551Account"
         );
 
         // execute TLCC launchCircle
@@ -421,18 +417,10 @@ export default {
           "launchCircle", // function name
           ["function launchCircle(uint256 start_date)"], // function ABI
           [this.startDate.getTime() / 1000], // function args
-          0, // value
-          ethers.getAddress(this.circleInfoProps.circle_id) // Contract Address
+          0, // VIC amount
+          this.circleInfoProps.circle_id // Contract Address
         ]);
-        if(!abiResponse.done) {
-          this.notif({
-            title: "OOPS!",
-            message: abiResponse.message,
-            dangerouslyUseHTMLString: true,
-            type: abiResponse.message_type,
-            duration: 3000,
-          });
-        } else {
+        if(abiResponse.done) {
           let apiResponse = await api.post_account_circles_creator_launch(
             {
               circle_id: this.circleInfoProps.circle_id,

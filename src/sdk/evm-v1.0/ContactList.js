@@ -9,22 +9,17 @@ class SDK {
 	}
 
 	owner() {
-		return this.contract.owner()
+		return this.contract.owner();
 	}
 	
 	totalSupply() {
-		return this.contract.totalSupply()
+		return this.contract.totalSupply();
+	}
+	
+	balanceOf(account, id) {
+		return this.contract.balanceOf(account, id);
 	}
 
-	async addContact(
-		senderTBA,
-		contactTBA
-	) {
-		const tx = await this.contract.addContact(senderTBA, contactTBA, {
-			gasLimit: 3000000
-		})
-		return await tx.wait();
-	}
 }
 
 module.exports = SDK

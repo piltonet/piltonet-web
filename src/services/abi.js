@@ -1,7 +1,11 @@
-// import store from "@/store";
-// const { ethers } = require('ethers')
-const { SDK } = require('@/sdk')
-const { ElLoading } = require('element-plus')
+const store = require('@/store').default;
+const connectedAccount = store.getters.getConnectionStore;
+const wallets = require('@/wallets').default;
+const wallet = wallets[connectedAccount.connected_wallet];
+const { ethers } = require('ethers');
+const { SDK } = require('@/sdk');
+const { ElLoading } = require('element-plus');
+const { notification } = require("@/plugins");
 
 class abi {
 	constructor(contractAddress, contractName, sdk, signer) {
@@ -11,12 +15,14 @@ class abi {
 		this.contract = new sdk(contractAddress, signer);
 	}
 	
-	static setAbi(contractAddress, contractName, signer) {
-		let sdk = SDK[contractName];
+	static async setAbi(contractAddress, contractName) {
+		const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
+    const signer = await provider.getSigner();
+		const sdk = SDK[contractName];
 		return new abi(contractAddress, contractName, sdk, signer);
 	}
 
-	async interaction(_function, _params, _loading = true) {
+	async interaction(_function, _params, _loading = true, _errNotif = true) {
 		let resp = {
 			origin_url: `abi/${this.contractName}/${_function}`,
 			response_id: null,
@@ -40,8 +46,16 @@ class abi {
 			console.log(err);
 			resp.done = false;
 			resp.message_type = 'error';
-			resp.message = "Show Log Error." +
-			"<br>Make sure the address and network are correct and you have enough funds for the transaction.";
+			resp.message = "Make sure the address and network are correct and you have enough funds for the transaction.";
+			if(_errNotif) {
+				notification({
+					title: "OOPS!",
+					message: resp.message,
+					dangerouslyUseHTMLString: true,
+					type: resp.message_type,
+					duration: 3000,
+				});
+			}
 		}
 		if(_loading) loading.close();
 		return resp;

@@ -54,7 +54,7 @@ class SDK {
 		, {
 			gasLimit: 6000000
 		})
-		return await tx.wait();
+		return await tx.wait()
 	}
 
 	async launchCircle(start_date) {
@@ -64,7 +64,6 @@ class SDK {
 	}
 	
 	async addToWhitelist(invited_adrs) {
-		console.log(invited_adrs);
 		return await this.contract.addInvites(JSON.parse(invited_adrs), {
 			gasLimit: 6000000
 		})

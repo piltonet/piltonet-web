@@ -440,22 +440,13 @@ export default {
     },
 
     async launchCircle() {
-      const contractAbi = abi.setAbi(
+      const contractAbi = await abi.setAbi(
         this.circleInfoProps.circle_id,
-        this.circleInfoProps.circle_contract,
-        this.provider
+        this.circleInfoProps.circle_contract
       );
       let abiResponse = await contractAbi.interaction('launchCircle', [parseInt(this.startDate.getTime() / 1000)]);
 
-      if(!abiResponse.done) {
-        this.notif({
-          title: "OOPS!",
-          message: abiResponse.message,
-          dangerouslyUseHTMLString: true,
-          type: abiResponse.message_type,
-          duration: 3000,
-        });
-      } else {
+      if(abiResponse.done) {
         let apiResponse = await api.post_account_circles_creator_launch(
           {
             circle_id: this.circleInfoProps.circle_id,

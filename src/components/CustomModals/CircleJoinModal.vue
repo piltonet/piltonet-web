@@ -51,10 +51,8 @@
 <script>
 import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
-import { ethers } from 'ethers'
 import abi from "@/services/abi";
 import api from "@/services/api";
-import wallets from "@/wallets";
 
 export default {
   name: "CircleJoinModal",
@@ -86,12 +84,9 @@ export default {
     async confirmJoin() {
       let loadingId = await this.showLoading();
       try {
-        const provider = new ethers.BrowserProvider(wallets[this.connectedAccount.connected_wallet].getProvider() || window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = abi.setAbi(
+        const contract = await abi.setAbi(
           this.accountProfile.account_tba_address, // sender tba address
-          "ERC6551Account",
-          signer
+          "ERC6551Account"
         );
 
         let abiResponse = {done: false};
@@ -103,8 +98,8 @@ export default {
             "joinCircle", // function name
             ["function joinCircle(uint8 selected_round)"], // function ABI
             [this.selectedRound], // function args
-            ethers.parseEther(this.paymentAmount.toString()), // value
-            ethers.getAddress(this.circleInfo.circle_id) // Contract Address
+            this.paymentAmount, // VIC amount
+            this.circleInfo.circle_id // Contract Address
           ]);
         } else {
           abiResponse = await contract.interaction("executeFunction", [
@@ -112,21 +107,13 @@ export default {
             "joinCircle", // function name
             ["function joinCircle(uint8 selected_round)"], // function ABI
             [this.selectedRound], // function args
-            0, // value
-            ethers.getAddress(this.circleInfo.circle_id) // Contract Address
+            0, // VIC amount
+            this.circleInfo.circle_id // Contract Address
           ]);
         }
 console.log(abiResponse);
         
-        if(!abiResponse.done) {
-          this.notif({
-            title: "OOPS!",
-            message: abiResponse.message,
-            dangerouslyUseHTMLString: true,
-            type: abiResponse.message_type,
-            duration: 3000,
-          });
-        } else {
+        if(abiResponse.done) {
           let apiResponse = await api.post_account_circles_invited_accept({
             circle_id: this.circleInfo.circle_id,
             member_selected_round: this.selectedRound

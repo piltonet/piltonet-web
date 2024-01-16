@@ -1,9 +1,13 @@
-import app from '@/main'
+// import app from '@/main'
+import { device, notification, utils } from "@/plugins"
+import blockchains from "@/configs/blockchains"
+const defaultchain = blockchains[process.env.VUE_APP_DEFAULT_NETWORK]
+
 import router from '@/router'
 import store from "@/store"
 import api from "@/services/api"
-import { notification } from '@/plugins'
 import { ElLoading } from 'element-plus'
+import { ethers } from 'ethers'
 
 // GET PROVIDER
 function getProvider(walletName = undefined) {
@@ -38,7 +42,7 @@ function getMetamaskProvider() {
 			return window.ethereum;
 		}
 
-		if(app.config.globalProperties.device.type.mobile) {
+		if(device.type.mobile) {
 			notification({
 				title: "Mobile App",
 				message:
@@ -75,7 +79,7 @@ function getCoin98Provider() {
 		} 
 		if(window.ethereum?.isCoin98) return window.ethereum;
 
-		if(app.config.globalProperties.device.type.mobile) {
+		if(device.type.mobile) {
 			notification({
 				title: "Mobile App",
 				message:
@@ -113,7 +117,7 @@ function getCoinbaseProvider() {
 			return window.ethereum;
 		}
 
-		if(app.config.globalProperties.device.type.mobile) {
+		if(device.type.mobile) {
 			notification({
 				title: "Mobile App",
 				message:
@@ -176,7 +180,7 @@ async function connectWallet(walletName) {
 function setWatchers(walletName) {
 	const provider = getProvider(walletName);
 	const connectedAccount = store.getters.getConnectionStore;
-	const defaultChain = app.config.globalProperties.defaultchain;
+	const defaultChain = defaultchain;
 	provider.on("chainChanged", (chainId) => {
 		if(connectedAccount && connectedAccount.is_connected && chainId != defaultChain.chainId) {
 			router.go();
@@ -195,7 +199,6 @@ function setWatchers(walletName) {
 
 // GET ACCOUNT
 async function getAccount(walletName, metamaskAccounts) {
-	const notification = app.config.globalProperties.notif;
 	if(metamaskAccounts.length > 0) {
 		// Send to Server via API
 		let apiResponse = await api.post_account_connect({ account_address: metamaskAccounts[0] });
@@ -220,7 +223,7 @@ async function getAccount(walletName, metamaskAccounts) {
 					title: "SUCCESS!",
 					message:
 						"You have successfully connected with MetaMask wallet." +
-						`<br>Account: ${app.config.globalProperties.utils.truncate(connectedAccount.account_address, 12)}`,
+						`<br>Account: ${utils.truncate(connectedAccount.account_address, 12)}`,
 					dangerouslyUseHTMLString: true,
 					type: "success",
 					duration: 3000,
@@ -262,7 +265,7 @@ async function isDefaultNetwork(provider = undefined, notif = true) {
 			let walletName = store.getters.getConnectionStore?.connected_wallet;
 			provider = getProvider(walletName);
 		}
-		const defaultChain = app.config.globalProperties.defaultchain;
+		const defaultChain = defaultchain;
 		const chainId = await provider.request({ method: "eth_chainId" });
 		if(chainId == defaultChain.chainId) {
 			return true;
@@ -286,7 +289,7 @@ async function switchNetworkToDefault(provider = undefined) {
 	let loading = show_loading();
 	let walletName = store.getters.getConnectionStore?.connected_wallet;
 	provider = provider || getProvider(walletName);
-	const defaultChain = app.config.globalProperties.defaultchain;
+	const defaultChain = defaultchain;
 
 	try {
 		await provider.request({
@@ -309,6 +312,22 @@ async function switchNetworkToDefault(provider = undefined) {
 	} finally {
 		loading.close();
 	}
+}
+
+// GET BALANCE
+async function getBalance(address) {
+	let balance = undefined;
+	try {
+		let walletName = store.getters.getConnectionStore?.connected_wallet;
+		const provider = getProvider(walletName);
+		if(await isDefaultNetwork(provider)) {
+			const _provider = new ethers.BrowserProvider(provider);
+			balance = await _provider.getBalance(address);
+		}
+	} catch (err) {
+		console.log(err);
+	}
+	return parseInt(balance.toString()) / 1e18 || 0;
 }
 
 // PERSONAL SIGN
@@ -373,6 +392,7 @@ export default {
 	connectWallet,
 	isDefaultNetwork,
 	switchNetworkToDefault,
+	getBalance,
 	personalSign,
 	disconnectWallet
 };

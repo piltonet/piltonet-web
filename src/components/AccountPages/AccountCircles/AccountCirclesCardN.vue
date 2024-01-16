@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.accountCircleProps);
+    // console.log(this.accountCircleProps);
   },
 };
 </script>
