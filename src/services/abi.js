@@ -33,7 +33,7 @@ class abi {
 			result: null
 		}
 
-		let loading = _loading ? this.show_loading() : '';
+		let loading = _loading ? this.showLoading() : '';
 		
 		try {
 			var transaction = await this.contract[_function](..._params);
@@ -61,7 +61,7 @@ class abi {
 		return resp;
 	}
 
-	show_loading() {
+	showLoading() {
 		let loading = ElLoading.service({
 			lock: true,
 			text: '',

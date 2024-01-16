@@ -89,7 +89,7 @@ class api {
 		// }
 	}
 	async postAPI(endpoint, formBE, headers = {}, show = true) {
-		let loading = this.show_loading();
+		let loading = this.showLoading();
 		try {
 			let response = await axios.post(endpoint, formBE, headers);
 			loading.close()
@@ -100,7 +100,7 @@ class api {
 		}
 	}
 	async getAPI(endPoint, headers, show) {
-		let loading = this.show_loading();
+		let loading = this.showLoading();
 		try {
 			let response = await axios.get(endPoint, headers);
 			loading.close()
@@ -111,7 +111,7 @@ class api {
 			errorNetworkModal();
 		}
 	}
-	show_loading() {
+	showLoading() {
 		let loading = ElLoading.service({
 			lock: true,
 			text: '',

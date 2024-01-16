@@ -146,7 +146,7 @@ function getCoinbaseProvider() {
 
 // CONNECT WALLET
 async function connectWallet(walletName) {
-  let loading = show_loading();
+  let loading = showLoading();
 	try {
 		let provider = getProvider(walletName);
 		if(provider) {
@@ -155,7 +155,7 @@ async function connectWallet(walletName) {
 				await switchNetworkToDefault(provider);
 			}
 			if(await isDefaultNetwork(provider, false)) {
-				loading = show_loading();
+				loading = showLoading();
 				const walletAccounts = await provider.request({ method: "eth_requestAccounts" });
 				let accountExists = await getAccount(walletName, walletAccounts);
 				if(accountExists) setWatchers(walletName);
@@ -286,7 +286,7 @@ async function isDefaultNetwork(provider = undefined, notif = true) {
 
 // SWITCH NETWORK
 async function switchNetworkToDefault(provider = undefined) {
-	let loading = show_loading();
+	let loading = showLoading();
 	let walletName = store.getters.getConnectionStore?.connected_wallet;
 	provider = provider || getProvider(walletName);
 	const defaultChain = defaultchain;
@@ -332,7 +332,7 @@ async function getBalance(address) {
 
 // PERSONAL SIGN
 async function personalSign(challenge, address, deniedMessage) {
-  let loading = show_loading();
+  let loading = showLoading();
 	let personalSign = null;
 	try {
 		let walletName = store.getters.getConnectionStore?.connected_wallet;
@@ -376,7 +376,7 @@ async function disconnectWallet() {
 	}
 }
 
-function show_loading() {
+function showLoading() {
   let loading = ElLoading.service({
     lock: true,
     text: '',

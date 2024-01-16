@@ -117,7 +117,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
 import abi from "@/services/abi";
 
@@ -244,16 +243,6 @@ export default {
       let _explorerLink = `${this.defaultchain.blockExplorerUrl}/tx/${this.txHash}`;
       window.open(_explorerLink, "_blank");
       this.closeModal();
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     },
     closeModal() {
       this.showModal = false;

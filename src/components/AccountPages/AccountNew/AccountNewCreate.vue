@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import wallets from "@/wallets";
@@ -111,7 +110,6 @@ export default {
       if(this.checkForm()) {
         let personalSign = await this.personalSign();
         if(personalSign) {
-          let loadingId = await this.showLoading();
           try {
             let apiResponse = await api.post_account_create(this.accountInfo);
             if(apiResponse.data.done) {
@@ -144,7 +142,6 @@ export default {
               }
             }
           } catch(err) {
-            this.openLoadings[loadingId].close();
             this.notif({
               title: "OOPS!",
               message: "Something went wrong, please try again later.",
@@ -212,16 +209,6 @@ export default {
         // console.log(err);
         return false;
       }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     }
   }
 }

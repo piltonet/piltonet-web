@@ -177,7 +177,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import abi from "@/services/abi";
@@ -427,16 +426,6 @@ export default {
         // console.log(err);
         return false;
       }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     }
   }
 }

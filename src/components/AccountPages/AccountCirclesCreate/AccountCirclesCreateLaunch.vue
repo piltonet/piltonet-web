@@ -334,7 +334,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import abi from "@/services/abi";
@@ -404,7 +403,6 @@ export default {
     },
 
     async launchCircle() {
-      let loadingId = await this.showLoading();
       try {
         const contract = await abi.setAbi(
           this.accountProfile.account_tba_address, // sender tba address
@@ -453,7 +451,6 @@ export default {
           }
         }
       } catch(err) {
-        this.openLoadings[loadingId].close();
         this.notif({
           title: "OOPS!",
           message: "Something went wrong, please try again later.",
@@ -481,16 +478,6 @@ export default {
 				null
       );
       return personalSignResult;
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     }
   }
 }

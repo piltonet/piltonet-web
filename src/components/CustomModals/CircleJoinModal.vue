@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters } from "vuex";
 import abi from "@/services/abi";
 import api from "@/services/api";
@@ -82,7 +81,6 @@ export default {
       this.showModal = true;
     },
     async confirmJoin() {
-      let loadingId = await this.showLoading();
       try {
         const contract = await abi.setAbi(
           this.accountProfile.account_tba_address, // sender tba address
@@ -153,19 +151,7 @@ console.log(abiResponse);
           duration: 3000,
         })
         console.log(err);
-      } finally {
-        this.openLoadings[loadingId].close();
       }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     },
     closeModal() {
       this.showModal = false;

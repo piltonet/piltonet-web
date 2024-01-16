@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { ElLoading } from "element-plus";
 import NavBar from '@/components/NavBar/NavBar.vue';
 import { mapGetters } from "vuex";
 import abi from "@/services/abi";
@@ -139,7 +138,6 @@ export default {
     },
 
     async _onBtn1Click() {
-      let loadingId = await this.showLoading();
       try {
         let ABI = ["function addContact(address contactTBA)"];
         let iface = new ethers.Interface(ABI);
@@ -164,20 +162,7 @@ console.log(abiResponse);
       } catch (err) {
         console.log("Error:", err);
       }
-      this.openLoadings[loadingId].close();
     },
-
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: "",
-        fullscreen: true,
-      });
-      return randomId;
-    },
-
     async copyPassword() {
       navigator.clipboard.writeText("Arnic@2504");
     },

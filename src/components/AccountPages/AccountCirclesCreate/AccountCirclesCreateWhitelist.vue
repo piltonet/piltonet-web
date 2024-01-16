@@ -189,7 +189,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
 import { mapGetters, mapMutations } from "vuex";
 import api from "@/services/api";
 import abi from "@/services/abi";
@@ -321,12 +320,10 @@ export default {
     },
     async removeFromWhitelist(whitelistedAdr) {
       console.log(whitelistedAdr);
-      // let loadingId = await this.showLoading();
       // try {
       //   const circleContractAddress = this.circleInfoProps.circle_id;
       //   const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
       //   const circleOwner = new Address(this.connectedAccount.account_tba_address);
-      //   loadingId = await this.showLoading();
       //   const transaction = await circleContract.methods.removeFromWhitelist({
       //     delistedAddress: [whitelistedAdr]
       //   }).send({
@@ -408,16 +405,6 @@ export default {
       } else {
         document.getElementById(elementId).innerHTML = '<i class="far fa-square" aria-hidden="true" style="color: rgba(var(--ptn-color-rgb), 0.9)"></i>'
       }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     }
   }
 }

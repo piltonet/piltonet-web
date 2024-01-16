@@ -122,8 +122,6 @@
 </template>
 
 <script>
-import { ElLoading } from 'element-plus';
-
 export default {
   name: "PatienceBenefitCalcModal",
   data() {
@@ -207,16 +205,6 @@ export default {
         console.log(err);
         return false;
       }
-    },
-    async showLoading() {
-      const randomId = Date.now();
-      this.openLoadings[randomId] = undefined;
-      this.openLoadings[randomId] = new ElLoading.service({
-        lock: true,
-        text: '',
-        fullscreen: true,
-      });
-      return randomId;
     },
     closeModal() {
       this.showModal = false;
