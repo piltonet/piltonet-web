@@ -340,8 +340,6 @@ import abi from "@/services/abi";
 import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
-// const { LendingCircleContract } = require('@/contracts');
-
 export default {
   name: "AccountCirclesCreateLaunch",
   components: {
