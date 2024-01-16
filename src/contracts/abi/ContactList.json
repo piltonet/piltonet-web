@@ -292,7 +292,7 @@
         "type": "address"
       }
     ],
-    "name": "addContactByOwner",
+    "name": "addContactByService",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
