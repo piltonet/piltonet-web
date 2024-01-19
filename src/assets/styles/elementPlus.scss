@@ -106,7 +106,7 @@
     max-width: 100%;
     max-width: 96%;
     text-align: center !important;
-  }
+}
 .calendar-button {
     background: var(--ptn-btn-bg);
     color: var(--ptn-btn-color);
@@ -142,6 +142,7 @@
     margin: max(2rem, 50vh - 100px) auto 0;
     padding: 0;
 }
+
 #topup-modal .el-dialog__body {
     padding: 1rem 1.5rem !important;
 }
@@ -154,6 +155,7 @@
     height: auto;
     padding: 0;
 }
+
 #calculator-modal .el-dialog__body {
     padding: 1rem 1.5rem !important;
 }
@@ -166,6 +168,7 @@
     height: auto;
     padding: 0;
 }
+
 #withdraw-modal .el-dialog__body {
     padding: 1rem 1.5rem !important;
 }
@@ -178,6 +181,7 @@
     height: auto;
     padding: 0;
 }
+
 #circle-approve-modal .el-dialog__body {
     padding: 1rem 1.5rem !important;
 }
