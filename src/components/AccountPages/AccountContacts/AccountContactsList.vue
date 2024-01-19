@@ -35,7 +35,7 @@
           />
           <p class="top-text-small ms-2">
             <span>
-              {{ accountContact.account_fullname }}
+              {{ accountContact.account_fullname || accountContact.account_nickname }}
             </span>
             <span class="note-text d-none d-sm-inline-block ps-2">
               {{ `friend request on ${utils.formatDate(accountContact.created_at, 'DD Month YYYY')}` }}

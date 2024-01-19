@@ -22,6 +22,7 @@
                 type="number"
                 class="small-input mb-0"
                 :class="hasError['circleSize'] ? 'has-error' : ''"
+                :disabled="calculate"
                 v-model="circleSize"
               />
             </div>
@@ -42,6 +43,7 @@
                 type="number"
                 class="small-input mb-0"
                 :class="hasError['fixedAmount'] ? 'has-error' : ''"
+                :disabled="calculate"
                 v-model="fixedAmount"
               />
             </div>
@@ -60,34 +62,36 @@
                 type="number"
                 class="small-input mb-0"
                 :class="hasError['patienceBenefit'] ? 'has-error' : ''"
+                :disabled="calculate"
                 v-model="patienceBenefit"
               />
             </div>
           </div>
         </div>
+        <!-- Calculation Result -->
         <div class="col-12 col-md-6 d-flex flex-column justify-content-start align-items-center mt-4">
           <template v-if="calculate">
             <div class="d-flex flex-row justify-content-center align-items-center row w-100">
               <div class="col-6 text-start">
-                Round
+                Rounds
               </div>
               <div class="col-6 text-start">
                 Loan Amount
               </div>
             </div>
-            <div v-for="(round, index) in calcResult"
+            <div v-for="(row, index) in calcResult"
               :key="index"
               class="d-flex flex-row justify-content-center align-items-center row w-100"
             >
               <template v-if="index < 4 || index > calcResult.length - 4">
                 <div class="col-6 text-start mt-1">
                   <span class="main-text-tiny">
-                    {{ `${round.round}` }}
+                    {{ `${row.round}` }}
                   </span>
                 </div>
-                <div class="col-6 d-flex flex-row justify-content-center align-items-center mt-1">
+                <div class="col-6 d-flex flex-row justify-content-start align-items-center mt-1">
                   <span class="main-text-tiny">
-                    {{ parseFloat(round.loan).toFixed(2) }}
+                    {{ parseFloat(row.loan).toFixed(2) }}
                   </span>
                   <SvgPaymentToken
                     :chainId="circleInfo.circle_chain_id"
@@ -112,7 +116,8 @@
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="success" class="footer-btn px-4 mt-2" @click="calcRounds">Calculate</el-button>
+        <el-button v-if="!calculate" type="success" class="footer-btn px-4 mt-2" @click="calcRounds">Calculate</el-button>
+        <el-button v-if="calculate" type="warning" class="footer-btn px-4 mt-2" @click="clearModal">Clear</el-button>
         <el-button type="danger" class="footer-btn px-4 mt-2" @click="closeModal">Close</el-button>
       </span>
     </template>
@@ -148,31 +153,20 @@ export default {
     },
     async calcRounds() {
       this.calcResult = [];
-      let round = '';
-      if(this.circleInfo.circle_round_days == 7) {
-          round = 'Week';
-        } else if(this.circleInfo.circle_round_days == 14) {
-          round = 'Biweek';
-        } else if(this.circleInfo.circle_round_days == 30) {
-          round = 'Month';
-        } else {
-          round = `${this.circleInfo.circle_round_days} days`;
-        }
       if(this.checkForm()) {
         for(let i=0; i < this.circleSize; i++) {
           this.calcResult.push({
-            round: `${round}-${i+1}`,
+            round: `Round-${i+1}`,
             loan: this.loanAmount(i),
           })
         }
         this.calculate = true;
-        console.log(this.calcResult);
       }
     },
     loanAmount(index) {
-      const memberMonth = index + 1;
-      const totalMonths = parseInt(this.circleSize);
-      const memberBenefit = ((memberMonth - ((totalMonths + 1) / 2)) * ((this.patienceBenefit / 100) / 12)) * this.totalPayments();
+      const roundNo = index + 1;
+      const totalRounds = parseInt(this.circleSize);
+      const memberBenefit = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / 12)) * this.totalPayments();
       // return (this.totalPayments() + memberBenefit) * (1 - this.circleFee);
       return (this.totalPayments() + memberBenefit);
     },
@@ -206,9 +200,15 @@ export default {
         return false;
       }
     },
+    clearModal() {
+      this.circleSize = "";
+      this.fixedAmount = "";
+      this.patienceBenefit = "";
+      this.calculate = false;
+    },
     closeModal() {
+      this.clearModal();
       this.showModal = false;
-      this.$emit('getBalance');
     }
   },
 };

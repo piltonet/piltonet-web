@@ -151,8 +151,7 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 900px;
-    height: 470px;
-    // margin: max(2rem, 50vh - 100px) auto 0;
+    height: auto;
     padding: 0;
 }
 #calculator-modal .el-dialog__body {
@@ -164,8 +163,7 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: 450px;
-    // margin: max(2rem, 50vh - 100px) auto 0;
+    height: auto;
     padding: 0;
 }
 #withdraw-modal .el-dialog__body {
@@ -177,8 +175,7 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: 490px;
-    // margin: max(2rem, 50vh - 100px) auto 0;
+    height: auto;
     padding: 0;
 }
 #circle-approve-modal .el-dialog__body {
@@ -190,8 +187,7 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: 450px;
-    // margin: max(2rem, 50vh - 100px) auto 0;
+    height: auto;
     padding: 0;
 }
 
@@ -204,8 +200,7 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: 400px;
-    // margin: max(2rem, 50vh - 100px) auto 0;
+    height: auto;
     padding: 0;
 }
 
@@ -221,9 +216,6 @@
 @media (max-width: 767px) {
     .el-dialog {
         width: 100%;
-    }
-    .withdraw-dialog {
-        height: 530px;
     }
 }
 

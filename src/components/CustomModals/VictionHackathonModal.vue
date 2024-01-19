@@ -17,7 +17,7 @@
           <a href="https://docs.viction.xyz/general/how-to-connect-to-viction-network" target="_blank">
             <span  class="text-decoration-underline blue-btn">Viction Testnet</span>
           </a>
-          (ChainID=89, RPC=https://rpc.testnet.tomochain.com)
+          {{ `(ChainID=${defaultchain.id}, RPC=${defaultchain.rpcUrl})` }}
         </p>
         <button
           type="button"
