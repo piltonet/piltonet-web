@@ -188,7 +188,7 @@
               <div
                 type="button"
                 @click="patienceBenefitCalc"
-                class="main-btn gray-bg middle-text ms-3"
+                class="main-btn gray-bg middle-text ms-3 mt-2"
               >
                 <span class="m-0 p-0">Calculator</span>
               </div>

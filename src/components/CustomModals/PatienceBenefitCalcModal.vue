@@ -8,9 +8,9 @@
   >
     <div class="d-flex flex-column justify-content-center align-items-start p-2">
       <div class="row w-100">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 my-2">
           <!-- Circle Size -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+          <div class="d-flex flex-column justify-content-center align-items-start">
             <label for="circleSize" class="input-label">
               Circle Size
               <span class="input-label-small">(Member Counts)</span>
@@ -69,36 +69,40 @@
           </div>
         </div>
         <!-- Calculation Result -->
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-start align-items-center mt-4">
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
           <template v-if="calculate">
-            <div class="d-flex flex-row justify-content-center align-items-center row w-100">
-              <div class="col-6 text-start">
-                Rounds
-                <span class="info-text tiny">{{ `(${roundPeriod})` }}</span>
-              </div>
-              <div class="col-6 text-start">
+            <div class="d-flex flex-column justify-content-center align-items-start w-100 mb-2">
+              <span class="main-text">
                 Loan Amount
-              </div>
+                <span class="note-text tiny text-start">
+                  {{ `(${roundPeriod})` }}
+                </span>
+              </span>
+              <span class="info-text tiny text-start">
+                The loan amount for the winner of each round.
+              </span>
             </div>
-            <div v-for="(row, index) in calcResult"
+            <div v-for="(calcRow, index) in calcResult"
               :key="index"
-              class="d-flex flex-row justify-content-center align-items-center row w-100"
+              class="d-flex flex-row justify-content-center align-items-center w-100"
             >
               <template v-if="index < 4 || index > calcResult.length - 4">
-                <div class="col-6 text-start mt-1">
-                  <span class="main-text tiny">
-                    {{ `${row.round}` }}
-                  </span>
-                </div>
-                <div class="col-6 d-flex flex-row justify-content-start align-items-center mt-1">
-                  <span class="main-text tiny">
-                    {{ parseFloat(row.loan).toFixed(2) }}
-                  </span>
-                  <SvgPaymentToken
-                    :chainId="circleInfo.circle_chain_id"
-                    :paymentToken="circleInfo.circle_payment_token"
-                    :height="14" customClass="ps-1"
-                  />
+                <div class="d-flex flex-row justify-content-center align-items-center row w-100 calc-grid">
+                  <div class="col-6 text-start mt-1">
+                    <span class="main-text tiny">
+                      {{ `${calcRow.round}` }}
+                    </span>
+                  </div>
+                  <div class="col-6 d-flex flex-row justify-content-end align-items-center mt-1">
+                    <span class="main-text tiny">
+                      {{ parseFloat(calcRow.loan).toFixed(2) }}
+                    </span>
+                    <SvgPaymentToken
+                      :chainId="circleInfo.circle_chain_id"
+                      :paymentToken="circleInfo.circle_payment_token"
+                      :height="14" customClass="ps-1"
+                    />
+                  </div>
                 </div>
               </template>
               <template v-else>
@@ -168,7 +172,7 @@ export default {
       if(this.checkForm()) {
         for(let i=0; i < this.circleSize; i++) {
           this.calcResult.push({
-            round: `Round-${i+1}`,
+            round: `Winner ${i+1}`,
             loan: this.loanAmount(i),
           })
         }
@@ -260,5 +264,8 @@ export default {
 .footer-btn {
   min-width: 120px;
   height: 32px;
+}
+.calc-grid {
+  border-bottom: solid 1px rgba(var(--ptn-third-gray-rgb), 0.3);
 }
 </style>
