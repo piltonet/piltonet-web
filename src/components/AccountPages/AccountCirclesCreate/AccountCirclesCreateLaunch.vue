@@ -37,7 +37,7 @@
               @click="copyAddress('copy-contract-address', circleInfoProps.circle_id)"
               class="ms-2"
             >
-              <i class="far fa-copy main-text-small" aria-hidden="true"></i>
+              <i class="far fa-copy main-text small" aria-hidden="true"></i>
             </a>
           </el-tooltip>
           <!-- Explore Icon -->
@@ -52,7 +52,7 @@
               target="_blank"
               class="ms-2"
             >
-              <i class="fa fa-external-link main-text-small" aria-hidden="true"></i>
+              <i class="fa fa-external-link main-text small" aria-hidden="true"></i>
             </a>
           </el-tooltip>
         </div>
@@ -64,13 +64,13 @@
             Round Period:
           </span>
           <span v-if="circleInfoProps.circle_round_days == 7" class="top-text-small ps-2">
-            Weekly<span class="main-text-small ps-2">(7 days)</span>
+            Weekly<span class="main-text small ps-2">(7 days)</span>
           </span>
           <span v-if="circleInfoProps.circle_round_days == 14" class="top-text-small ps-2">
-            Biweekly<span class="main-text-small ps-2">(14 days)</span>
+            Biweekly<span class="main-text small ps-2">(14 days)</span>
           </span>
           <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text-small ps-2">
-            Monthly<span class="main-text-small ps-2">(30 days)</span>
+            Monthly<span class="main-text small ps-2">(30 days)</span>
           </span>
           <span v-else class="top-text-small ps-2">
             {{ circleInfoProps.circle_round_days }} days
@@ -93,18 +93,18 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_max_members }}
           </span>
-          <span class="main-text-small ps-2">people</span>
+          <span class="main-text small ps-2">people</span>
         </div>
         <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Circle Size:</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_min_members }}
           </span>
-          <span class="main-text-small ps-2">to</span>
+          <span class="main-text small ps-2">to</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_max_members }}
           </span>
-          <span class="main-text-small ps-2">people</span>
+          <span class="main-text small ps-2">people</span>
         </div>
         <!-- Payments per Round & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
@@ -120,7 +120,7 @@
               :paymentToken="circleInfoProps.circle_payment_token"
               customClass="ms-1"
             />
-            <!-- <span class="main-text-small ps-2">(fixed)</span> -->
+            <!-- <span class="main-text small ps-2">(fixed)</span> -->
           </div>
           <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
             class="d-flex flex-row justify-content-start align-items-center mt-4"
@@ -145,7 +145,7 @@
               :paymentToken="circleInfoProps.circle_payment_token"
               customClass="ms-1"
             />
-            <span class="main-text-small ps-2">to</span>
+            <span class="main-text small ps-2">to</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount * circleInfoProps.circle_max_members }}
             </span>
@@ -185,7 +185,7 @@
               :paymentToken="circleInfoProps.circle_payment_token"
               customClass="ms-1"
             />
-            <span class="main-text-small ps-2">to</span>
+            <span class="main-text small ps-2">to</span>
             <span class="top-text-small ps-2">
               {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
             </span>
@@ -206,7 +206,7 @@
               :paymentToken="circleInfoProps.circle_payment_token"
               customClass="ms-1"
             />
-            <!-- <span class="main-text-small ps-2">(fixed)</span> -->
+            <!-- <span class="main-text small ps-2">(fixed)</span> -->
           </div>
   
         </div>
@@ -237,7 +237,7 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_winners_number }}
           </span>
-          <span class="main-text-small ps-2">winner(s)</span>
+          <span class="main-text small ps-2">winner(s)</span>
         </div>
         <!-- Patience Benefit -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
@@ -245,7 +245,7 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_patience_benefit }}
           </span>
-          <span class="main-text-small ps-1">%</span>
+          <span class="main-text small ps-1">%</span>
         </div>
         <!-- Creator Earnings -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
@@ -253,7 +253,7 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_creator_earnings }}
           </span>
-          <span class="main-text-small ps-1">%</span>
+          <span class="main-text small ps-1">%</span>
         </div>
         <!-- Service Charge -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
@@ -261,7 +261,7 @@
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_service_charge }}
           </span>
-          <span class="main-text-small ps-1">%</span>
+          <span class="main-text small ps-1">%</span>
         </div>
         
       </div>
@@ -465,7 +465,7 @@ export default {
       this.copyAddressTooltip = "Copied To Clipboard";
       setTimeout(() => {
           this.copyAddressTooltip = "Copy Address";
-          document.getElementById(elementId).innerHTML = '<i class="far fa-copy main-text-small" aria-hidden="true"></i>';
+          document.getElementById(elementId).innerHTML = '<i class="far fa-copy main-text small" aria-hidden="true"></i>';
         }, 2000);
     },
     async personalSign() {

@@ -41,7 +41,7 @@
 
         </form>
       </div>
-      <p class="main-text-small">
+      <p class="main-text small">
         <i class="fa fa-asterisk pe-1" aria-hidden="true"></i>
         If you don't have an account, click
         <span

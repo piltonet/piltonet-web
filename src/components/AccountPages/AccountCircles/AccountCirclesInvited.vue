@@ -39,19 +39,19 @@
         </p>
       </div>
       <div class="d-flex flex-column justify-content-center align-items-start">
-        <p class="main-text-small mt-3">
+        <p class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
           The circle requires a minimum of
           <span class="top-text-small">{{ `${circleInfo.circle_min_members} members` }}</span>
           to commence. If this threshold is not met by the start date, the circle will be automatically disbanded, and all payments will be reimbursed.
         </p>
-        <p v-if="parseInt(circleInfo.circle_min_members) < parseInt(circleInfo.circle_max_members)" class="main-text-small mt-3">
+        <p v-if="parseInt(circleInfo.circle_min_members) < parseInt(circleInfo.circle_max_members)" class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
           If the number of participating accounts does not reach the maximum limit of circle members
           (<span class="top-text-small">{{ `${circleInfo.circle_max_members} people` }}</span>)
           by the start date, the remaining slots will be vacated while maintaining the order of the winners.
         </p>
-        <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" class="main-text-small mt-3">
+        <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
             To join the circle, a payment of
             <span class="top-text-small">
@@ -60,7 +60,7 @@
             </span>
             is required.
         </p>
-        <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" class="main-text-small mt-3">
+        <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" class="main-text small mt-3">
           <span v-if="parseInt(circleInfo.circle_min_members) < parseInt(circleInfo.circle_max_members)">
             <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
               To join the circle, a payment of
@@ -81,7 +81,7 @@
               is required.
           </span>
         </p>
-        <p v-if="allowance < paymentAmount" class="main-text-small mt-3">
+        <p v-if="allowance < paymentAmount" class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
             The circle contract requires approval before you can join. You can use a single transaction to approve all rounds of the circle.
         </p>

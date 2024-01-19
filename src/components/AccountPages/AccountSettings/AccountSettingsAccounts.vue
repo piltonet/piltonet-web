@@ -12,7 +12,7 @@
     </div>
     <div class="main-section">
       <h3>MAIN ACCOUNT</h3>
-      <p class="main-text-small">
+      <p class="main-text small">
         {{ utils.truncate(accountWalletsProps.main_account_address, 17) }}
         <el-tooltip
           :content="this.copyAddressTooltip"
@@ -30,7 +30,7 @@
       <div>
         <p v-for="(waiting_account_address, index) in accountWalletsProps.waiting_accounts"
           :key="waiting_account_address"
-          class="main-text-small"
+          class="main-text small"
           :class="index > 0 ? 'mt-2' : ''"
         >
           {{ utils.truncate(waiting_account_address, 17) }}
@@ -63,7 +63,7 @@
       <div v-if="accountWalletsProps.linked_accounts">
         <p v-for="(linked_account_address, index) in accountWalletsProps.linked_accounts"
           :key="linked_account_address"
-          class="main-text-small"
+          class="main-text small"
           :class="index > 0 ? 'mt-2' : ''"
         >
           {{ utils.truncate(linked_account_address, 17) }}

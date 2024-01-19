@@ -167,7 +167,7 @@
       </div>
       <div v-else>
         <p class="note-text">The list of remaining contacts is empty.</p>
-        <p class="main-text-small mt-4">
+        <p class="main-text small mt-4">
           <i class="fa fa-asterisk pe-1" aria-hidden="true"></i>
           If you don't have enough contacts, click
           <span

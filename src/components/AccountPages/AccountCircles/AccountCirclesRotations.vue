@@ -7,11 +7,11 @@
         
         <!-- Titles in Header -->
         <div class="row mb-3">
-          <div class="col-2 col-md-1 col-lg-1 col-xl-1 text-center"><span class="main-text-small">Round</span></div>
-          <div class="col-4 col-md-4 col-lg-4 col-xl-3 ps-2 ps-md-3 ps-lg-4 ps-xl-5"><span class="main-text-small">Winner</span></div>
-          <div class="col-md-3 col-lg-2 col-xl-2 d-none d-md-block text-center"><span class="main-text-small">Due Date</span></div>
-          <div class="col-3 col-md-2 col-lg-2 col-xl-2 text-center"><span class="main-text-small">Loan Amount</span></div>
-          <div class="col-3 col-md-2 col-lg-3 col-xl-2 text-center"><span class="main-text-small">Total Payments</span></div>
+          <div class="col-2 col-md-1 col-lg-1 col-xl-1 text-center"><span class="main-text small">Round</span></div>
+          <div class="col-4 col-md-4 col-lg-4 col-xl-3 ps-2 ps-md-3 ps-lg-4 ps-xl-5"><span class="main-text small">Winner</span></div>
+          <div class="col-md-3 col-lg-2 col-xl-2 d-none d-md-block text-center"><span class="main-text small">Due Date</span></div>
+          <div class="col-3 col-md-2 col-lg-2 col-xl-2 text-center"><span class="main-text small">Loan Amount</span></div>
+          <div class="col-3 col-md-2 col-lg-3 col-xl-2 text-center"><span class="main-text small">Total Payments</span></div>
         </div>
 
         <div v-for="(member, index) in circleMembers"
@@ -24,7 +24,7 @@
             <p v-if="circleInfo.circle_winners_order == 'fixed' && member.main_account_address == mainAccountAddress" class="account-circles-rotations-you">
                 {{ selectedRound = roundNumber(index) }}
               </p>
-              <p v-else class="main-text-tiny">
+              <p v-else class="main-text tiny">
                 {{ roundNumber(index) }}
               </p>
           </div>
@@ -57,7 +57,7 @@
               <p v-if="member.main_account_address == mainAccountAddress" class="account-circles-rotations-you ms-2">
                 You
               </p>
-              <p v-else class="main-text-tiny ms-2">
+              <p v-else class="main-text tiny ms-2">
                 {{ member.account_fullname || member.account_nickname }}
               </p>
             </div>
@@ -72,24 +72,24 @@
                 :class="selectedRound == index ? 'selected' : ''"
               >
               </div>
-              <p v-if="selectedRound == index" class="main-text-tiny selected ms-2">
+              <p v-if="selectedRound == index" class="main-text tiny selected ms-2">
                 selected
               </p>
-              <p v-else class="main-text-tiny ms-2">
+              <p v-else class="main-text tiny ms-2">
                 vacant
               </p>
             </div>
           </div>
           
           <div v-else-if="circleInfo.circle_winners_order == 'random'" class="col-4 col-md-4 col-lg-4 col-xl-3 ps-1 ps-md-2 ps-lg-3 ps-xl-4 ps-lg-3 align-items-start">
-            <p class="main-text-tiny py-2">
+            <p class="main-text tiny py-2">
               <i class="fa fa-dice fa-xl third-gray-btn me-2" aria-hidden="true"></i>
               Random
             </p>
           </div>
           
           <div v-else-if="circleInfo.circle_winners_order == 'bidding'" class="col-4 col-md-4 col-lg-4 col-xl-3 ps-1 ps-md-2 ps-lg-3 ps-xl-4 ps-lg-3 align-items-start">
-            <p class="main-text-tiny py-2">
+            <p class="main-text tiny py-2">
               <i class="fa fa-gavel fa-xl third-gray-btn me-2" aria-hidden="true"></i>
               Bidding
             </p>
@@ -97,7 +97,7 @@
           
           <!-- Due Date -->
           <div class="col-md-3 col-lg-2 col-xl-2 d-none d-md-block d-flex flex-row text-center align-items-center">
-            <p class="main-text-tiny">
+            <p class="main-text tiny">
               {{ circleInfo.circle_start_date ? utils.formatDate(
                 utils.nextRound(
                   circleInfo.circle_start_date,
@@ -108,7 +108,7 @@
 
           <!-- Loan Amount -->
           <div class="col-3 col-md-2 col-lg-2 col-xl-2 d-flex flex-row justify-content-center align-items-center">
-            <span class="main-text-tiny">
+            <span class="main-text tiny">
               {{ parseFloat(loanAmount(index)).toFixed(2) }}
             </span>
             <SvgPaymentToken
@@ -120,7 +120,7 @@
 
           <!-- Total Payments -->
           <div class="col-3 col-md-2 col-lg-3 col-xl-2 d-flex flex-row justify-content-center align-items-center">
-            <span class="main-text-tiny">
+            <span class="main-text tiny">
               {{ parseFloat(totalPayments()).toFixed(2) }}
             </span>
             <SvgPaymentToken
@@ -225,7 +225,7 @@ export default {
   // background: var(--ptn-second-blue);
   border: solid 2px var(--ptn-second-blue);
 }
-.main-text-tiny.selected {
+.main-text tiny.selected {
   font-weight: bold;
   color: var(--ptn-second-blue);
 }

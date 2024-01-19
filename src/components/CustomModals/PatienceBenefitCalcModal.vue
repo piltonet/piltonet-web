@@ -74,6 +74,7 @@
             <div class="d-flex flex-row justify-content-center align-items-center row w-100">
               <div class="col-6 text-start">
                 Rounds
+                <span class="info-text tiny">{{ `(${roundPeriod})` }}</span>
               </div>
               <div class="col-6 text-start">
                 Loan Amount
@@ -85,12 +86,12 @@
             >
               <template v-if="index < 4 || index > calcResult.length - 4">
                 <div class="col-6 text-start mt-1">
-                  <span class="main-text-tiny">
+                  <span class="main-text tiny">
                     {{ `${row.round}` }}
                   </span>
                 </div>
                 <div class="col-6 d-flex flex-row justify-content-start align-items-center mt-1">
-                  <span class="main-text-tiny">
+                  <span class="main-text tiny">
                     {{ parseFloat(row.loan).toFixed(2) }}
                   </span>
                   <SvgPaymentToken
@@ -102,7 +103,7 @@
               </template>
               <template v-else>
                 <div v-if="index == 4" class="col-12 text-start">
-                  <span class="main-text-tiny">...</span>
+                  <span class="main-text tiny">...</span>
                 </div>
               </template>
             </div>
@@ -135,6 +136,7 @@ export default {
       circleSize: "",
       fixedAmount: "",
       patienceBenefit: "",
+      roundPeriod: "",
       calculate: false,
       calcResult: [],
       showModal: false,
@@ -148,11 +150,21 @@ export default {
   },
   methods: {
     async setCalculator(circleInfo) {
+      this.clearModal();
       this.circleInfo = circleInfo;
       this.showModal = true;
     },
     async calcRounds() {
       this.calcResult = [];
+      if(this.circleInfo.circle_round_days == 7) {
+        this.roundPeriod = 'Weekly';
+      } else if(this.circleInfo.circle_round_days == 14) {
+        this.roundPeriod = 'Biweekly';
+      } else if(this.circleInfo.circle_round_days == 30) {
+        this.roundPeriod = 'Monthly';
+      } else {
+        this.roundPeriod = `${this.circleInfo.circle_round_days} days`;
+      }
       if(this.checkForm()) {
         for(let i=0; i < this.circleSize; i++) {
           this.calcResult.push({
@@ -207,7 +219,6 @@ export default {
       this.calculate = false;
     },
     closeModal() {
-      this.clearModal();
       this.showModal = false;
     }
   },
