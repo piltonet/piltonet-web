@@ -544,6 +544,12 @@ export default {
         this.tabIndex = 6;
       } else {
         // New Circle
+        const contract = await abi.setAbi(
+          "0x", // Mock TLCC
+          "TLCC"
+        );
+        let abiResponse = await contract.interaction('getTLCCConstants', []);
+        console.log(abiResponse.result);
         this.circleInfo = {
           circle_id: null,
           circle_creator_tba: this.accountProfile.account_tba_address,

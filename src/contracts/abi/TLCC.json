@@ -12,7 +12,7 @@
         "type": "address"
       },
       {
-        "internalType": "enum TLCC._paymentType",
+        "internalType": "enum TLCC.PaymentType",
         "name": "payment_type",
         "type": "uint8"
       },
@@ -22,7 +22,7 @@
         "type": "uint16"
       },
       {
-        "internalType": "enum TLCC._winnersOrder",
+        "internalType": "enum TLCC.WinnersOrder",
         "name": "winners_order",
         "type": "uint8"
       },
@@ -342,6 +342,19 @@
   },
   {
     "inputs": [],
+    "name": "acceptedTokens",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "activateEscapeHatch",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -404,7 +417,7 @@
     "name": "circleStatus",
     "outputs": [
       {
-        "internalType": "enum TLCC._circleStatus",
+        "internalType": "enum TLCC.CircleStatus",
         "name": "",
         "type": "uint8"
       }
@@ -567,7 +580,7 @@
         "type": "string"
       }
     ],
-    "stateMutability": "pure",
+    "stateMutability": "view",
     "type": "function"
   },
   {

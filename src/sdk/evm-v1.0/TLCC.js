@@ -1,8 +1,10 @@
 const { ethers } = require('ethers')
 const contractAbi = require('@/contracts/abi/TLCC')
+const contractDep = require(`@/contracts/deployments/${process.env.VUE_APP_DEFAULT_NETWORK}/TLCC.json`)
 
 class SDK {
 	constructor(contractAddress, signer) {
+		contractAddress = contractAddress == '0x' ? contractDep.address : contractAddress;
 		this.contract = new ethers.Contract(contractAddress, contractAbi, signer)
 	}
 
@@ -10,6 +12,11 @@ class SDK {
 		return this.contract.owner()
 	}
 
+	async getTLCCConstants() {
+		const TLCCConstants = await this.contract.getTLCCConstants()
+		return JSON.parse(TLCCConstants)
+	}
+	
 	paymentToken() {
 		return this.contract.paymentToken()
 	}
