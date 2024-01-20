@@ -477,7 +477,7 @@
     </div>
   </div>
 
-  <NotFound v-else />
+  <NotFound v-else-if="!loading" />
 
   <PatienceBenefitCalcModal
     ref="calc_modal"
@@ -515,7 +515,8 @@ export default {
         circle_patience_benefit: false
       },
       copyAddressTooltip: "Copy Address",
-      explorerLink: null
+      explorerLink: null,
+      loading: true
     }
   },
   computed: {
@@ -538,6 +539,7 @@ export default {
   methods: {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     async setup() {
+      this.loading = true;
       if(this.circleInfoProps) {
         this.circleInfo = this.circleInfoProps;
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfo.circle_id}`;
@@ -564,6 +566,7 @@ export default {
           circle_service_address: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS
         }
       }
+      this.loading = false;
     },
     async deployCircle() {
       if(this.checkForm()) {
