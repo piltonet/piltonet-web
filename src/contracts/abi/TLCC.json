@@ -558,6 +558,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getTLCCConstants",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint8",

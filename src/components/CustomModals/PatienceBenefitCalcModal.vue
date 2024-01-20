@@ -20,6 +20,7 @@
                 ref="circleSize"
                 id="circle_size"
                 type="number"
+                :placeholder="`${circleSizeMin} to ${circleSizeMax} people`"
                 class="small-input mb-0"
                 :class="hasError['circleSize'] ? 'has-error' : ''"
                 :disabled="calculate"
@@ -138,6 +139,8 @@ export default {
     return {
       circleInfo: null,
       circleSize: "",
+      circleSizeMin: process.env.VUE_APP_CIRCLES_MIN_MEMBERS,
+      circleSizeMax: process.env.VUE_APP_CIRCLES_MAX_MEMBERS,
       fixedAmount: "",
       patienceBenefit: "",
       roundPeriod: "",
@@ -182,7 +185,7 @@ export default {
     loanAmount(index) {
       const roundNo = index + 1;
       const totalRounds = parseInt(this.circleSize);
-      const memberBenefit = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / 12)) * this.totalPayments();
+      const memberBenefit = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * this.totalPayments();
       // return (this.totalPayments() + memberBenefit) * (1 - this.circleFee);
       return (this.totalPayments() + memberBenefit);
     },
@@ -208,6 +211,21 @@ export default {
               onClose: () => { this.hasError[element] = false }
             })
             throw false;
+          }
+          if(element == 'circleSize') {
+            this[element] = this[element] < 0 ? 0 : parseInt(this[element] * 100) / 100;
+            if(parseInt(this[element]) < this.circleSizeMin || parseInt(this[element]) > this.circleSizeMax) {
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The circle size must be between ${this.circleSizeMin} and ${this.circleSizeMax}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
           }
         });
         return true;
