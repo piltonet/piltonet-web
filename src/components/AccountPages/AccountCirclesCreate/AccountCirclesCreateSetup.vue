@@ -115,7 +115,8 @@
                 :height="16"
                 customClass="mt-1 ms-2 me-1"
               />
-              <p class="info-text mt-1">{{ `${tokenSymbol} / ${circleRound}` }}</p>
+              <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" class="info-text mt-1">{{ `${tokenSymbol} / ${circleRound}` }}</p>
+              <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" class="info-text mt-1">{{ tokenSymbol }}</p>
             </div>
 
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
@@ -370,7 +371,7 @@ export default {
           }
           if(element == 'circle_fixed_amount') {
             const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
-            // this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**tokenDecimals) / 10**tokenDecimals;
+            this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**2) / 10**2;
             if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
               || parseInt(this.circleInfo[element] * 10**tokenDecimals) > this.maxFixedAmount * 10**tokenDecimals) {
               this.$refs[element].focus();
@@ -385,17 +386,20 @@ export default {
               throw false;
             }
           }
-          if(element == 'circle_min_members' && (parseInt(this.circleInfo[element]) < this.minMembers || parseInt(this.circleInfo[element]) > this.maxMembers)) {
-            this.$refs[element].focus();
-            this.hasError[element] = true;
-            this.notif({
-              message: `The minimum number of members should be between ${this.minMembers} and ${this.maxMembers}.`,
-              dangerouslyUseHTMLString: true,
-              type: "error",
-              duration: 5000,
-              onClose: () => { this.hasError[element] = false }
-            })
-            throw false;
+          if(element == 'circle_min_members') {
+            this.circleInfo[element] = parseInt(this.circleInfo[element]);
+            if(this.circleInfo[element] < this.minMembers || this.circleInfo[element] > this.maxMembers) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The circle size should be between ${this.minMembers} and ${this.maxMembers}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
           }
           // if(element == 'circle_max_members' && (parseInt(this.circleInfo[element]) < parseInt(this.circleInfo['circle_min_members']) || parseInt(this.circleInfo[element]) > this.maxMembers)) {
           //   console.log(parseInt(this.circleInfo[element]));
@@ -410,19 +414,32 @@ export default {
           //   })
           //   throw false;
           // }
-          if(element == 'circle_extra_members' && 
-            (parseInt(this.circleInfo[element]) < 0 || parseInt(this.circleInfo[element]) > parseInt(parseInt(this.circleInfo['circle_min_members'] * 0.2)))) {
-            console.log(parseInt(this.circleInfo[element]));
-            this.$refs[element].focus();
-            this.hasError[element] = true;
-            this.notif({
-              message: `The extra number of members should be up to 20% of the circle size, rounded down`,
-              dangerouslyUseHTMLString: true,
-              type: "error",
-              duration: 5000,
-              onClose: () => { this.hasError[element] = false }
-            })
-            throw false;
+          if(element == 'circle_extra_members') {
+            this.circleInfo[element] = parseInt(this.circleInfo[element]);
+            if(this.circleInfo[element] < 0 || this.circleInfo[element] > parseInt(this.circleInfo['circle_min_members'] * 0.2)) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The extra number of members should be up to 20% of the circle size, rounded down`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+            if(this.circleInfo[element] + this.circleInfo['circle_min_members'] > this.maxMembers) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The total of the circle size and the extra number of members should be less than or equal to ${this.maxMembers}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
           }
           if(element == 'circle_winners_number' && (parseInt(this.circleInfo['circle_min_members'] / this.circleInfo[element]) < this.minMembers)) {
             this.$refs[element].focus();
