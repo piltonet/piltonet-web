@@ -200,7 +200,7 @@ export default {
   border-bottom: solid 1px transparent;
   width: 100%;
   overflow: hidden;
-  text-wrap: nowrap;
+  white-space:nowrap;
 }
 .verified-icon {
   width: 25px;
