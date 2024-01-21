@@ -101,6 +101,7 @@
                 ref="circle_fixed_amount"
                 id="circleFixedAmount"
                 type="number"
+                step="any"
                 :placeholder="`e.g. ${minFixedAmount}`"
                 class="tiny-input mb-0"
                 :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
@@ -266,8 +267,8 @@ export default {
     async setupConst() {
       if(this.circleConstProps) {
         this.paymentToken = this.circleConstProps['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
-        this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
-        const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+        this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL'];
+        const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
         this.minFixedAmount = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
         this.maxFixedAmount = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
         this.minMembers = this.circleConstProps['CIRCLES_MIN_MEMBERS'];
@@ -367,17 +368,21 @@ export default {
             })
             throw false;
           }
-          if(element == 'circle_fixed_amount' && (parseInt(this.circleInfo[element]) < this.minFixedAmount || parseInt(this.circleInfo[element]) > this.maxFixedAmount)) {
-            this.$refs[element].focus();
-            this.hasError[element] = true;
-            this.notif({
-              message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} should be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
-              dangerouslyUseHTMLString: true,
-              type: "error",
-              duration: 5000,
-              onClose: () => { this.hasError[element] = false }
-            })
-            throw false;
+          if(element == 'circle_fixed_amount') {
+            const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
+            if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
+              || parseInt(this.circleInfo[element] * 10**tokenDecimals) > this.maxFixedAmount * 10**tokenDecimals) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} should be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
           }
           if(element == 'circle_min_members' && (parseInt(this.circleInfo[element]) < this.minMembers || parseInt(this.circleInfo[element]) > this.maxMembers)) {
             this.$refs[element].focus();
