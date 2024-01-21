@@ -103,7 +103,7 @@
                 type="number"
                 step="any"
                 :placeholder="`e.g. ${minFixedAmount}`"
-                class="tiny-input mb-0"
+                class="smaller-input mb-0"
                 :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
                 aria-describedby="circleFixedAmountHelp"
                 v-model="circleInfo.circle_fixed_amount"
@@ -370,6 +370,7 @@ export default {
           }
           if(element == 'circle_fixed_amount') {
             const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
+            // this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**tokenDecimals) / 10**tokenDecimals;
             if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
               || parseInt(this.circleInfo[element] * 10**tokenDecimals) > this.maxFixedAmount * 10**tokenDecimals) {
               this.$refs[element].focus();
