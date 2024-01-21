@@ -206,7 +206,6 @@ export default {
     checkForm() {
       try {
         Object.keys(this.hasError).forEach(element => {
-          console.log(element, this[element]);
           if(this[element] == null || this[element].length <= 0) {
             this.$refs[element].focus();
             this.hasError[element] = true;

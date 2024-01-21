@@ -177,7 +177,7 @@
                 id="circlePatienceBenefit"
                 type="number"
                 min=0.00
-                :max="circleInfo.maxPatienceBenefit"
+                :max="maxPatienceBenefit"
                 step="0.01"
                 placeholder="e.g. 18"
                 class="tiny-input mb-0"
@@ -194,7 +194,7 @@
               </div>
             </div>
             <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
-              {{ `Percentage of benefits for members who win in subsequent rounds, up to ${circleInfo.maxPatienceBenefit}%.` }}
+              {{ `Percentage of benefits for members who win in subsequent rounds, up to ${maxPatienceBenefit}%.` }}
             </p>
           </template>
 
@@ -210,7 +210,7 @@
                 id="circleCreatorEarnings"
                 type="number"
                 min=0.00
-                :max="circleInfo.maxCreatorEarnings"
+                :max="maxCreatorEarnings"
                 step="0.01"
                 placeholder="e.g. 0.5"
                 class="tiny-input mb-0"
@@ -219,7 +219,7 @@
                 v-model="circleInfo.circle_creator_earnings"
               />
               <p id="circleCreatorEarningsHelp" class="help-text pt-2 mb-3">
-                {{ `You can earn a share of up to ${circleInfo.maxCreatorEarnings}% from each loan.` }}
+                {{ `You can earn a share of up to ${maxCreatorEarnings}% from each loan.` }}
               </p>
             </div>
           </template>
@@ -509,6 +509,8 @@ export default {
     return {
       tabIndex: 1,
       circleInfo: null,
+      maxPatienceBenefit: 0,
+      maxCreatorEarnings: 0,
       hasError: {
         circle_creator_earnings: false,
         circle_patience_benefit: false
@@ -565,6 +567,8 @@ export default {
     },
     async setupConst() {
       if(this.circleConstProps) {
+        this.maxPatienceBenefit = this.circleConstProps['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
+        this.maxCreatorEarnings = this.circleConstProps['CIRCLES_MAX_CREATOR_EARNINGS_X10000'] / 100;
         this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;
         this.circleInfo['circle_service_address'] = this.circleConstProps['PILTONET_SERVICE_ADMIN'];
       }
@@ -681,12 +685,12 @@ export default {
           }
           if(element == 'circle_patience_benefit') {
             this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.circleInfo.maxPatienceBenefit * 100) {
+            if(parseInt(this.circleInfo[element] * 100) > this.maxPatienceBenefit * 100) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The benefit of patience should be between 0% and ${this.circleInfo.maxPatienceBenefit}%.`,
+                message: `The benefit of patience should be between 0% and ${this.maxPatienceBenefit}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,
@@ -697,12 +701,12 @@ export default {
           }
           if(element == 'circle_creator_earnings') {
             this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.circleInfo.maxCreatorEarnings * 100) {
+            if(parseInt(this.circleInfo[element] * 100) > this.maxCreatorEarnings * 100) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The creator earnings should not be more than ${this.circleInfo.maxCreatorEarnings}%.`,
+                message: `The creator earnings should not be more than ${this.maxCreatorEarnings}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,
