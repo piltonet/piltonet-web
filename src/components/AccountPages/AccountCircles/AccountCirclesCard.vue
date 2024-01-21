@@ -647,7 +647,6 @@ export default {
   font-size: 20px;
   font-weight: bold;
   color: rgba(var(--ptn-blue-rgb), 0.9);
-  width: calc(100% - 20px);
   max-width: 280px;
   overflow: hidden;
   white-space:nowrap;

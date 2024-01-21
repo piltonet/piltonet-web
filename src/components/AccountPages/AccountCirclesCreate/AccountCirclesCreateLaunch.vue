@@ -277,8 +277,8 @@
         <button class="account-circles-setup-button date-button" @click="showCalendarModal = true">
           <p>{{ utils.formatDate(startDate, 'DD Month YYYY') || 'Not Set' }}</p>
         </button>
-        <p id="circleStartDateHelp" class="help-text">
-          The start date should be after today and at least 12 hours away from now.
+        <p id="circleStartDateHelp" class="help-text mt-1">
+          The start date should be a minimum of two days from now.
         </p>
       </div>
 
@@ -377,7 +377,8 @@ export default {
       this.startDate = this.circleInfoProps.circle_start_date;
       const now = new Date();
       this.minStartDate = now;
-      this.minStartDate.setDate(now.getDate() + (now.getHours() < 12 ? 1 : 2 ))
+      // this.minStartDate.setDate(now.getDate() + (now.getHours() < 12 ? 1 : 2 ))
+      this.minStartDate.setDate(now.getDate() + 2)
       if(this.circleInfoProps) {
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfoProps.circle_id}`;
       }
