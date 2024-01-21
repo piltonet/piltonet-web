@@ -22,9 +22,9 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <!-- Circle Name -->
           <div>
-            <span class="account-circles-card-name">
+            <p class="account-circles-card-name">
               {{ accountCircleProps.circle_name }}
-            </span>
+            </p>
           </div>
 
           <!-- Circle Creator -->
@@ -193,9 +193,9 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <!-- Circle Name -->
           <div>
-            <span class="account-circles-card-name">
+            <p class="account-circles-card-name">
               {{ accountCircleProps.circle_name }}
-            </span>
+            </p>
           </div>
 
           <!-- Circle Creator -->
@@ -364,9 +364,9 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <!-- Circle Name -->
           <div>
-            <span class="account-circles-card-name">
+            <p class="account-circles-card-name">
               New Circle
-            </span>
+            </p>
           </div>
 
           <!-- Circle Status -->
@@ -451,9 +451,9 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <!-- Circle Name -->
           <div>
-            <span class="account-circles-card-name">
+            <p class="account-circles-card-name">
               {{ accountCircleProps.circle_name }}
-            </span>
+            </p>
           </div>
 
           <!-- Circle Payment Type -->
@@ -647,6 +647,10 @@ export default {
   font-size: 20px;
   font-weight: bold;
   color: rgba(var(--ptn-blue-rgb), 0.9);
+  width: calc(100% - 20px);
+  max-width: 280px;
+  overflow: hidden;
+  white-space:nowrap;
 }
 .account-circles-card-creator-fullname {
   font-size: 16px;
