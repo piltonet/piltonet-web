@@ -285,10 +285,10 @@ export default {
           // To Do
           this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_min_members) + this.circle_extra_members).toString();
 
-          const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+          const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
           const setupArgs = [
             this.circleInfo.circle_name,
-            parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals),
+            (parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals)).toString(),
             parseInt(this.circleInfo.circle_min_members),
             parseInt(this.circleInfo.circle_max_members),
             parseInt(this.circleInfo.circle_winners_number)
@@ -302,7 +302,7 @@ export default {
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
             "setupCircle", // function name
-            ["function setupCircle(string memory circle_name, uint256 fixed_amount_x100, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
+            ["function setupCircle(string memory circle_name, string memory fixed_amount, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
             setupArgs, // function args
             0, // VIC amount
             this.circleInfo.circle_id // Contract Address

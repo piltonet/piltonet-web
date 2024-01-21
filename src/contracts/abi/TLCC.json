@@ -736,9 +736,9 @@
         "type": "string"
       },
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "fixed_amount",
-        "type": "uint256"
+        "type": "string"
       },
       {
         "internalType": "uint8",
