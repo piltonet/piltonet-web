@@ -243,7 +243,7 @@
                     :chainId="this.defaultchain.chainId"
                     :paymentToken="this.defaultchain.nativeCurrency.address"
                     :tooltip="false"
-                    customClass=""
+                    customClass="pe-1"
                   />
                   <p>{{ defaultchain.nativeCurrency.symbol }}</p>
                 </div>
@@ -259,9 +259,9 @@
                     :chainId="this.defaultchain.chainId"
                     :paymentToken="this.defaultchain.CUSD.address"
                     :tooltip="false"
-                    customClass=""
+                    customClass="pe-1"
                   />
-                  <p>CUSD</p>
+                  <p>{{ defaultchain.CUSD.symbol }}</p>
                 </div>
               </div>
               <!-- Top-up & Withdraw -->

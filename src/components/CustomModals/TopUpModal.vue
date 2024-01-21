@@ -23,7 +23,7 @@
               :chainId="this.defaultchain.chainId"
               :paymentToken="'USDT-token-address'"
               :tooltip="false"
-              customClass="m-1 me-2"
+              customClass="pe-2"
             />
             <p>Tether (USDT)</p>
           </button>
@@ -36,7 +36,7 @@
               :chainId="this.defaultchain.chainId"
               :paymentToken="this.defaultchain.CUSD.address"
               :tooltip="false"
-              customClass="m-1 me-2"
+              customClass="pe-2"
             />
             <p>CUSD</p>
           </button>
@@ -49,7 +49,7 @@
               :chainId="this.defaultchain.chainId"
               :paymentToken="'DAI-token-address'"
               :tooltip="false"
-              customClass="m-1 me-2"
+              customClass="pe-2"
             />
             <p>DAI</p>
           </button>

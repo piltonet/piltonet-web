@@ -278,7 +278,7 @@
           <p>{{ utils.formatDate(startDate, 'DD Month YYYY') || 'Not Set' }}</p>
         </button>
         <p id="circleStartDateHelp" class="help-text">
-          The start date must be after today and at least 12 hours away from now.
+          The start date should be after today and at least 12 hours away from now.
         </p>
       </div>
 

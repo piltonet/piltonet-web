@@ -158,7 +158,7 @@ export default {
     return {
       circleInfo: this.circleInfoProps,
       circleMembers: this.circleMembersProps,
-      circleFee: (process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 10000) + (this.circleInfoProps.circle_creator_earnings / 100),
+      circleFee: (this.circleInfoProps.circle_service_charge / 100) + (this.circleInfoProps.circle_creator_earnings / 100),
       selectedRound: this.selectedRoundProps
     }
   },

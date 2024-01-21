@@ -42,7 +42,7 @@
               <div class="col-12 col-xl-5">
                 <label for="circleMinMembers" class="input-label mt-2">
                   Circle Size
-                  <span class="input-label-small">{{ `(Minimum ${minMembers}) `}}</span>
+                  <span class="input-label-small">(Required)</span>
                 </label>
                 <input
                   :disabled="circleInfo.circle_joined_members"
@@ -56,7 +56,7 @@
                   v-model="circleInfo.circle_min_members"
                 />
                 <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
-                  Enter the number of members in the circle.
+                  {{ `Enter the number of circle members, which should be between ${minMembers} and ${maxMembers} people.`}}
                 </p>
               </div>
               <!-- To Do -->
@@ -111,17 +111,17 @@
                 :chainId="circleInfo.circle_chain_id"
                 :paymentToken="circleInfo.circle_payment_token"
                 :tooltip="false"
-                :height="20"
-                customClass="price-token-icon mt-1 ms-2"
+                :height="16"
+                customClass="mt-1 ms-2 me-1"
               />
-              <p class="info-text mt-1">{{ `${paymentToken.symbol} - ${circleRound}` }}</p>
+              <p class="info-text mt-1">{{ `${tokenSymbol} / ${circleRound}` }}</p>
             </div>
 
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `Enter the fixed amount that each participant will contribute in every round, ranging from ${minFixedAmount} to ${maxFixedAmount} ${paymentToken.symbol}.` }}
+              {{ `Enter the fixed amount that each participant will contribute in every round, ranging from ${minFixedAmount} to ${maxFixedAmount} ${tokenSymbol}.` }}
             </p>
             <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${paymentToken.symbol}.` }}
+              {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${tokenSymbol}.` }}
             </p>
           </template>
 
@@ -190,19 +190,21 @@ export default {
     NotFound
   },
   props: {
-    circleInfoProps: Object
+    circleInfoProps: Object,
+    circleConstProps: Object
   },
   data() {
     return {
       tabIndex: 1,
       circleInfo: this.circleInfoProps,
       circle_extra_members: 0,
-      paymentToken: '',
+      paymentToken: null,
+      tokenSymbol: '',
       circleRound: '',
-      minFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MIN_MONTHLY_PAYMENT_IN_VIC),
-      maxFixedAmount: parseInt(process.env.VUE_APP_CIRCLES_MAX_MONTHLY_PAYMENT_IN_VIC),
-      minMembers: parseInt(process.env.VUE_APP_CIRCLES_MIN_MEMBERS),
-      maxMembers: parseInt(process.env.VUE_APP_CIRCLES_MAX_MEMBERS),
+      minFixedAmount: 0,
+      maxFixedAmount: 0,
+      minMembers: 0,
+      maxMembers: 0,
       hasError: {
         circle_name: false,
         circle_fixed_amount: false,
@@ -222,34 +224,26 @@ export default {
       return this.getProfileStore;
     }
   },
-  created() {
-    if(this.circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address) {
-      this.paymentToken = this.defaultchain.nativeCurrency;
-    } else {
-      this.paymentToken = this.defaultchain.CUSD;
-    }
-  },
   mounted() {
     this.setup();
+    this.setupConst();
   },
   watch: {
     circleInfoProps: function () {
-      // if(this.circleInfo.circle_id != this.circleInfoProps.circle_id) this.setup();
+      this.setup();
+    },
+    circleConstProps: function () {
+      this.setupConst();
     }
   },
   methods: {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
-    setup() {
+    async setup() {
       this.circleInfo = this.circleInfoProps;
-
-      // To Do
-      this.circle_extra_members = parseInt(this.circleInfo.circle_max_members) - parseInt(this.circleInfo.circle_min_members);
-
       if(this.circleInfo) {
-        if(this.circleInfo.circle_payment_type == 'fixed_loan') {
-          this.minFixedAmount = this.minFixedAmount * this.minMembers;
-          this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
-        }
+        // To Do
+        this.circle_extra_members = parseInt(this.circleInfo.circle_max_members) - parseInt(this.circleInfo.circle_min_members);
+        
         if(this.circleInfo.circle_round_days == 7) {
           this.circleRound = 'Weekly';
         } else if(this.circleInfo.circle_round_days == 14) {
@@ -269,6 +263,22 @@ export default {
         }
       }
     },
+    async setupConst() {
+      if(this.circleConstProps) {
+        this.paymentToken = this.circleConstProps['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
+        this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
+        const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+        this.minFixedAmount = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
+        this.maxFixedAmount = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
+        this.minMembers = this.circleConstProps['CIRCLES_MIN_MEMBERS'];
+        this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
+
+        if(this.circleInfo.circle_payment_type == 'fixed_loan') {
+          this.minFixedAmount = this.minFixedAmount * this.minMembers;
+          this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
+        }
+      }
+    },
     async setupCircle() {
       if(this.checkForm()) {
         try {
@@ -280,14 +290,16 @@ export default {
             "ERC6551Account"
           );
 
+          const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+
           const setupArgs = [
             this.circleInfo.circle_name,
-            parseInt(this.circleInfo.circle_fixed_amount * 100),
+            parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals),
             parseInt(this.circleInfo.circle_min_members),
             parseInt(this.circleInfo.circle_max_members),
             parseInt(this.circleInfo.circle_winners_number)
           ];
-
+console.log(setupArgs);
           // execute TLCC setupCircle
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
@@ -361,7 +373,7 @@ export default {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} must be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
+              message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} should be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,
@@ -373,7 +385,7 @@ export default {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: `The minimum number of members must be between ${this.minMembers} and ${this.maxMembers}.`,
+              message: `The minimum number of members should be between ${this.minMembers} and ${this.maxMembers}.`,
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,
@@ -386,7 +398,7 @@ export default {
           //   this.$refs[element].focus();
           //   this.hasError[element] = true;
           //   this.notif({
-          //     message: `The maximum number of members must be between ${this.circleInfo['circle_min_members']} and ${this.maxMembers}.`,
+          //     message: `The maximum number of members should be between ${this.circleInfo['circle_min_members']} and ${this.maxMembers}.`,
           //     dangerouslyUseHTMLString: true,
           //     type: "error",
           //     duration: 5000,
@@ -400,7 +412,7 @@ export default {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({
-              message: `The extra number of members must be up to 20% of the circle size, rounded down`,
+              message: `The extra number of members should be up to 20% of the circle size, rounded down`,
               dangerouslyUseHTMLString: true,
               type: "error",
               duration: 5000,

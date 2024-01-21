@@ -5,7 +5,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     x="0px"
     y="0px"
-    viewBox="0 0 559.84 565.94"
+    viewBox="0 0 512 512"
     style="enable-background: new 0 0 186.7 280"
     xml:space="preserve"
   >
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "SvgVicIcon",
+  name: "SvgVICIcon",
 };
 </script>
 

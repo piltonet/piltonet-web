@@ -24,7 +24,7 @@
                 :chainId="this.defaultchain.chainId"
                 :paymentToken="this.defaultchain.nativeCurrency.address"
                 :tooltip="false"
-                customClass="m-1 me-2"
+                customClass="pe-2"
               />
               <p>VIC</p>
             </button>
@@ -39,7 +39,7 @@
                 :chainId="this.defaultchain.chainId"
                 :paymentToken="this.defaultchain.CUSD.address"
                 :tooltip="false"
-                customClass="m-1 me-2"
+                customClass="pe-2"
               />
               <p>CUSD</p>
             </button>

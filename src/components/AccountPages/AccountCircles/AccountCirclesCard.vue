@@ -387,9 +387,11 @@
             <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
                 :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
+                :height="13"
+                :tooltip="false"
+                customClass="mx-1"
               />
-            <span class="account-circles-card-creator-fullname ps-1">
+            <span class="account-circles-card-creator-fullname">
               {{ accountCircleProps.circle_payment_token == this.defaultchain.CUSD.address ?
                 this.defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol }}
             </span>

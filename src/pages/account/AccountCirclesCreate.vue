@@ -16,10 +16,12 @@
     <div class="col-10 col-md-8 col-xl-9 mt-4 my-md-5">
       <AccountCirclesCreateDeploy v-if="activePage == 'deploy'"
         :circleInfoProps="circleInfo"
+        :circleConstProps="circleConst"
         @set-active-page="setActivePage"
       />
       <AccountCirclesCreateSetup v-else-if="activePage == 'setup'"
         :circleInfoProps="circleInfo"
+        :circleConstProps="circleConst"
       />
       <AccountCirclesCreateWhitelist v-else-if="activePage == 'whitelist'"
         :circleInfoProps="circleInfo"
@@ -41,8 +43,9 @@ import AccountCirclesCreateSetup from '@/components/AccountPages/AccountCirclesC
 import AccountCirclesCreateWhitelist from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateWhitelist.vue';
 import AccountCirclesCreateLaunch from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateLaunch.vue';
 import FooterBar from '@/components/FooterBar/FooterBar.vue';
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import api from "@/services/api";
+import abi from "@/services/abi";
 
 export default {
   name: 'AccountCirclesCreate',
@@ -60,6 +63,7 @@ export default {
       receivablePages: ['deploy', 'setup', 'whitelist', 'launch'],
       circleId: null,
       circleInfo: null,
+      circleConst: null,
       activePage: 'deploy',
       loading: true
     }
@@ -76,13 +80,27 @@ export default {
   beforeMount() {
     this.setActivePage('active_page' in this.$route.query ? this.$route.query.active_page : null, 'circle_id' in this.$route.query ? this.$route.query.circle_id : null);
   },
+  mounted() {
+    this.setup();
+  },
   watch: {
     $route(to) {
       this.setActivePage('active_page' in to.query ? to.query.active_page : null, 'circle_id' in to.query ? to.query.circle_id : null);
     }
   },
   methods: {
-    ...mapActions(['fetchProfile']),
+    async setup() {
+      const contract = await abi.setAbi(
+        "0x", // TLCC mock
+        "TLCC"
+      );
+      let abiResponse = await contract.interaction('getTLCCConstants', []);
+      if(abiResponse.done) {
+        this.circleConst = abiResponse.result;
+      } else {
+        this.$router.push('/account/circles');
+      }
+    },
     async setActivePage(active_page, circle_id, reload = false) {
       if(reload) this.loading = true;
       

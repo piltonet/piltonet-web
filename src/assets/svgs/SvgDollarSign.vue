@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "SvgVicIcon",
+  name: "SvgVICIcon",
 };
 </script>
 

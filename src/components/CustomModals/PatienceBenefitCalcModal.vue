@@ -20,7 +20,7 @@
                 ref="circleSize"
                 id="circle_size"
                 type="number"
-                :placeholder="`${circleSizeMin} to ${circleSizeMax} people`"
+                :placeholder="`${minMembers} to ${maxMembers} people`"
                 class="small-input mb-0"
                 :class="hasError['circleSize'] ? 'has-error' : ''"
                 :disabled="calculate"
@@ -32,16 +32,27 @@
           <!-- Round Payment / Loan Amount -->
           <div class="d-flex flex-column justify-content-center align-items-start mt-4">
             <label for="circleSize" class="input-label">
-              {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payment' : 'Loan Amount' }}
-              <span class="input-label-small">
-                {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? '(Fixed Payment)' : '(Fixed Loan)' }}
-              </span>
+              <div class="d-flex flex-row justify-content-center align-items-center">
+                {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payment' : 'Loan Amount' }}
+                <span class="input-label-small ps-1">(</span>
+                <SvgPaymentToken
+                  :chainId="circleInfo.circle_chain_id"
+                  :paymentToken="circleInfo.circle_payment_token"
+                  :height="12"
+                  :tooltip="false"
+                  customClass="input-label-small m-0 pe-1"
+                />
+                <span class="input-label-small">{{ `${tokenSymbol})` }}</span>
+              </div>
             </label>
             <div class="d-flex flex-column justify-content-center align-items-start">
               <input
                 ref="fixedAmount"
                 id="fixed_amount"
                 type="number"
+                :placeholder="circleInfo.circle_payment_type == 'fixed_loan' ? 
+                  `${minRoundPayment * (parseInt(circleSize) || minMembers)} to ${maxRoundPayment * (parseInt(circleSize) || minMembers)} ${tokenSymbol}` :
+                  `${minRoundPayment} to ${maxRoundPayment} ${tokenSymbol}`"
                 class="small-input mb-0"
                 :class="hasError['fixedAmount'] ? 'has-error' : ''"
                 :disabled="calculate"
@@ -61,6 +72,7 @@
                 ref="patienceBenefit"
                 id="patience_benefit"
                 type="number"
+                :placeholder="`up to ${maxPatienceBenefit}%`"
                 class="small-input mb-0"
                 :class="hasError['patienceBenefit'] ? 'has-error' : ''"
                 :disabled="calculate"
@@ -101,7 +113,8 @@
                     <SvgPaymentToken
                       :chainId="circleInfo.circle_chain_id"
                       :paymentToken="circleInfo.circle_payment_token"
-                      :height="14" customClass="ps-1"
+                      :height="14"
+                      customClass="ps-1"
                     />
                   </div>
                 </div>
@@ -115,9 +128,6 @@
           </template>
         </div>
       </div>
-      
-      
-
     </div>
 
     <template #footer>
@@ -138,12 +148,17 @@ export default {
   data() {
     return {
       circleInfo: null,
-      circleSize: "",
-      circleSizeMin: process.env.VUE_APP_CIRCLES_MIN_MEMBERS,
-      circleSizeMax: process.env.VUE_APP_CIRCLES_MAX_MEMBERS,
-      fixedAmount: "",
-      patienceBenefit: "",
-      roundPeriod: "",
+      circleSize: '',
+      fixedAmount: '',
+      patienceBenefit: '',
+      roundPeriod: '',
+      paymentToken: null,
+      tokenSymbol: '',
+      minRoundPayment: 0,
+      maxRoundPayment: 0,
+      minMembers: 0,
+      maxMembers: 0,
+      maxPatienceBenefit: 0,
       calculate: false,
       calcResult: [],
       showModal: false,
@@ -156,9 +171,24 @@ export default {
     };
   },
   methods: {
-    async setCalculator(circleInfo) {
+    async setCalculator(circleInfo, circleConst) {
       this.clearModal();
+      
       this.circleInfo = circleInfo;
+      this.paymentToken = circleConst['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
+      this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
+      const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+      this.minRoundPayment = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
+      this.maxRoundPayment = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
+      this.minMembers = circleConst['CIRCLES_MIN_MEMBERS'];
+      this.maxMembers = circleConst['CIRCLES_MAX_MEMBERS'];
+      this.maxPatienceBenefit = circleConst['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
+      
+      if(this.circleInfo.circle_payment_type == 'fixed_loan') {
+        this.minFixedAmount = this.minFixedAmount * this.minMembers;
+        this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
+      }
+
       this.showModal = true;
     },
     async calcRounds() {
@@ -213,12 +243,57 @@ export default {
             throw false;
           }
           if(element == 'circleSize') {
-            this[element] = this[element] < 0 ? 0 : parseInt(this[element] * 100) / 100;
-            if(parseInt(this[element]) < this.circleSizeMin || parseInt(this[element]) > this.circleSizeMax) {
+            this[element] = parseInt(this[element]);
+            if(this[element] < this.minMembers || this[element] > this.maxMembers) {
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The circle size must be between ${this.circleSizeMin} and ${this.circleSizeMax}.`,
+                message: `The circle size should be between ${this.minMembers} and ${this.maxMembers} people.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'fixedAmount') {
+            this[element] = parseInt(this[element] * 100) / 100;
+            if(this.circleInfo.circle_payment_type == 'fixed_pay') {
+              if(this[element] < this.minRoundPayment || this[element] > this.maxRoundPayment) {
+                if(this.$refs[element]) this.$refs[element].focus();
+                this.hasError[element] = true;
+                this.notif({
+                  message: `The round payment should be between ${this.minRoundPayment} and ${this.maxRoundPayment} ${this.tokenSymbol}.`,
+                  dangerouslyUseHTMLString: true,
+                  type: "error",
+                  duration: 5000,
+                  onClose: () => { this.hasError[element] = false }
+                })
+                throw false;
+              }
+            } else {
+              if(this[element] < this.minRoundPayment * this.circleSize || this[element] > this.maxRoundPayment * this.circleSize) {
+                if(this.$refs[element]) this.$refs[element].focus();
+                this.hasError[element] = true;
+                this.notif({
+                  message: `The loan amount should be between ${this.minRoundPayment * this.circleSize} and ${this.maxRoundPayment * this.circleSize} ${this.tokenSymbol}.`,
+                  dangerouslyUseHTMLString: true,
+                  type: "error",
+                  duration: 5000,
+                  onClose: () => { this.hasError[element] = false }
+                })
+                throw false;
+              }
+            }
+          }
+          if(element == 'patienceBenefit') {
+            this[element] = parseInt(this[element]) < 0 ? 0 : parseInt(this[element] * 100) / 100;
+            if(this[element] > this.maxPatienceBenefit) {
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The patience benefit should be up to ${this.maxPatienceBenefit}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,
@@ -235,9 +310,9 @@ export default {
       }
     },
     clearModal() {
-      this.circleSize = "";
-      this.fixedAmount = "";
-      this.patienceBenefit = "";
+      this.circleSize = '';
+      this.fixedAmount = '';
+      this.patienceBenefit = '';
       this.calculate = false;
     },
     closeModal() {

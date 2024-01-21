@@ -177,7 +177,7 @@
                 id="circlePatienceBenefit"
                 type="number"
                 min=0.00
-                :max="maxPatienceBenefit"
+                :max="circleInfo.maxPatienceBenefit"
                 step="0.01"
                 placeholder="e.g. 18"
                 class="tiny-input mb-0"
@@ -194,7 +194,7 @@
               </div>
             </div>
             <p id="circlePatienceBenefitHelp" class="help-text pt-2 mb-3">
-              {{ `Percentage of benefits for members who win in subsequent rounds, up to ${maxPatienceBenefit}%.` }}
+              {{ `Percentage of benefits for members who win in subsequent rounds, up to ${circleInfo.maxPatienceBenefit}%.` }}
             </p>
           </template>
 
@@ -210,7 +210,7 @@
                 id="circleCreatorEarnings"
                 type="number"
                 min=0.00
-                :max="maxCreatorEarnings"
+                :max="circleInfo.maxCreatorEarnings"
                 step="0.01"
                 placeholder="e.g. 0.5"
                 class="tiny-input mb-0"
@@ -219,7 +219,7 @@
                 v-model="circleInfo.circle_creator_earnings"
               />
               <p id="circleCreatorEarningsHelp" class="help-text pt-2 mb-3">
-                {{ `You can earn a share of up to ${maxCreatorEarnings}% from each loan.` }}
+                {{ `You can earn a share of up to ${circleInfo.maxCreatorEarnings}% from each loan.` }}
               </p>
             </div>
           </template>
@@ -501,15 +501,14 @@ export default {
     NotFound
   },
   props: {
-    circleInfoProps: Object
+    circleInfoProps: Object,
+    circleConstProps: Object
   },
   emits: ["setActivePage"],
   data() {
     return {
       tabIndex: 1,
       circleInfo: null,
-      maxPatienceBenefit: process.env.VUE_APP_CIRCLES_MAX_PATIENCE_BENEFIT_X10000 / 100,
-      maxCreatorEarnings: process.env.VUE_APP_CIRCLES_MAX_CREATOR_EARNINGS_X10000 / 100,
       hasError: {
         circle_creator_earnings: false,
         circle_patience_benefit: false
@@ -534,6 +533,9 @@ export default {
   watch: {
     circleInfoProps: function () {
       this.setup();
+    },
+    circleConstProps: function () {
+      this.setupConst();
     }
   },
   methods: {
@@ -546,12 +548,6 @@ export default {
         this.tabIndex = 6;
       } else {
         // New Circle
-        const contract = await abi.setAbi(
-          "0x", // Mock TLCC
-          "TLCC"
-        );
-        let abiResponse = await contract.interaction('getTLCCConstants', []);
-        console.log(abiResponse.result);
         this.circleInfo = {
           circle_id: null,
           circle_creator_tba: this.accountProfile.account_tba_address,
@@ -561,12 +557,17 @@ export default {
           circle_round_days: 30,
           circle_winners_order: 'random',
           circle_patience_benefit: 0,
-          circle_creator_earnings: 0,
-          circle_service_charge: process.env.VUE_APP_CIRCLES_SERVICE_CHARGE_X10000 / 100,
-          circle_service_address: process.env.VUE_APP_VICTION_SERVICE_ADMIN_ADDRESS
+          circle_creator_earnings: 0
         }
+        this.setupConst();
       }
       this.loading = false;
+    },
+    async setupConst() {
+      if(this.circleConstProps) {
+        this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;
+        this.circleInfo['circle_service_address'] = this.circleConstProps['PILTONET_SERVICE_ADMIN'];
+      }
     },
     async deployCircle() {
       if(this.checkForm()) {
@@ -611,6 +612,7 @@ export default {
                 dangerouslyUseHTMLString: true,
                 type: apiResponse.data.message_type,
                 duration: 3000,
+                onClose: () => { this.$router.go() }
               })
             }
           }
@@ -660,7 +662,7 @@ export default {
       }
     },
     async patienceBenefitCalc() {
-      this.$refs.calc_modal.setCalculator(this.circleInfo);
+      this.$refs.calc_modal.setCalculator(this.circleInfo, this.circleConstProps);
     },
     checkForm() {
       try {
@@ -679,12 +681,12 @@ export default {
           }
           if(element == 'circle_patience_benefit') {
             this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.maxPatienceBenefit * 100) {
+            if(parseInt(this.circleInfo[element] * 100) > this.circleInfo.maxPatienceBenefit * 100) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The benefit of patience must be between 0% and ${this.maxPatienceBenefit}%.`,
+                message: `The benefit of patience should be between 0% and ${this.circleInfo.maxPatienceBenefit}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,
@@ -695,12 +697,12 @@ export default {
           }
           if(element == 'circle_creator_earnings') {
             this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.maxCreatorEarnings * 100) {
+            if(parseInt(this.circleInfo[element] * 100) > this.circleInfo.maxCreatorEarnings * 100) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The creator earnings should not be more than ${this.maxCreatorEarnings}%.`,
+                message: `The creator earnings should not be more than ${this.circleInfo.maxCreatorEarnings}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,

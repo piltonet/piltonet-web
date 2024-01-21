@@ -15,7 +15,7 @@ class regex {
     this.errorMessages = {
       email: "Please enter a valid email address.",
       account_email: "Please enter a valid email address.",
-      password: "The password must be at least 6 characters long containing at least 1 number and 1 letter.",
+      password: "The password should be at least 6 characters long containing at least 1 number and 1 letter.",
       mobile: "Please enter a valid phone number.",
       invite_code: "Your invitation code is not valid.",
       account_nickname: "Please enter a valid username.",

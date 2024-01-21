@@ -14,6 +14,12 @@ const truncate = (fullStr, strLen) => {
 		fullStr.substr(fullStr.length - backChars)
 }
 
+const toString = (address) => {
+	if(address === undefined || !address) return address
+
+	return address.toLowerCase().replace('0x', '')
+}
+
 const fixedNumber = (fullNumber, toFixed = 5, minDecimals = 2) => {
 	if(fullNumber === undefined) return undefined
 	let fixedNumber =	+fullNumber.toFixed(toFixed).toString()
@@ -113,6 +119,7 @@ function objectCleaner(obj) {
 
 export default {
 	truncate,
+	toString,
 	fixedNumber,
 	formatPrice,
 	formatDate,
