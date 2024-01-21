@@ -737,7 +737,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "fixed_amount_x100",
+        "name": "fixed_amount",
         "type": "uint256"
       },
       {
