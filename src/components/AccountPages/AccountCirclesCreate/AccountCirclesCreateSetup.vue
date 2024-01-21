@@ -285,13 +285,7 @@ export default {
           // To Do
           this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_min_members) + this.circle_extra_members).toString();
 
-          const contract = await abi.setAbi(
-            this.accountProfile.account_tba_address, // sender tba address
-            "ERC6551Account"
-          );
-
           const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
-
           const setupArgs = [
             this.circleInfo.circle_name,
             parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals),
@@ -299,7 +293,11 @@ export default {
             parseInt(this.circleInfo.circle_max_members),
             parseInt(this.circleInfo.circle_winners_number)
           ];
-console.log(setupArgs);
+
+          const contract = await abi.setAbi(
+            this.accountProfile.account_tba_address, // sender tba address
+            "ERC6551Account"
+          );
           // execute TLCC setupCircle
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name

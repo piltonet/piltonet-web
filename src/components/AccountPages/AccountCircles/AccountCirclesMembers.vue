@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     this.setup();
-    console.log(this.circleInfoProps);
+    // console.log(this.circleInfoProps);
   },
   watch: {
     circleIdProps: function () {
