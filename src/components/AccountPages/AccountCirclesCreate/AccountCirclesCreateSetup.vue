@@ -292,7 +292,7 @@ export default {
             this.circleInfo.circle_name,
             (parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals)).toString(),
             parseInt(this.circleInfo.circle_min_members),
-            parseInt(this.circleInfo.circle_max_members),
+            parseInt(this.circle_extra_members),
             parseInt(this.circleInfo.circle_winners_number)
           ];
 
@@ -401,19 +401,6 @@ export default {
               throw false;
             }
           }
-          // if(element == 'circle_max_members' && (parseInt(this.circleInfo[element]) < parseInt(this.circleInfo['circle_min_members']) || parseInt(this.circleInfo[element]) > this.maxMembers)) {
-          //   console.log(parseInt(this.circleInfo[element]));
-          //   this.$refs[element].focus();
-          //   this.hasError[element] = true;
-          //   this.notif({
-          //     message: `The maximum number of members should be between ${this.circleInfo['circle_min_members']} and ${this.maxMembers}.`,
-          //     dangerouslyUseHTMLString: true,
-          //     type: "error",
-          //     duration: 5000,
-          //     onClose: () => { this.hasError[element] = false }
-          //   })
-          //   throw false;
-          // }
           if(element == 'circle_extra_members') {
             this.circleInfo[element] = parseInt(this.circleInfo[element]);
             if(this.circleInfo[element] < 0 || this.circleInfo[element] > parseInt(this.circleInfo['circle_min_members'] * 0.2)) {
@@ -421,18 +408,6 @@ export default {
               this.hasError[element] = true;
               this.notif({
                 message: `The extra number of members should be up to 20% of the circle size, rounded down`,
-                dangerouslyUseHTMLString: true,
-                type: "error",
-                duration: 5000,
-                onClose: () => { this.hasError[element] = false }
-              })
-              throw false;
-            }
-            if(this.circleInfo[element] + this.circleInfo['circle_min_members'] > this.maxMembers) {
-              this.$refs[element].focus();
-              this.hasError[element] = true;
-              this.notif({
-                message: `The total of the circle size and the extra number of members should be less than or equal to ${this.maxMembers}.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,

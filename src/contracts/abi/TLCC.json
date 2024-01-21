@@ -742,17 +742,17 @@
       },
       {
         "internalType": "uint8",
-        "name": "min_members",
+        "name": "circle_size",
         "type": "uint8"
       },
       {
         "internalType": "uint8",
-        "name": "max_members",
+        "name": "extra_members",
         "type": "uint8"
       },
       {
         "internalType": "uint8",
-        "name": "winners_number",
+        "name": "round_winners",
         "type": "uint8"
       }
     ],
