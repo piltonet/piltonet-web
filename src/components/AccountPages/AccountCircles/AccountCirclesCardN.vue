@@ -61,12 +61,12 @@
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
-                  customClass="price-token-icon small ps-1"
+                  customClass="price-token-icon small"
                 />
               </div>
               <p class="trusted-circles-key">PAYMENT</p>
             </div>
-            <p class="trusted-circles-value pb-1 mb-3">x</p>
+            <!-- <p class="trusted-circles-value pb-1 mb-3">x</p> -->
             <div class="d-flex flex-column justify-content-center align-items-center px-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
                 <p class="trusted-circles-value">{{ accountCircleProps.circle_min_members }}</p>
@@ -75,14 +75,15 @@
               </div>
               <p class="trusted-circles-key">ROUNDS</p>
             </div>
-            <p class="trusted-circles-value mb-3">=</p>
+            <!-- <p class="trusted-circles-value mb-3">=</p> -->
             <div class="d-flex flex-column justify-content-center align-items-center ps-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
-                <p class="trusted-circles-value">{{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}</p>
+                <p class="trusted-circles-value big">{{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}</p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
-                  customClass="price-token-icon small ps-1"
+                  :height="20"
+                  customClass="price-token-icon"
                 />
               </div>
               <p class="trusted-circles-key">LOAN AMOUNT</p>
@@ -229,8 +230,14 @@ export default {
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
+  color: rgba(var(--ptn-color-rgb), 0.7);
   margin: 0;
   padding: 0;
+}
+.trusted-circles-value.big {
+  font-size: 25px;
+  line-height: 24px;
+  color: rgba(var(--ptn-color-rgb), 1);
 }
 .trusted-circles-price {
   font-family: "Circular", arial, sans-serif;
