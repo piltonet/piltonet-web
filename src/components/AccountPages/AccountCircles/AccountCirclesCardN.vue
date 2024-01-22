@@ -57,7 +57,12 @@
           <div class="col-10 d-flex flex-row justify-content-start align-items-center">
             <div class="d-flex flex-column justify-content-center align-items-center pe-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
-                <p class="trusted-circles-value">{{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}</p>
+                <p v-if="accountCircleProps.circle_payment_type == 'fixed_pay'" class="trusted-circles-value">
+                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}
+                </p>
+                <p v-if="accountCircleProps.circle_payment_type == 'fixed_loan'" class="trusted-circles-value">
+                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount / accountCircleProps.circle_min_members) }}
+                </p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
@@ -78,7 +83,12 @@
             <!-- <p class="trusted-circles-value mb-3">=</p> -->
             <div class="d-flex flex-column justify-content-center align-items-center ps-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
-                <p class="trusted-circles-value big">{{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}</p>
+                <p v-if="accountCircleProps.circle_payment_type == 'fixed_pay'" class="trusted-circles-value big">
+                  {{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}
+                </p>
+                <p v-if="accountCircleProps.circle_payment_type == 'fixed_loan'" class="trusted-circles-value big">
+                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}
+                </p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
@@ -112,7 +122,6 @@ export default {
   },
   data() {
     return {
-      mintToken: this.accountCircleProps.contract_mint_token == process.env.VUE_APP_LUA_CONTRACT_ADDRESS ? 'lua' : 'vic',
       mouseOver: false
     }
   },
