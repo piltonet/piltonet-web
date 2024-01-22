@@ -39,10 +39,10 @@
                   :chainId="circleInfo.circle_chain_id"
                   :paymentToken="circleInfo.circle_payment_token"
                   :height="12"
-                  :tooltip="false"
+                  :tooltip="true"
                   customClass="input-label-small m-0 pe-1"
                 />
-                <span class="input-label-small">{{ `${tokenSymbol})` }}</span>
+                <span class="input-label-small">{{ `/ ${roundPeriod})` }}</span>
               </div>
             </label>
             <div class="d-flex flex-column justify-content-center align-items-start">
@@ -81,21 +81,22 @@
             </div>
           </div>
         </div>
+
         <!-- Calculation Result -->
         <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
           <template v-if="calculate">
             <div class="d-flex flex-column justify-content-center align-items-start w-100 mb-2">
               <span class="main-text">
-                Loan Amount
-                <span class="note-text tiny text-start">
-                  {{ `(${roundPeriod})` }}
-                </span>
+                {{ this.circleInfo.circle_payment_type == 'fixed_loan' ? 'Total Amount Payable' : 'Loan Amount' }}
               </span>
-              <span class="info-text tiny text-start">
-                The loan amount for the winner of each round.
+              <span v-if="this.circleInfo.circle_payment_type == 'fixed_loan'" class="info-text tiny text-start">
+                {{ `Total of all ${roundPeriod} payments made during the circle.` }}
+              </span>
+              <span v-else class="info-text tiny text-start">
+                {{ `Loan amount awarded to the winner of each ${roundPeriod} round.` }}
               </span>
             </div>
-            <div v-for="(calcRow, index) in calcResult"
+            <div v-for="(result, index) in calcResult"
               :key="index"
               class="d-flex flex-row justify-content-center align-items-center w-100"
             >
@@ -103,12 +104,12 @@
                 <div class="d-flex flex-row justify-content-center align-items-center row w-100 calc-grid">
                   <div class="col-6 text-start mt-1">
                     <span class="main-text tiny">
-                      {{ `${calcRow.round}` }}
+                      {{ `${result.round}` }}
                     </span>
                   </div>
                   <div class="col-6 d-flex flex-row justify-content-end align-items-center mt-1">
                     <span class="main-text tiny">
-                      {{ parseFloat(calcRow.loan).toFixed(2) }}
+                      {{ parseFloat(result.amount).toFixed(2) }}
                     </span>
                     <SvgPaymentToken
                       :chainId="circleInfo.circle_chain_id"
@@ -189,43 +190,52 @@ export default {
         this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
       }
 
+      if(this.circleInfo.circle_round_days == 7) {
+        this.roundPeriod = 'weekly';
+      } else if(this.circleInfo.circle_round_days == 14) {
+        this.roundPeriod = 'biweekly';
+      } else if(this.circleInfo.circle_round_days == 30) {
+        this.roundPeriod = 'monthly';
+      } else {
+        this.roundPeriod = `${this.circleInfo.circle_round_days} days`;
+      }
+
       this.showModal = true;
     },
     async calcRounds() {
       this.calcResult = [];
-      if(this.circleInfo.circle_round_days == 7) {
-        this.roundPeriod = 'Weekly';
-      } else if(this.circleInfo.circle_round_days == 14) {
-        this.roundPeriod = 'Biweekly';
-      } else if(this.circleInfo.circle_round_days == 30) {
-        this.roundPeriod = 'Monthly';
-      } else {
-        this.roundPeriod = `${this.circleInfo.circle_round_days} days`;
-      }
       if(this.checkForm()) {
-        for(let i=0; i < this.circleSize; i++) {
-          this.calcResult.push({
-            round: `Winner ${i+1}`,
-            loan: this.loanAmount(i),
-          })
+        if(this.circleInfo.circle_payment_type == 'fixed_pay') {
+          this.calcLoanAmounts();
+        } else {
+          this.calcTotalPayments();
         }
         this.calculate = true;
       }
     },
-    loanAmount(index) {
+    async calcLoanAmounts() {
+      const totalPayments = this.circleSize * this.fixedAmount;
+      for(let i=0; i < this.circleSize; i++) {
+        this.calcResult.push({
+          round: `Winner of round-${i+1}`,
+          amount: totalPayments + this.winnerPnL(i, totalPayments),
+        })
+      }
+    },
+    async calcTotalPayments() {
+      const loanAmount = this.fixedAmount;
+      for(let i=0; i < this.circleSize; i++) {
+        this.calcResult.push({
+          round: `Winner of round-${i+1}`,
+          amount: loanAmount - this.winnerPnL(i, loanAmount),
+        })
+      }
+    },
+    winnerPnL(index, totalAmount) {
       const roundNo = index + 1;
       const totalRounds = parseInt(this.circleSize);
-      const memberBenefit = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * this.totalPayments();
-      // return (this.totalPayments() + memberBenefit) * (1 - this.circleFee);
-      return (this.totalPayments() + memberBenefit);
-    },
-    totalPayments() {
-      if(this.circleInfo.circle_payment_type == 'fixed_pay') {
-        return (this.circleSize * this.fixedAmount);
-      }
-      if(this.circleInfo.circle_payment_type == 'fixed_loan') {
-        return this.fixedAmount;
-      }
+      const _winnerPnL = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * totalAmount;
+      return _winnerPnL;
     },
     checkForm() {
       try {
