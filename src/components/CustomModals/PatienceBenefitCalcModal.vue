@@ -203,38 +203,14 @@ export default {
       this.showModal = true;
     },
     async calcRounds() {
-      this.calcResult = [];
       if(this.checkForm()) {
         if(this.circleInfo.circle_payment_type == 'fixed_pay') {
-          this.calcLoanAmounts();
+          this.calcResult = this.utils.calcLoanAmounts(this.circleSize, this.circleInfo.circle_round_days, this.fixedAmount, this.patienceBenefit);
         } else {
-          this.calcTotalPayments();
+          this.calcResult = this.utils.calcTotalPayments(this.circleSize, this.circleInfo.circle_round_days, this.fixedAmount, this.patienceBenefit);
         }
         this.calculate = true;
       }
-    },
-    async calcLoanAmounts() {
-      const totalPayments = this.circleSize * this.fixedAmount;
-      for(let round = 1; round <= this.circleSize; round++) {
-        this.calcResult.push({
-          round: `Winner of round-${round}`,
-          amount: totalPayments + this.winnerPnL(round, totalPayments),
-        })
-      }
-    },
-    async calcTotalPayments() {
-      const loanAmount = this.fixedAmount;
-      for(let round = 1; round <= this.circleSize; round++) {
-        this.calcResult.push({
-          round: `Winner of round-${round}`,
-          amount: loanAmount - this.winnerPnL(round, loanAmount),
-        })
-      }
-    },
-    winnerPnL(round, totalAmount) {
-      const totalRounds = parseInt(this.circleSize);
-      const _winnerPnL = ((round - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * totalAmount;
-      return _winnerPnL;
     },
     checkForm() {
       try {

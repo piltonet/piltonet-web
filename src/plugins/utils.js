@@ -87,13 +87,32 @@ function formatDate(unixTimestamp, formatDate = 'DD-MM-YYYY', formatTime = null)
 	return formattedDate + (formattedTime ? ` - ${formattedTime}` : '');
 }
 
-function nextMonth(firstDate, diff = 1) {
-	const date = new Date(firstDate);
-	if (date.getMonth() + diff >= 12) {
-		return new Date(date.getFullYear() + parseInt(diff / 12), date.getMonth() + (diff % 12), date.getDate());
-	} else {
-		return new Date(date.getFullYear(), date.getMonth() + diff, date.getDate());
+function calcLoanAmounts(circleSize, roundDays, roundPayment, patienceBenefit) {
+	const totalPayments = circleSize * roundPayment;
+	let calcResult = [];
+	for(let round = 1; round <= circleSize; round++) {
+		calcResult.push({
+			round: `Winner of round-${round}`,
+			amount: totalPayments + winnerPnL(round, circleSize, roundDays, totalPayments, patienceBenefit),
+		})
 	}
+	return calcResult;
+}
+
+function calcTotalPayments(circleSize, roundDays, loanAmount, patienceBenefit) {
+	let calcResult = [];
+	for(let round = 1; round <= circleSize; round++) {
+		calcResult.push({
+			round: `Winner of round-${round}`,
+			amount: loanAmount - winnerPnL(round, circleSize, roundDays, loanAmount, patienceBenefit),
+		})
+	}
+	return calcResult;
+}
+
+function winnerPnL(winnerRound, circleSize, roundDays, totalAmount, patienceBenefit) {
+	const _winnerPnL = ((winnerRound - ((circleSize + 1) / 2)) * ((patienceBenefit / 100) / (365 / roundDays))) * totalAmount;
+	return _winnerPnL;
 }
 
 function nextRound(firstDate, diffDays = 1) {
@@ -123,7 +142,9 @@ export default {
 	fixedNumber,
 	formatPrice,
 	formatDate,
-	nextMonth,
+	calcLoanAmounts,
+	calcTotalPayments,
+	winnerPnL,
 	nextRound,
 	diffDays,
 	objectCleaner,
