@@ -109,7 +109,7 @@
           <!-- Loan Amount -->
           <div class="col-3 col-md-2 col-lg-2 col-xl-2 d-flex flex-row justify-content-center align-items-center">
             <span class="main-text tiny">
-              {{ parseFloat(loanAmount(index)).toFixed(2) }}
+              {{ parseFloat(calcResult[index]?.loanAmount).toFixed(2) }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfo.circle_chain_id"
@@ -121,7 +121,7 @@
           <!-- Total Payments -->
           <div class="col-3 col-md-2 col-lg-3 col-xl-2 d-flex flex-row justify-content-center align-items-center">
             <span class="main-text tiny">
-              {{ parseFloat(totalPayments()).toFixed(2) }}
+              {{ parseFloat(calcResult[index]?.totalPayments).toFixed(2) }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfo.circle_chain_id"
@@ -159,7 +159,8 @@ export default {
       circleInfo: this.circleInfoProps,
       circleMembers: this.circleMembersProps,
       circleFee: (this.circleInfoProps.circle_service_charge / 100) + (this.circleInfoProps.circle_creator_earnings / 100),
-      selectedRound: this.selectedRoundProps
+      selectedRound: this.selectedRoundProps,
+      calcResult: []
     }
   },
   computed: {
@@ -169,6 +170,7 @@ export default {
     }
   },
   async mounted() {
+    this.calcRounds();
   },
   watch: {
     circleInfoProps: function () {
@@ -182,6 +184,23 @@ export default {
     }
   },
   methods: {
+    async calcRounds() {
+      if(this.circleInfo.circle_payment_type == 'fixed_pay') {
+        this.calcResult = this.utils.calcLoanAmounts(
+          parseInt(this.circleInfo.circle_min_members),
+          parseInt(this.circleInfo.circle_round_days),
+          parseFloat(this.circleInfo.circle_fixed_amount),
+          parseFloat(this.circleInfo.circle_patience_benefit) 
+        );
+      } else {
+        this.calcResult = this.utils.calcTotalPayments(
+          parseInt(this.circleInfo.circle_min_members),
+          parseInt(this.circleInfo.circle_round_days),
+          parseFloat(this.circleInfo.circle_fixed_amount),
+          parseFloat(this.circleInfo.circle_patience_benefit)
+        );
+      }
+    },
     roundNumber(index) {
       return parseInt((index + parseInt(this.circleInfo.circle_winners_number)) / parseInt(this.circleInfo.circle_winners_number));
     },

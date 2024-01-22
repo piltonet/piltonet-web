@@ -92,8 +92,9 @@ function calcLoanAmounts(circleSize, roundDays, roundPayment, patienceBenefit) {
 	let calcResult = [];
 	for(let round = 1; round <= circleSize; round++) {
 		calcResult.push({
-			round: `Winner of round-${round}`,
-			amount: totalPayments + winnerPnL(round, circleSize, roundDays, totalPayments, patienceBenefit),
+			roundNo: round,
+			totalPayments: totalPayments,
+			loanAmount: totalPayments + winnerPnL(round, circleSize, roundDays, totalPayments, patienceBenefit)
 		})
 	}
 	return calcResult;
@@ -103,8 +104,9 @@ function calcTotalPayments(circleSize, roundDays, loanAmount, patienceBenefit) {
 	let calcResult = [];
 	for(let round = 1; round <= circleSize; round++) {
 		calcResult.push({
-			round: `Winner of round-${round}`,
-			amount: loanAmount - winnerPnL(round, circleSize, roundDays, loanAmount, patienceBenefit),
+			roundNo: round,
+			totalPayments: loanAmount - winnerPnL(round, circleSize, roundDays, loanAmount, patienceBenefit),
+			loanAmount: loanAmount
 		})
 	}
 	return calcResult;

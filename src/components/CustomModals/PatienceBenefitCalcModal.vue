@@ -104,12 +104,15 @@
                 <div class="d-flex flex-row justify-content-center align-items-center row w-100 calc-grid">
                   <div class="col-6 text-start mt-1">
                     <span class="main-text tiny">
-                      {{ `${result.round}` }}
+                      {{ `Winner of round-${result.roundNo}` }}
                     </span>
                   </div>
                   <div class="col-6 d-flex flex-row justify-content-end align-items-center mt-1">
-                    <span class="main-text tiny">
-                      {{ parseFloat(result.amount).toFixed(2) }}
+                    <span v-if="this.circleInfo.circle_payment_type == 'fixed_loan'" class="main-text tiny">
+                      {{ parseFloat(result.totalPayments).toFixed(2) }}
+                    </span>
+                    <span v-else class="main-text tiny">
+                      {{ parseFloat(result.loanAmount).toFixed(2) }}
                     </span>
                     <SvgPaymentToken
                       :chainId="circleInfo.circle_chain_id"
