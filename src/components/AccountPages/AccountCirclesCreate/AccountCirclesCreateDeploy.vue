@@ -154,7 +154,7 @@
             <button
               class="choosing-winners-button mb-2"
               :class="circleInfo.circle_winners_order == 'bidding' ? 'selected' : ''"
-              @click="circleInfo.circle_winners_order = 'bidding'"
+              @click="circleInfo.circle_winners_order = 'bidding'; circleInfo.circle_patience_benefit = 0"
             >
               <p class="ps-2 pt-2">
                 <i class="fa fa-gavel fa-xl" aria-hidden="true"></i>
@@ -168,11 +168,12 @@
           <template v-if="tabIndex == 5">
             <label for="circlePatienceBenefit" class="input-label">
               Patience Benefit
-              <span class="input-label-small">(Default 0%)</span>
+              <span v-if="circleInfo.circle_winners_order == 'bidding'" class="input-label-small">(Not available in bidding mode)</span>
+              <span v-else class="input-label-small">(Default 0%)</span>
             </label>
             <div class="d-flex flex-row justify-content-start align-items-center">
               <input
-                :disabled="circleInfo.circle_joined_members"
+                :disabled="circleInfo.circle_winners_order == 'bidding'"
                 ref="circle_patience_benefit"
                 id="circlePatienceBenefit"
                 type="number"
@@ -186,6 +187,7 @@
                 v-model="circleInfo.circle_patience_benefit"
               />
               <div
+                v-if="circleInfo.circle_winners_order != 'bidding'"
                 type="button"
                 @click="patienceBenefitCalc"
                 class="main-btn gray-bg middle-text ms-3 mt-2"
