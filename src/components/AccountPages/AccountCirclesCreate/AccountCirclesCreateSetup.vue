@@ -56,7 +56,7 @@
                   v-model="circleInfo.circle_min_members"
                 />
                 <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
-                  {{ `Enter the number of circle members, which should be between ${minMembers} and ${maxMembers} people.`}}
+                  {{ `Enter the number of circle members, between ${minMembers} and ${maxMembers} people.`}}
                 </p>
               </div>
               <!-- To Do -->
@@ -102,7 +102,11 @@
                 id="circleFixedAmount"
                 type="number"
                 step="any"
-                :placeholder="`e.g. ${minFixedAmount}`"
+                :placeholder="circleInfo.circle_payment_type == 'fixed_loan' ?
+                  (!parseInt(circleInfo.circle_min_members) || parseInt(circleInfo.circle_min_members) < minMembers || parseInt(circleInfo.circle_min_members) > maxMembers ?
+                  `e.g. ${minRoundPayment * 5}` :
+                  `${minRoundPayment * parseInt(circleInfo.circle_min_members)} to ${maxRoundPayment * parseInt(circleInfo.circle_min_members)}`) :
+                  `${minRoundPayment} to ${maxRoundPayment}`"
                 class="smaller-input mb-0"
                 :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
                 aria-describedby="circleFixedAmountHelp"
@@ -120,10 +124,10 @@
             </div>
 
             <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `Enter the fixed amount that each participant will contribute in every round, ranging from ${minFixedAmount} to ${maxFixedAmount} ${tokenSymbol}.` }}
+              Enter the fixed amount that each participant will contribute in every round.
             </p>
             <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" id="circleFixedAmountHelp" class="help-text pt-2 mb-3">
-              {{ `The fixed amount of loan that the winner receives, ${minFixedAmount} to ${maxFixedAmount}  ${tokenSymbol}.` }}
+              The fixed amount of loan that the winner receives.
             </p>
           </template>
 
@@ -205,13 +209,15 @@ export default {
       circleRound: '',
       minFixedAmount: 0,
       maxFixedAmount: 0,
+      minRoundPayment: 0,
+      maxRoundPayment: 0,
       minMembers: 0,
       maxMembers: 0,
       hasError: {
         circle_name: false,
-        circle_fixed_amount: false,
         circle_min_members: false,
         circle_extra_members: false,
+        circle_fixed_amount: false,
         circle_winners_number: false
       },
       openLoadings: []
@@ -270,15 +276,10 @@ export default {
         this.paymentToken = this.circleConstProps['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
         this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL'];
         const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
-        this.minFixedAmount = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
-        this.maxFixedAmount = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
+        this.minRoundPayment = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
+        this.maxRoundPayment = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
         this.minMembers = this.circleConstProps['CIRCLES_MIN_MEMBERS'];
         this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
-
-        if(this.circleInfo.circle_payment_type == 'fixed_loan') {
-          this.minFixedAmount = this.minFixedAmount * this.minMembers;
-          this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
-        }
       }
     },
     async setupCircle() {
@@ -356,6 +357,14 @@ export default {
       // To Do
       this.circleInfo['circle_extra_members'] = this.circle_extra_members;
 
+      if(this.circleInfo.circle_payment_type == 'fixed_pay') {
+        this.minFixedAmount = this.minRoundPayment;
+        this.maxFixedAmount = this.maxRoundPayment;
+      } else {
+        this.minFixedAmount = this.minRoundPayment * parseInt(this.circleInfo.circle_min_members);
+        this.maxFixedAmount = this.maxRoundPayment * parseInt(this.circleInfo.circle_min_members);
+      }
+
       try {
         Object.keys(this.hasError).forEach(element => {
           if(this.circleInfo[element] == null || this.circleInfo[element].length <= 0) {
@@ -368,23 +377,6 @@ export default {
               onClose: () => { this.hasError[element] = false }
             })
             throw false;
-          }
-          if(element == 'circle_fixed_amount') {
-            const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
-            this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**2) / 10**2;
-            if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
-              || parseInt(this.circleInfo[element] * 10**tokenDecimals) > this.maxFixedAmount * 10**tokenDecimals) {
-              this.$refs[element].focus();
-              this.hasError[element] = true;
-              this.notif({
-                message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `periodic payments` : 'loan amount'} should be between ${this.minFixedAmount} and ${this.maxFixedAmount}.`,
-                dangerouslyUseHTMLString: true,
-                type: "error",
-                duration: 5000,
-                onClose: () => { this.hasError[element] = false }
-              })
-              throw false;
-            }
           }
           if(element == 'circle_min_members') {
             this.circleInfo[element] = parseInt(this.circleInfo[element]);
@@ -408,6 +400,23 @@ export default {
               this.hasError[element] = true;
               this.notif({
                 message: `The extra number of members should be up to 20% of the circle size, rounded down`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'circle_fixed_amount') {
+            const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
+            this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**2) / 10**2;
+            if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
+              || parseInt(this.circleInfo[element] * 10**tokenDecimals) > this.maxFixedAmount * 10**tokenDecimals) {
+              this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The ${this.circleInfo.circle_payment_type == 'fixed_pay' ?  `round payments` : 'loan amount'} should be between ${this.minFixedAmount} and ${this.maxFixedAmount} ${this.tokenSymbol}.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
                 duration: 5000,
