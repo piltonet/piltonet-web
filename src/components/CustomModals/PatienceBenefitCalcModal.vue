@@ -215,26 +215,25 @@ export default {
     },
     async calcLoanAmounts() {
       const totalPayments = this.circleSize * this.fixedAmount;
-      for(let i=0; i < this.circleSize; i++) {
+      for(let round = 1; round <= this.circleSize; round++) {
         this.calcResult.push({
-          round: `Winner of round-${i+1}`,
-          amount: totalPayments + this.winnerPnL(i, totalPayments),
+          round: `Winner of round-${round}`,
+          amount: totalPayments + this.winnerPnL(round, totalPayments),
         })
       }
     },
     async calcTotalPayments() {
       const loanAmount = this.fixedAmount;
-      for(let i=0; i < this.circleSize; i++) {
+      for(let round = 1; round <= this.circleSize; round++) {
         this.calcResult.push({
-          round: `Winner of round-${i+1}`,
-          amount: loanAmount - this.winnerPnL(i, loanAmount),
+          round: `Winner of round-${round}`,
+          amount: loanAmount - this.winnerPnL(round, loanAmount),
         })
       }
     },
-    winnerPnL(index, totalAmount) {
-      const roundNo = index + 1;
+    winnerPnL(round, totalAmount) {
       const totalRounds = parseInt(this.circleSize);
-      const _winnerPnL = ((roundNo - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * totalAmount;
+      const _winnerPnL = ((round - ((totalRounds + 1) / 2)) * ((this.patienceBenefit / 100) / (365 / this.circleInfo.circle_round_days))) * totalAmount;
       return _winnerPnL;
     },
     checkForm() {
