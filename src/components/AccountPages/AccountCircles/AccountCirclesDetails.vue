@@ -89,24 +89,14 @@
         </div>
         <!-- Circle Size -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members">
-            <span class="note-text">Circle Size:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_max_members }}
-            </span>
-            <span class="main-text small ps-2">people</span>
-          </div>
-          <div v-else>
-            <span class="note-text">Circle Size:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_min_members }}
-            </span>
-            <span class="main-text small ps-2">to</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_max_members }}
-            </span>
-            <span class="main-text small ps-2">people</span>
-          </div>
+          <span class="note-text">Circle Size:</span>
+          <span class="top-text-small ps-2">
+            {{ circleInfoProps.circle_min_members }}
+            <template v-if="parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members) > 0">
+              {{ `(+${parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members)})` }}
+            </template>
+          </span>
+          <span class="main-text small ps-2">people</span>
         </div>
         <!-- Payments per Round & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">

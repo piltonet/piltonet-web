@@ -62,7 +62,7 @@ import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
 
 export default {
-  name: 'AccountCirclesInvited',
+  name: 'AccountCirclesJoined',
   components: {
     AccountCirclesDetails,
     AccountCirclesRotations,

@@ -219,8 +219,7 @@ export default {
         circle_extra_members: false,
         circle_fixed_amount: false,
         circle_winners_number: false
-      },
-      openLoadings: []
+      }
     }
   },
   computed: {
@@ -234,7 +233,6 @@ export default {
   },
   mounted() {
     this.setup();
-    this.setupConst();
   },
   watch: {
     circleInfoProps: function () {
@@ -270,6 +268,7 @@ export default {
           this.circleInfo['circle_start_date'] = '';
         }
       }
+      this.setupConst();
     },
     async setupConst() {
       if(this.circleConstProps) {

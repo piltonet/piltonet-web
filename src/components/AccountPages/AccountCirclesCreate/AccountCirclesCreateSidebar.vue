@@ -1,5 +1,5 @@
 <template>
-  <div v-if="circleInfoProps" id="side-bar" class="p-0 mt-4">
+  <div v-if="circleInfoProps && circleConstProps" id="side-bar" class="p-0 mt-4">
     <div class="side-bar-main">
       <h3>
 				<span class="d-none d-md-inline-block">CREATE CIRCLE</span>
@@ -38,9 +38,9 @@
           @click="activePage != 'whitelist' && circleInfoProps.circle_status != 'deployed' ? $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
           :class="activePage == 'whitelist' ? 
-            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members ? 'active' : 'active done'
+            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'active' : 'active done'
             : (circleInfoProps.circle_status == 'deployed' ? 'disable'
-            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members ? '' : 'done')"
+            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'done')"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Whitelist Contacts</p>
@@ -48,13 +48,13 @@
       </div>
       <div class="side-bar-item">
         <div
-          :type="activePage == 'launch' ? '' : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members ? '' : 'button'"
-          @click="activePage != 'launch' && circleInfoProps.whitelists && circleInfoProps.whitelists.length >= circleInfoProps.circle_min_members ?
+          :type="activePage == 'launch' ? '' : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'button'"
+          @click="activePage != 'launch' && circleInfoProps.whitelists && circleInfoProps.whitelists.length >= circleConstProps['CIRCLES_MIN_MEMBERS'] ?
             $router.push({path: '/account/circles/create', query: {active_page: 'launch', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
           :class="activePage == 'launch' ? 
-            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members ? 'disable' : circleInfoProps.circle_status == 'setuped' ? 'active' : 'active done'
-            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members ? 'disable' : circleInfoProps.circle_status == 'setuped' ? '' : 'done'"
+            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'setuped' ? 'active' : 'active done'
+            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'setuped' ? '' : 'done'"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">4</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Review & Launch</p>
@@ -105,7 +105,8 @@ export default {
   name: "AccountCirclesCreateSidebar",
   props: {
     activePage: String,
-    circleInfoProps: Object
+    circleInfoProps: Object,
+    circleConstProps: Object
   },
   mounted() {
     // console.log(this.circleInfoProps);
@@ -200,9 +201,6 @@ export default {
 }
 
 @media (max-width: 991px) {
-  .side-bar-btn {
-    // max-width: 160px;
-  }
 }
 
 @media (max-width: 767px) {

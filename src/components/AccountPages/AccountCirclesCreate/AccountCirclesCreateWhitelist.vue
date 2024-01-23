@@ -73,10 +73,24 @@
             <span class="m-0 p-0">Remove</span>
           </div>
         </div>
-        <div v-if="!circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_min_members">
+        <div v-if="!circleInfoProps.whitelists || circleInfoProps.whitelists.length < minMembers">
           <p class="help-text mt-4">
             <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
-            {{ `You need at least ${circleInfoProps.circle_min_members} whitelisted accounts before launch the circle.` }}
+            {{ `You need a minimum of ${minMembers} contacts on the whitelist before the circle can be launched.` }}
+          </p>
+        </div>
+        <div v-else-if="circleInfoProps.whitelists.length <= circleInfoProps.circle_max_members">
+          <p class="help-text mt-4">
+            <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
+            {{ `${circleInfoProps.whitelists.length} out of the required 
+              ${circleInfoProps.circle_min_members}${extraMembers > 0 ? "(+"+extraMembers+")" : ""} 
+              members have been added to the circle's whitelist.` }}
+          </p>
+        </div>
+        <div v-else>
+          <p class="help-text mt-4">
+            <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
+            {{ `${circleInfoProps.whitelists.length} individuals have been included in the whitelist, exceeding the maximum limit of ${circleInfoProps.circle_max_members} circle members.` }}
           </p>
         </div>
       </div>
@@ -202,13 +216,15 @@ export default {
     NotFound
   },
   props: {
-    circleInfoProps: Object
+    circleInfoProps: Object,
+    circleConstProps: Object
   },
   data() {
     return {
       selectedContacts: {},
       contactAdrs: [],
-      openLoadings: []
+      minMembers: 0,
+      extraMembers: 0
     }
   },
   computed: {
@@ -227,6 +243,9 @@ export default {
   watch: {
     circleInfoProps: function () {
       this.setup();
+    },
+    circleConstProps: function () {
+      this.setupConst();
     }
   },
   methods: {
@@ -234,6 +253,13 @@ export default {
     async setup() {
       for(let contact of this.circleInfoProps.contacts || []) {
         this.selectedContacts[contact.account_tba_address] = false;
+      }
+      this.extraMembers = parseInt(this.circleInfoProps.circle_max_members) - parseInt(this.circleInfoProps.circle_min_members);
+      this.setupConst();
+    },
+    async setupConst() {
+      if(this.circleConstProps) {
+        this.minMembers = this.circleConstProps['CIRCLES_MIN_MEMBERS'];
       }
     },
     async inviteContact(contactAdr) {

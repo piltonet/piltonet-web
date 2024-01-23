@@ -91,7 +91,10 @@
         >
           <span class="note-text">Circle Size:</span>
           <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_max_members }}
+            {{ circleInfoProps.circle_min_members }}
+            <template v-if="parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members) > 0">
+              {{ `(+${parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members)})` }}
+            </template>
           </span>
           <span class="main-text small ps-2">people</span>
         </div>
@@ -99,10 +102,9 @@
           <span class="note-text">Circle Size:</span>
           <span class="top-text-small ps-2">
             {{ circleInfoProps.circle_min_members }}
-          </span>
-          <span class="main-text small ps-2">to</span>
-          <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_max_members }}
+            <template v-if="parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members) > 0">
+              {{ `(+${parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members)})` }}
+            </template>
           </span>
           <span class="main-text small ps-2">people</span>
         </div>
@@ -346,7 +348,8 @@ export default {
     NotFound
   },
   props: {
-    circleInfoProps: Object
+    circleInfoProps: Object,
+    circleConstProps: Object
   },
   data() {
     return {
@@ -354,8 +357,7 @@ export default {
       startDate: null,
       minStartDate: '',
       copyAddressTooltip: "Copy Address",
-      explorerLink: null,
-      openLoadings: []
+      explorerLink: null
     }
   },
   computed: {

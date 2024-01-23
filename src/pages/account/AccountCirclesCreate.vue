@@ -10,6 +10,7 @@
       <AccountCirclesCreateSidebar
         :activePage = "activePage"
         :circleInfoProps="circleInfo"
+        :circleConstProps="circleConst"
         @set-active-page="setActivePage"
       />
     </div>
@@ -25,9 +26,11 @@
       />
       <AccountCirclesCreateWhitelist v-else-if="activePage == 'whitelist'"
         :circleInfoProps="circleInfo"
+        :circleConstProps="circleConst"
       />
       <AccountCirclesCreateLaunch v-else-if="activePage == 'launch'"
         :circleInfoProps="circleInfo"
+        :circleConstProps="circleConst"
       />
     </div>
   </div>
@@ -90,6 +93,7 @@ export default {
   },
   methods: {
     async setup() {
+      this.loading = true;
       const contract = await abi.setAbi(
         "0x", // TLCC mock
         "TLCC"
@@ -100,6 +104,7 @@ export default {
       } else {
         this.$router.push('/account/circles');
       }
+      this.loading = false;
     },
     async setActivePage(active_page, circle_id, reload = false) {
       if(reload) this.loading = true;
