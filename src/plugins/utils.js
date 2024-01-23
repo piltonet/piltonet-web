@@ -129,6 +129,18 @@ function diffDays(date1, date2) {
 	return days_difference;
 }
 
+function diffHours(date1, date2) {
+	const time_difference = date2.getTime() - date1.getTime();
+	const hours_difference = parseInt(time_difference / (1000 * 60 * 60));
+	return hours_difference;
+}
+
+function diffMinutes(date1, date2) {
+	const time_difference = date2.getTime() - date1.getTime();
+	const minutes_difference = parseInt(time_difference / (1000 * 60));
+	return minutes_difference;
+}
+
 function objectCleaner(obj) {
   Object.keys(obj).forEach(key => {
 		if(obj[key] === '' || obj[key] === null || obj[key] === undefined) {
@@ -149,6 +161,8 @@ export default {
 	winnerPnL,
 	nextRound,
 	diffDays,
+	diffHours,
+	diffMinutes,
 	objectCleaner,
 	formatLabel,
 	nftIpfsLink

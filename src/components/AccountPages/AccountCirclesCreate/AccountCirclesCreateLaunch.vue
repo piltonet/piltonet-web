@@ -111,9 +111,7 @@
         <!-- Round Payments & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payments:</span>
-            <span v-else class="note-text">Round Payments:</span>
+            <span class="note-text">Round Payments:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
             </span>

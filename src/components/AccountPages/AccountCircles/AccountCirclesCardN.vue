@@ -101,9 +101,17 @@
             
           </div>
 
-          <div class="col-2 text-end">
+          <div v-if="utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) > 1" class="col-2 text-end">
             <p class="top-text-big">{{ utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
             <p class="trusted-circles-info">DAYS LEFT</p>
+          </div>
+          <div v-else-if="utils.diffHours(new Date(), new Date(accountCircleProps.circle_start_date)) > 1" class="col-2 text-end">
+            <p class="top-text-big">{{ utils.diffHours(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="trusted-circles-info">HOURS LEFT</p>
+          </div>
+          <div v-else class="col-2 text-end">
+            <p class="top-text-big">{{ utils.diffMinutes(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="trusted-circles-info">MIN LEFT</p>
           </div>
           
         </div>

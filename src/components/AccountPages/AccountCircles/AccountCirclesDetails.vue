@@ -101,9 +101,7 @@
         <!-- Round Payments & Loan Amount - fixed_pay -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payments:</span>
-            <span v-else class="note-text">Round Payments:</span>
+            <span class="note-text">Round Payments:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
             </span>
@@ -114,32 +112,13 @@
             />
             <!-- <span class="main-text small ps-2">(fixed)</span> -->
           </div>
-          <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
-            class="d-flex flex-row justify-content-start align-items-center mt-4"
-          >
-            <span class="note-text">Loan Amount:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount * circleInfoProps.circle_max_members }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-          </div>
-          <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Loan Amount:</span>
+          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+            <span class="note-text">Average Gross Loan:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount * circleInfoProps.circle_min_members }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-            <span class="main-text small ps-2">to</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount * circleInfoProps.circle_max_members }}
+              <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
+                {{ `(+${circleInfoProps.circle_fixed_amount * (parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members))})` }}
+              </template>
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -150,36 +129,14 @@
         </div>
         <!-- Round Payments & Loan Amount - fixed_loan -->
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_loan'">
-          <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
-            class="d-flex flex-row justify-content-start align-items-center mt-4"
-          >
-            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payments:</span>
-            <span v-else class="note-text">Round Payments:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-          </div>
-          <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span v-if="circleInfoProps.circle_round_days == 7" class="note-text">Weekly Payments:</span>
-            <span v-else-if="circleInfoProps.circle_round_days == 30" class="note-text">Round Payments:</span>
-            <span v-else class="note-text">Round Payments:</span>
-            <span class="top-text-small ps-2">
-              {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-            <span class="main-text small ps-2">to</span>
+          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+            <span class="note-text">Round Payments:</span>
             <span class="top-text-small ps-2">
               {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
+              <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
+                {{ `(-${(Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_min_members)
+                  - (circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100)})` }}
+              </template>
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -189,7 +146,7 @@
           </div>
   
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Loan Amount:</span>
+            <span class="note-text">Gross Loan Amount:</span>
             <span class="top-text-small ps-2">
               {{ circleInfoProps.circle_fixed_amount }}
             </span>
