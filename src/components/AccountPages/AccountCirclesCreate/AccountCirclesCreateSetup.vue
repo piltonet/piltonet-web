@@ -88,7 +88,7 @@
           <!-- Fixed Pay -->
           <template v-if="tabIndex == 1">
             <label v-if="circleInfo.circle_payment_type == 'fixed_pay'" for="circleFixedAmount" class="input-label mt-2">
-              Round Payment
+              Round Payments
               <span class="input-label-small">(Required)</span>
             </label>
             <label v-if="circleInfo.circle_payment_type == 'fixed_loan'" for="circleFixedAmount" class="input-label mt-2">

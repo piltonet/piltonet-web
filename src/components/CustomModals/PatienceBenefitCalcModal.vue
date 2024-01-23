@@ -29,11 +29,11 @@
             </div>
           </div>
           
-          <!-- Round Payment / Loan Amount -->
+          <!-- Round Payments / Loan Amount -->
           <div class="d-flex flex-column justify-content-center align-items-start mt-4">
             <label for="circleSize" class="input-label">
               <div class="d-flex flex-row justify-content-center align-items-center">
-                {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payment' : 'Loan Amount' }}
+                {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payments' : 'Loan Amount' }}
                 <span class="input-label-small ps-1">(</span>
                 <SvgPaymentToken
                   :chainId="circleInfo.circle_chain_id"
