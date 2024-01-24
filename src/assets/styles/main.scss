@@ -203,8 +203,7 @@ input[type="submit"],
   font-size: 11px;
   font-weight: 400;
 }
-.top-text,
-.top-text-small {
+.top-text {
   font-family: "RobotoB2", arial, sans-serif;
   font-size: 23px;
 	font-weight: bold;
@@ -215,15 +214,20 @@ input[type="submit"],
   margin: 0;
   padding: 0;
 }
-.top-text-big {
+.top-text.big {
 	font-weight: bold;
   font-size: 40px !important;
   line-height: 45px;
 }
-.top-text-small {
+.top-text.small {
 	font-weight: normal;
   font-size: 17px !important;
   line-height: 21px;
+}
+.top-text.tiny {
+	font-weight: normal;
+  font-size: 14px !important;
+  line-height: 17px;
 }
 .main-text {
   font-size: 20px;
@@ -284,6 +288,24 @@ input[type="submit"],
   color: rgba(var(--ptn-third-gray-rgb), 0.7) !important;
 	margin: 0;
 	padding: 0;
+}
+.green-text {
+  color: rgba(var(--ptn-green-rgb), 0.8) !important;
+}
+.blue-text {
+  color: rgba(var(--ptn-blue-rgb), 0.8) !important;
+}
+.darkblue-text {
+  color: rgba(var(--ptn-second-blue-rgb), 0.8) !important;
+}
+.red-text {
+  color: rgba(var(--ptn-red-rgb), 0.8) !important;
+}
+.gray-text {
+  color: rgba(var(--ptn-third-gray-rgb), 0.8) !important;
+}
+.orange-text {
+  color: rgba(var(--ptn-orange-rgb), 1) !important;
 }
 .main-btn {
   display: flex;

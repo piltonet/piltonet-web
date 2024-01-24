@@ -187,16 +187,16 @@ export default {
     async calcRounds() {
       if(this.circleInfo.circle_payment_type == 'fixed_pay') {
         this.calcResult = this.utils.calcLoanAmounts(
-          parseInt(this.circleInfo.circle_min_members),
+          parseInt(this.circleInfo.circle_size),
           parseInt(this.circleInfo.circle_round_days),
-          parseFloat(this.circleInfo.circle_fixed_amount),
+          parseFloat(this.circleInfo.circle_round_payments),
           parseFloat(this.circleInfo.circle_patience_benefit) 
         );
       } else {
         this.calcResult = this.utils.calcTotalPayments(
-          parseInt(this.circleInfo.circle_min_members),
+          parseInt(this.circleInfo.circle_size),
           parseInt(this.circleInfo.circle_round_days),
-          parseFloat(this.circleInfo.circle_fixed_amount),
+          parseFloat(this.circleInfo.circle_round_payments),
           parseFloat(this.circleInfo.circle_patience_benefit)
         );
       }
@@ -206,15 +206,15 @@ export default {
     },
     totalPayments() {
       if(this.circleInfo.circle_payment_type == 'fixed_pay') {
-        return (this.circleInfo.circle_max_members * this.circleInfo.circle_fixed_amount);
+        return (this.circleInfo.circle_size * this.circleInfo.circle_round_payments);
       }
       if(this.circleInfo.circle_payment_type == 'fixed_loan') {
-        return (this.circleInfo.circle_fixed_amount / this.circleInfo.circle_winners_number);
+        return (this.circleInfo.circle_round_payments / this.circleInfo.circle_winners_number);
       }
     },
     loanAmount(index) {
       const memberMonth = parseInt((index + parseInt(this.circleInfo.circle_winners_number)) / parseInt(this.circleInfo.circle_winners_number));
-      const totalMonths = parseInt(this.circleInfo.circle_max_members) / parseInt(this.circleInfo.circle_winners_number);
+      const totalMonths = parseInt(this.circleInfo.circle_size) / parseInt(this.circleInfo.circle_winners_number);
       const memberBenefit = ((memberMonth - ((totalMonths + 1) / 2)) * ((this.circleInfo.circle_patience_benefit / 100) / 12)) * this.totalPayments();
       return (this.totalPayments() + memberBenefit) * (1 - this.circleFee);
     },

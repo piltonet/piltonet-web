@@ -20,10 +20,6 @@
         :circleConstProps="circleConst"
         @set-active-page="setActivePage"
       />
-      <AccountCirclesCreateSetup v-else-if="activePage == 'setup'"
-        :circleInfoProps="circleInfo"
-        :circleConstProps="circleConst"
-      />
       <AccountCirclesCreateWhitelist v-else-if="activePage == 'whitelist'"
         :circleInfoProps="circleInfo"
         :circleConstProps="circleConst"
@@ -42,7 +38,6 @@
 import NavBar from '@/components/NavBar/NavBar.vue';
 import AccountCirclesCreateSidebar from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateSidebar.vue';
 import AccountCirclesCreateDeploy from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateDeploy.vue';
-import AccountCirclesCreateSetup from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateSetup.vue';
 import AccountCirclesCreateWhitelist from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateWhitelist.vue';
 import AccountCirclesCreateLaunch from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateLaunch.vue';
 import FooterBar from '@/components/FooterBar/FooterBar.vue';
@@ -56,14 +51,13 @@ export default {
     NavBar,
     AccountCirclesCreateSidebar,
     AccountCirclesCreateDeploy,
-    AccountCirclesCreateSetup,
     AccountCirclesCreateWhitelist,
     AccountCirclesCreateLaunch,
     FooterBar
   },
   data() {
     return {
-      receivablePages: ['deploy', 'setup', 'whitelist', 'launch'],
+      receivablePages: ['deploy', 'whitelist', 'launch'],
       circleId: null,
       circleInfo: null,
       circleConst: null,

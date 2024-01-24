@@ -33,7 +33,7 @@
             :rounded="true"
             class="account-image-small"
           />
-          <p class="top-text-small ms-2">
+          <p class="top-text small ms-2">
             <span>
               {{ accountContact.account_fullname || accountContact.account_nickname }}
             </span>
@@ -108,7 +108,7 @@
             :rounded="true"
             class="account-image-small"
           />
-          <p class="top-text-small ms-2">
+          <p class="top-text small ms-2">
             <span>
               {{ accountContact.account_fullname || accountContact.account_nickname }}
             </span>
@@ -148,7 +148,7 @@
             :rounded="true"
             class="account-image-small"
           />
-          <p class="top-text-small ms-2">
+          <p class="top-text small ms-2">
             <span>
               {{ accountContact.account_fullname || accountContact.account_nickname }}
             </span>

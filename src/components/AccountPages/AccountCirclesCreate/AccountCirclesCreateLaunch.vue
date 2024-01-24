@@ -21,7 +21,7 @@
       <!-- Contract Address -->
       <div class="d-flex flex-row justify-content-start align-items-center mt-4">
         <span class="note-text">Contract Address:</span>
-        <span class="top-text-small ps-2">
+        <span class="top-text small ps-2">
           {{ utils.truncate(circleInfoProps.circle_id, 17) }}
         </span>
         <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
@@ -63,48 +63,33 @@
           <span class="note-text">
             Round Period:
           </span>
-          <span v-if="circleInfoProps.circle_round_days == 7" class="top-text-small ps-2">
+          <span v-if="circleInfoProps.circle_round_days == 7" class="top-text small ps-2">
             Weekly<span class="main-text small ps-2">(7 days)</span>
           </span>
-          <span v-if="circleInfoProps.circle_round_days == 14" class="top-text-small ps-2">
+          <span v-if="circleInfoProps.circle_round_days == 14" class="top-text small ps-2">
             Biweekly<span class="main-text small ps-2">(14 days)</span>
           </span>
-          <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text-small ps-2">
+          <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text small ps-2">
             Monthly<span class="main-text small ps-2">(30 days)</span>
           </span>
-          <span v-else class="top-text-small ps-2">
+          <span v-else class="top-text small ps-2">
             {{ circleInfoProps.circle_round_days }} days
           </span>
         </div>
         <!-- Payment Type -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Payment Type:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_payment_type == 'fixed_pay' ? 'Fixed Payments' : 
               circleInfoProps.circle_payment_type == 'fixed_loan' ? 'Fixed Loan' : ''
             }}
           </span>
         </div>
         <!-- Circle Size -->
-        <div v-if="circleInfoProps.circle_min_members == circleInfoProps.circle_max_members"
-          class="d-flex flex-row justify-content-start align-items-center mt-4"
-        >
+        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Circle Size:</span>
-          <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_min_members }}
-            <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
-              {{ `(+${parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members)})` }}
-            </template>
-          </span>
-          <span class="main-text small ps-2">people</span>
-        </div>
-        <div v-else class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Circle Size:</span>
-          <span class="top-text-small ps-2">
-            {{ circleInfoProps.circle_min_members }}
-            <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
-              {{ `(+${parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members)})` }}
-            </template>
+          <span class="top-text small ps-2">
+            {{ circleInfoProps.circle_size }}
           </span>
           <span class="main-text small ps-2">people</span>
         </div>
@@ -112,8 +97,8 @@
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span class="note-text">Round Payments:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount }}
+            <span class="top-text small ps-2">
+              {{ circleInfoProps.circle_round_payments }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -124,11 +109,8 @@
           </div>
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span class="note-text">Average Gross Loan:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount * circleInfoProps.circle_min_members }}
-              <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
-                {{ `(+${circleInfoProps.circle_fixed_amount * (parseInt(circleInfoProps.circle_max_members) - parseInt(circleInfoProps.circle_min_members))})` }}
-              </template>
+            <span class="top-text small ps-2">
+              {{ circleInfoProps.circle_round_payments * circleInfoProps.circle_size }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -141,12 +123,8 @@
         <div v-if="circleInfoProps.circle_payment_type == 'fixed_loan'">
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span class="note-text">Round Payments:</span>
-            <span class="top-text-small ps-2">
-              {{ Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
-              <template v-if="parseInt(circleInfoProps.circle_max_members) > parseInt(circleInfoProps.circle_min_members)">
-                {{ `(-${(Math.round(((circleInfoProps.circle_fixed_amount / circleInfoProps.circle_min_members)
-                  - (circleInfoProps.circle_fixed_amount / circleInfoProps.circle_max_members) + Number.EPSILON) * 100) / 100)})` }}
-              </template>
+            <span class="top-text small ps-2">
+              {{ Math.round(((circleInfoProps.circle_round_payments / circleInfoProps.circle_size) + Number.EPSILON) * 100) / 100 }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -157,8 +135,8 @@
   
           <div class="d-flex flex-row justify-content-start align-items-center mt-4">
             <span class="note-text">Gross Loan Amount:</span>
-            <span class="top-text-small ps-2">
-              {{ circleInfoProps.circle_fixed_amount }}
+            <span class="top-text small ps-2">
+              {{ circleInfoProps.circle_round_payments }}
             </span>
             <SvgPaymentToken
               :chainId="circleInfoProps.circle_chain_id"
@@ -174,7 +152,7 @@
           class="d-flex flex-row justify-content-start align-items-center mt-4"
         >
           <span class="note-text">Start Date:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ utils.formatDate(circleInfoProps.circle_start_date, 'DD Month YYYY') }}
           </span>
         </div>
@@ -183,7 +161,7 @@
         <!-- Winner Selection Method -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Winner Selection Method:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_winners_order == 'random' ? 'Random' : 
               circleInfoProps.circle_winners_order == 'fixed' ? 'FCFS' :
               circleInfoProps.circle_winners_order == 'bidding' ? 'Bidding' : ''
@@ -193,7 +171,7 @@
         <!-- Round Winners Quantity -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Round Winners Quantity:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_winners_number }}
           </span>
           <span class="main-text small ps-2">winner(s)</span>
@@ -201,7 +179,7 @@
         <!-- Patience Benefit -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Patience Benefit:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_patience_benefit }}
           </span>
           <span class="main-text small ps-1">%</span>
@@ -209,7 +187,7 @@
         <!-- Creator Earnings -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Creator Earnings:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_creator_earnings }}
           </span>
           <span class="main-text small ps-1">%</span>
@@ -217,7 +195,7 @@
         <!-- Service Charge -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-4">
           <span class="note-text">Service Charge:</span>
-          <span class="top-text-small ps-2">
+          <span class="top-text small ps-2">
             {{ circleInfoProps.circle_service_charge }}
           </span>
           <span class="main-text small ps-1">%</span>
@@ -258,7 +236,7 @@
         <span class="note-text">
           Launched At:
         </span>
-        <span class="top-text-small ps-2">
+        <span class="top-text small ps-2">
           {{ utils.formatDate(circleInfoProps.circle_launched_at, 'DD Month YYYY', 'HH:MM') }}
         </span>
       </div>

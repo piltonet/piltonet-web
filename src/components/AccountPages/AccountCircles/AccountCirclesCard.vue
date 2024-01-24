@@ -35,25 +35,11 @@
             </span>
           </div>
 
-          <!-- Circle Members -->
-          <div
-            v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"
-            class="d-flex flex-row justify-content-start align-items-center pt-2"
-          >
+          <!-- Circle Size -->
+          <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">Participants:</span>
             <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">people</span>
-          </div>
-          <div v-else class="d-flex flex-row justify-content-start align-items-center pt-2">
-            <span class="account-circles-card-note">Participants:</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_min_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">to</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
+              {{ accountCircleProps.circle_size }}
             </span>
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
@@ -63,7 +49,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -72,36 +58,10 @@
               />
               <span class="account-circles-card-unit ps-1">(fixed)</span>
             </div>
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Loan Amount:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_min_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
+                {{ accountCircleProps.circle_round_payments * accountCircleProps.circle_size }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -111,36 +71,10 @@
             </div>
           </div>
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_loan'">
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Round Payments:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
+                {{ Math.round(((accountCircleProps.circle_round_payments / accountCircleProps.circle_size) + Number.EPSILON) * 100) / 100 }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -151,7 +85,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -207,24 +141,10 @@
           </div>
 
           <!-- Circle Members -->
-          <div
-            v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"
-            class="d-flex flex-row justify-content-start align-items-center pt-2"
-          >
+          <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">Participants:</span>
             <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">people</span>
-          </div>
-          <div v-else class="d-flex flex-row justify-content-start align-items-center pt-2">
-            <span class="account-circles-card-note">Participants:</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_min_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">to</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
+              {{ accountCircleProps.circle_size }}
             </span>
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
@@ -234,7 +154,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -243,36 +163,10 @@
               />
               <span class="account-circles-card-unit ps-1">(fixed)</span>
             </div>
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Loan Amount:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_min_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
+                {{ accountCircleProps.circle_round_payments * accountCircleProps.circle_size }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -282,36 +176,10 @@
             </div>
           </div>
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_loan'">
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Round Payments:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
+                {{ Math.round(((accountCircleProps.circle_round_payments / accountCircleProps.circle_size) + Number.EPSILON) * 100) / 100 }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -322,7 +190,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -424,7 +292,7 @@
     <!-- Creating - Setuped -->
     <div v-else-if="accountRoleProps == 'creating' && (accountCircleProps.circle_status == 'setuped' || accountCircleProps.circle_status == 'launched')"
       role="button"
-      @click="accountCircleProps.circle_total_whitelisted < accountCircleProps.circle_min_members ?
+      @click="accountCircleProps.circle_total_whitelisted < accountCircleProps.circle_size ?
         $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: accountCircleProps.circle_id}}) :
         $router.push({path: '/account/circles/create', query: {active_page: 'launch', circle_id: accountCircleProps.circle_id}})"
     >
@@ -467,24 +335,10 @@
           </div>
 
           <!-- Circle Members -->
-          <div
-            v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"
-            class="d-flex flex-row justify-content-start align-items-center pt-2"
-          >
+          <div class="d-flex flex-row justify-content-start align-items-center pt-2">
             <span class="account-circles-card-note">Participants:</span>
             <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">people</span>
-          </div>
-          <div v-else class="d-flex flex-row justify-content-start align-items-center pt-2">
-            <span class="account-circles-card-note">Participants:</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_min_members }}
-            </span>
-            <span class="account-circles-card-unit ps-2">to</span>
-            <span class="account-circles-card-text ps-2">
-              {{ accountCircleProps.circle_max_members }}
+              {{ accountCircleProps.circle_size }}
             </span>
             <span class="account-circles-card-unit ps-2">people</span>
           </div>
@@ -494,7 +348,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -503,36 +357,10 @@
               />
               <span class="account-circles-card-unit ps-1">(fixed)</span>
             </div>
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Loan Amount:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_min_members }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount * accountCircleProps.circle_max_members }}
+                {{ accountCircleProps.circle_round_payments * accountCircleProps.circle_size }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -542,36 +370,10 @@
             </div>
           </div>
           <div v-if="accountCircleProps.circle_payment_type == 'fixed_loan'">
-            <div
-              v-if="accountCircleProps.circle_min_members == accountCircleProps.circle_max_members"  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
+            <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Round Payments:</span>
               <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-            </div>
-            <div
-              v-else  
-              class="d-flex flex-row justify-content-start align-items-center pt-2"
-            >
-              <span class="account-circles-card-note">Round Payments:</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_max_members) + Number.EPSILON) * 100) / 100 }}
-              </span>
-              <SvgPaymentToken
-                :chainId="accountCircleProps.circle_chain_id"
-                :paymentToken="accountCircleProps.circle_payment_token"
-                :height="13" customClass="ms-1"
-              />
-              <span class="account-circles-card-unit ps-2">to</span>
-              <span class="account-circles-card-text ps-2">
-                {{ Math.round(((accountCircleProps.circle_fixed_amount / accountCircleProps.circle_min_members) + Number.EPSILON) * 100) / 100 }}
+                {{ Math.round(((accountCircleProps.circle_round_payments / accountCircleProps.circle_size) + Number.EPSILON) * 100) / 100 }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"
@@ -582,7 +384,7 @@
             <div class="d-flex flex-row justify-content-start align-items-center pt-2">
               <span class="account-circles-card-note">Loan Amount:</span>
               <span class="account-circles-card-text ps-2">
-                {{ accountCircleProps.circle_fixed_amount }}
+                {{ accountCircleProps.circle_round_payments }}
               </span>
               <SvgPaymentToken
                 :chainId="accountCircleProps.circle_chain_id"

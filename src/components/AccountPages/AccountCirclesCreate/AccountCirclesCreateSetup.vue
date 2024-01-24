@@ -46,14 +46,14 @@
                 </label>
                 <input
                   :disabled="circleInfo.circle_joined_members"
-                  ref="circle_min_members"
+                  ref="circle_size"
                   id="circleMinMembers"
                   type="number"
                   placeholder="e.g. 5"
                   class="tiny-input mb-0"
-                  :class="hasError['circle_min_members'] ? 'has-error' : ''"
+                  :class="hasError['circle_size'] ? 'has-error' : ''"
                   aria-describedby="circleMinMembersHelp"
-                  v-model="circleInfo.circle_min_members"
+                  v-model="circleInfo.circle_size"
                 />
                 <p id="circleMinMembersHelp" class="help-text pt-2 mb-3">
                   {{ `Enter the number of circle members, between ${minMembers} and ${maxMembers} people.`}}
@@ -98,19 +98,19 @@
             <div class="d-flex flex-row justify-content-start align-items-center">
               <input
                 :disabled="circleInfo.circle_joined_members"
-                ref="circle_fixed_amount"
+                ref="circle_round_payments"
                 id="circleFixedAmount"
                 type="number"
                 step="any"
                 :placeholder="circleInfo.circle_payment_type == 'fixed_loan' ?
-                  (!parseInt(circleInfo.circle_min_members) || parseInt(circleInfo.circle_min_members) < minMembers || parseInt(circleInfo.circle_min_members) > maxMembers ?
+                  (!parseInt(circleInfo.circle_size) || parseInt(circleInfo.circle_size) < minMembers || parseInt(circleInfo.circle_size) > maxMembers ?
                   `e.g. ${minRoundPayment * 5}` :
-                  `${minRoundPayment * parseInt(circleInfo.circle_min_members)} to ${maxRoundPayment * parseInt(circleInfo.circle_min_members)}`) :
+                  `${minRoundPayment * parseInt(circleInfo.circle_size)} to ${maxRoundPayment * parseInt(circleInfo.circle_size)}`) :
                   `${minRoundPayment} to ${maxRoundPayment}`"
                 class="smaller-input mb-0"
-                :class="hasError['circle_fixed_amount'] ? 'has-error' : ''"
+                :class="hasError['circle_round_payments'] ? 'has-error' : ''"
                 aria-describedby="circleFixedAmountHelp"
-                v-model="circleInfo.circle_fixed_amount"
+                v-model="circleInfo.circle_round_payments"
               />
               <SvgPaymentToken
                 :chainId="circleInfo.circle_chain_id"
@@ -144,7 +144,7 @@
               type="number"
               placeholder="e.g. 1"
               min="1"
-              :max="Math.max(parseInt(circleInfo.circle_min_members /  3), 1)"
+              :max="Math.max(parseInt(circleInfo.circle_size /  3), 1)"
               step="1"
               class="tiny-input mb-0"
               :class="hasError['circle_winners_number'] ? 'has-error' : ''"
@@ -215,9 +215,9 @@ export default {
       maxMembers: 0,
       hasError: {
         circle_name: false,
-        circle_min_members: false,
+        circle_size: false,
         circle_extra_members: false,
-        circle_fixed_amount: false,
+        circle_round_payments: false,
         circle_winners_number: false
       }
     }
@@ -248,7 +248,7 @@ export default {
       this.circleInfo = this.circleInfoProps;
       if(this.circleInfo) {
         // To Do
-        this.circle_extra_members = parseInt(this.circleInfo.circle_max_members) - parseInt(this.circleInfo.circle_min_members);
+        this.circle_extra_members = parseInt(this.circleInfo.circle_max_members) - parseInt(this.circleInfo.circle_size);
         
         if(this.circleInfo.circle_round_days == 7) {
           this.circleRound = 'Weekly';
@@ -261,8 +261,8 @@ export default {
         }
         if(this.circleInfo.circle_status == 'deployed') {
           this.circleInfo['circle_name'] = '';
-          this.circleInfo['circle_fixed_amount'] = '';
-          this.circleInfo['circle_min_members'] = '';
+          this.circleInfo['circle_round_payments'] = '';
+          this.circleInfo['circle_size'] = '';
           this.circleInfo['circle_max_members'] = '';
           this.circleInfo['circle_winners_number'] = 1;
           this.circleInfo['circle_start_date'] = '';
@@ -285,13 +285,13 @@ export default {
       if(this.checkForm()) {
         try {
           // To Do
-          this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_min_members) + this.circle_extra_members).toString();
+          this.circleInfo.circle_max_members = (parseInt(this.circleInfo.circle_size) + this.circle_extra_members).toString();
 
           const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
           const setupArgs = [
             this.circleInfo.circle_name,
-            (parseInt(this.circleInfo.circle_fixed_amount * 10**tokenDecimals)).toString(),
-            parseInt(this.circleInfo.circle_min_members),
+            (parseInt(this.circleInfo.circle_round_payments * 10**tokenDecimals)).toString(),
+            parseInt(this.circleInfo.circle_size),
             parseInt(this.circle_extra_members),
             parseInt(this.circleInfo.circle_winners_number)
           ];
@@ -360,8 +360,8 @@ export default {
         this.minFixedAmount = this.minRoundPayment;
         this.maxFixedAmount = this.maxRoundPayment;
       } else {
-        this.minFixedAmount = this.minRoundPayment * parseInt(this.circleInfo.circle_min_members);
-        this.maxFixedAmount = this.maxRoundPayment * parseInt(this.circleInfo.circle_min_members);
+        this.minFixedAmount = this.minRoundPayment * parseInt(this.circleInfo.circle_size);
+        this.maxFixedAmount = this.maxRoundPayment * parseInt(this.circleInfo.circle_size);
       }
 
       try {
@@ -377,7 +377,7 @@ export default {
             })
             throw false;
           }
-          if(element == 'circle_min_members') {
+          if(element == 'circle_size') {
             this.circleInfo[element] = parseInt(this.circleInfo[element]);
             if(this.circleInfo[element] < this.minMembers || this.circleInfo[element] > this.maxMembers) {
               this.$refs[element].focus();
@@ -394,7 +394,7 @@ export default {
           }
           if(element == 'circle_extra_members') {
             this.circleInfo[element] = parseInt(this.circleInfo[element]);
-            if(this.circleInfo[element] < 0 || this.circleInfo[element] > parseInt(this.circleInfo['circle_min_members'] * 0.2)) {
+            if(this.circleInfo[element] < 0 || this.circleInfo[element] > parseInt(this.circleInfo['circle_size'] * 0.2)) {
               this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
@@ -407,7 +407,7 @@ export default {
               throw false;
             }
           }
-          if(element == 'circle_fixed_amount') {
+          if(element == 'circle_round_payments') {
             const tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
             this.circleInfo[element] = parseInt(this.circleInfo[element] * 10**2) / 10**2;
             if(parseInt(this.circleInfo[element] * 10**tokenDecimals) < this.minFixedAmount * 10**tokenDecimals
@@ -424,7 +424,7 @@ export default {
               throw false;
             }
           }
-          if(element == 'circle_winners_number' && (parseInt(this.circleInfo['circle_min_members'] / this.circleInfo[element]) < this.minMembers)) {
+          if(element == 'circle_winners_number' && (parseInt(this.circleInfo['circle_size'] / this.circleInfo[element]) < this.minMembers)) {
             this.$refs[element].focus();
             this.hasError[element] = true;
             this.notif({

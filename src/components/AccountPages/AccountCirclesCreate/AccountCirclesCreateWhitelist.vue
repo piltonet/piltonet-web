@@ -49,7 +49,7 @@
             :colors=jazzColors
             class="account-image-small"
           /> -->
-          <p class="top-text-small ms-2">
+          <p class="top-text small ms-2">
             <span :class="whitelist.whitelist_is_rejected ? 'text-decoration-line-through' : ''">
               {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
             </span>
@@ -79,18 +79,17 @@
             {{ `You need a minimum of ${minMembers} contacts on the whitelist before the circle can be launched.` }}
           </p>
         </div>
-        <div v-else-if="circleInfoProps.whitelists.length <= circleInfoProps.circle_max_members">
+        <div v-else-if="circleInfoProps.whitelists.length <= circleInfoProps.circle_size">
           <p class="help-text mt-4">
             <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
-            {{ `${circleInfoProps.whitelists.length} out of the required 
-              ${circleInfoProps.circle_min_members}${extraMembers > 0 ? "(+"+extraMembers+")" : ""} 
+            {{ `${circleInfoProps.whitelists.length} out of the required ${circleInfoProps.circle_size}
               members have been added to the circle's whitelist.` }}
           </p>
         </div>
         <div v-else>
           <p class="help-text mt-4">
             <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
-            {{ `${circleInfoProps.whitelists.length} individuals have been included in the whitelist, exceeding the maximum limit of ${circleInfoProps.circle_max_members} circle members.` }}
+            {{ `${circleInfoProps.whitelists.length} individuals have been included in the whitelist, exceeding the maximum limit of ${circleInfoProps.circle_size} circle members.` }}
           </p>
         </div>
       </div>
@@ -153,7 +152,7 @@
             :colors=jazzColors
             class="account-image-small"
           /> -->
-          <p class="top-text-small ms-2">
+          <p class="top-text small ms-2">
             <span>
               {{ contact.account_fullname || contact.account_nickname }}
             </span>
@@ -223,8 +222,7 @@ export default {
     return {
       selectedContacts: {},
       contactAdrs: [],
-      minMembers: 0,
-      extraMembers: 0
+      minMembers: 0
     }
   },
   computed: {
@@ -254,7 +252,6 @@ export default {
       for(let contact of this.circleInfoProps.contacts || []) {
         this.selectedContacts[contact.account_tba_address] = false;
       }
-      this.extraMembers = parseInt(this.circleInfoProps.circle_max_members) - parseInt(this.circleInfoProps.circle_min_members);
       this.setupConst();
     },
     async setupConst() {

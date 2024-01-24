@@ -58,10 +58,10 @@
             <div class="d-flex flex-column justify-content-center align-items-center pe-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_pay'" class="trusted-circles-value">
-                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}
+                  {{ utils.formatPrice(accountCircleProps.circle_round_payments) }}
                 </p>
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_loan'" class="trusted-circles-value">
-                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount / accountCircleProps.circle_min_members) }}
+                  {{ utils.formatPrice(accountCircleProps.circle_round_payments / accountCircleProps.circle_size) }}
                 </p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
@@ -74,7 +74,7 @@
             <!-- <p class="trusted-circles-value pb-1 mb-3">x</p> -->
             <div class="d-flex flex-column justify-content-center align-items-center px-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
-                <p class="trusted-circles-value">{{ accountCircleProps.circle_min_members }}</p>
+                <p class="trusted-circles-value">{{ accountCircleProps.circle_size }}</p>
                 <!-- <p class="trusted-circles-value">{{ accountCircleProps.circle_round_days }}</p> -->
                 <!-- <p class="trusted-circles-info ps-1">(Monthly)</p> -->
               </div>
@@ -84,10 +84,10 @@
             <div class="d-flex flex-column justify-content-center align-items-center ps-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_pay'" class="trusted-circles-value big">
-                  {{ utils.formatPrice(accountCircleProps.circle_min_members * accountCircleProps.circle_fixed_amount) }}
+                  {{ utils.formatPrice(accountCircleProps.circle_size * accountCircleProps.circle_round_payments) }}
                 </p>
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_loan'" class="trusted-circles-value big">
-                  {{ utils.formatPrice(accountCircleProps.circle_fixed_amount) }}
+                  {{ utils.formatPrice(accountCircleProps.circle_round_payments) }}
                 </p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
@@ -102,15 +102,15 @@
           </div>
 
           <div v-if="utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) > 1" class="col-2 text-end">
-            <p class="top-text-big">{{ utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="top-text big">{{ utils.diffDays(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
             <p class="trusted-circles-info">DAYS LEFT</p>
           </div>
           <div v-else-if="utils.diffHours(new Date(), new Date(accountCircleProps.circle_start_date)) > 1" class="col-2 text-end">
-            <p class="top-text-big">{{ utils.diffHours(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="top-text big">{{ utils.diffHours(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
             <p class="trusted-circles-info">HOURS LEFT</p>
           </div>
           <div v-else class="col-2 text-end">
-            <p class="top-text-big">{{ utils.diffMinutes(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
+            <p class="top-text big">{{ utils.diffMinutes(new Date(), new Date(accountCircleProps.circle_start_date)) }}</p>
             <p class="trusted-circles-info">MIN LEFT</p>
           </div>
           

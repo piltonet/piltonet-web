@@ -18,7 +18,7 @@
               :status="member.main_account_address == connectedAccount.account_address ? 'online' : false"
               class="account-image-small"
             />
-            <p class="top-text-small ms-2">
+            <p class="top-text small ms-2">
               <!-- To Do -->
               <span v-if="false">
                 {{ member.main_account_address == connectedAccount.account_address ? (isCircleCreator ? 'You (HOST)' : (isCircleModerator ? 'You (moderator)' : 'You'))

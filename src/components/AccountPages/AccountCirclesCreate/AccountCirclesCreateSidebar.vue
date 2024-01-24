@@ -18,18 +18,7 @@
           :class="activePage == 'deploy' ? 'active done' : 'done'"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">1</span>
-          <p class="d-none d-md-inline-block m-0 ps-2">Create & Deploy</p>
-        </div>
-      </div>
-      <div class="side-bar-item">
-        <div
-          :type="activePage == 'setup' ? '' : 'button'"
-          @click="activePage != 'setup' ? $router.push({path: '/account/circles/create', query: {active_page: 'setup', circle_id: circleInfoProps.circle_id}}) : ''"
-          class="side-bar-btn"
-          :class="activePage == 'setup' ? (circleInfoProps.circle_status == 'deployed' ? 'active' : 'active done') : (circleInfoProps.circle_status == 'deployed' ? '' : 'done')"
-        >
-          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">2</span>
-          <p class="d-none d-md-inline-block m-0 ps-2">Setup Details</p>
+          <p class="d-none d-md-inline-block m-0 ps-2">Setup & Deploy</p>
         </div>
       </div>
       <div class="side-bar-item">
@@ -42,7 +31,7 @@
             : (circleInfoProps.circle_status == 'deployed' ? 'disable'
             : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'done')"
         >
-          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
+          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">2</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Whitelist Contacts</p>
         </div>
       </div>
@@ -56,7 +45,7 @@
             !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'setuped' ? 'active' : 'active done'
             : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'setuped' ? '' : 'done'"
         >
-          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">4</span>
+          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Review & Launch</p>
         </div>
       </div>
@@ -75,24 +64,18 @@
       <div class="side-bar-item mt-4">
         <div class="side-bar-btn active">
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">1</span>
-          <p class="d-none d-md-inline-block m-0 ps-2">Create & Deploy</p>
+          <p class="d-none d-md-inline-block m-0 ps-2">Setup & Deploy</p>
         </div>
       </div>
       <div class="side-bar-item">
         <div class="side-bar-btn disable">
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">2</span>
-          <p class="d-none d-md-inline-block m-0 ps-2">Setup Details</p>
-        </div>
-      </div>
-      <div class="side-bar-item">
-        <div class="side-bar-btn disable">
-          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Whitelist Contacts</p>
         </div>
       </div>
       <div class="side-bar-item">
         <div class="side-bar-btn disable">
-          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">4</span>
+          <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Review & Launch</p>
         </div>
       </div>

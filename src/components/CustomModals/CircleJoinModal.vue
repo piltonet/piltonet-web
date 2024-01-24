@@ -11,22 +11,22 @@
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
           Circle name:
-          <span class="top-text-small">{{ circleInfo.circle_name }}</span>
+          <span class="top-text small">{{ circleInfo.circle_name }}</span>
         </p>
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
           Circle Admin:
-          <span class="top-text-small">@{{ circleInfo.circle_creator.account_nickname }}</span>
+          <span class="top-text small">@{{ circleInfo.circle_creator.account_nickname }}</span>
         </p>
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
           Invited By:
-          <span class="top-text-small">{{ circleInfo.circle_creator.account_fullname || circleInfo.circle_creator.account_nickname }}</span>
+          <span class="top-text small">{{ circleInfo.circle_creator.account_fullname || circleInfo.circle_creator.account_nickname }}</span>
         </p>
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
           First Payment:
-          <span class="top-text-small">{{ `${paymentAmount} ${circleInfo.circle_payment_token == defaultchain.CUSD.address ?
+          <span class="top-text small">{{ `${paymentAmount} ${circleInfo.circle_payment_token == defaultchain.CUSD.address ?
               defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol}` }}</span>
         </p>
         <!-- Confirm Text -->

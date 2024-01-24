@@ -12,7 +12,7 @@
     </div>
     <div class="main-section">
       <h3 v-if="circleInfo.circle_id">CIRCLE CONTRACT</h3>
-      <h3 v-else>CREATE & DEPLOY</h3>
+      <h3 v-else>SETUP & DEPLOY</h3>
       <div class="account-circles-deploy-form">
         <form @submit.prevent>
 
@@ -22,7 +22,7 @@
             <button class="account-circles-deploy-button selected locked">
               <SvgPaymentToken
                 :chainId="circleInfo.circle_chain_id"
-                :paymentToken="this.defaultchain.nativeCurrency.address"
+                :paymentToken="defaultchain.nativeCurrency.address"
                 :tooltip="false"
                 customClass="m-1"
               />
@@ -41,12 +41,12 @@
             </label>
             <button
               class="account-circles-deploy-button"
-              :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_token = this.defaultchain.nativeCurrency.address"
+              :class="circleInfo.circle_payment_token == defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = defaultchain.nativeCurrency.address; setupConst();"
             >
               <SvgPaymentToken
                 :chainId="circleInfo.circle_chain_id"
-                :paymentToken="this.defaultchain.nativeCurrency.address"
+                :paymentToken="defaultchain.nativeCurrency.address"
                 :tooltip="false"
                 customClass="m-1"
               />
@@ -54,50 +54,68 @@
             </button>
             <button
               class="account-circles-deploy-button mt-2"
-              :class="circleInfo.circle_payment_token == this.defaultchain.CUSD.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_token = this.defaultchain.CUSD.address"
+              :class="circleInfo.circle_payment_token == defaultchain.CUSD.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = defaultchain.CUSD.address; setupConst();"
             >
               <SvgPaymentToken
                 :chainId="circleInfo.circle_chain_id"
-                :paymentToken="this.defaultchain.CUSD.address"
+                :paymentToken="defaultchain.CUSD.address"
                 :tooltip="false"
                 customClass="m-1"
               />
-              <p>{{ this.defaultchain.CUSD.symbol }}</p>
+              <p>{{ defaultchain.CUSD.symbol }}</p>
             </button>
             <p id="circlePaymentTokenHelp" class="help-text pt-2 mb-3">
               This token is used to pay contributions and receive loans.
             </p>
           </template>
 
-          <!-- Payment Type -->
+          <!-- Circle Name -->
           <template v-if="tabIndex == 2">
-            <label for="circlePaymentType" class="input-label">Payment Type</label>
-            <button
-              class="account-circles-deploy-button"
-              :class="circleInfo.circle_payment_type == 'fixed_pay' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_type = 'fixed_pay'"
-            >
-              <p>Fixed Payment</p>
-            </button>
-            <button
-              class="account-circles-deploy-button mt-2"
-              :class="circleInfo.circle_payment_type == 'fixed_loan' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_type = 'fixed_loan'"
-            >
-              <p>Fixed Loan</p>
-            </button>
-            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
-              Select the payment type for the circle.<br>
-              In the Fixed Payment type, the loan amount will be based on the number of members and other rules.<br>
-              In the Fixed Loan type, the contribution amount will be based on the number of members and other rules."
+            <label for="circleName" class="input-label">
+              Circle Name
+              <span class="input-label-small">(Required)</span>
+            </label>
+            <input
+              ref="circle_name"
+              id="circleName"
+              type="text"
+              class="small-input mb-0"
+              :class="hasError['circle_name'] ? 'has-error' : ''"
+              placeholder="e.g. Work Friends"
+              aria-describedby="circleNameHelp"
+              v-model="circleInfo.circle_name"
+            />
+            <p id="circleNameHelp" class="help-text pt-2 mb-3">
+              Enter the circle name. Choose a unique and meaningful name for your circle.
             </p>
           </template>
 
-          <!-- Circle Round Days -->
-          <template v-if="tabIndex == 3">
+          <!-- Circle Size -->
+          <template v-if="tabIndex == 2">
+            <label for="circleSize" class="input-label mt-2">
+              Circle Size
+              <span class="input-label-small">(Required)</span>
+            </label>
+            <input
+              ref="circle_size"
+              id="circleSize"
+              type="number"
+              placeholder="e.g. 5"
+              class="tiny-input mb-0"
+              :class="hasError['circle_size'] ? 'has-error' : ''"
+              aria-describedby="circleSizeHelp"
+              v-model="circleInfo.circle_size"
+            />
+            <p id="circleSizeHelp" class="help-text pt-2 mb-3">
+              {{ `Enter the number of circle members, between ${minMembers} and ${maxMembers} people.`}}
+            </p>
+          </template>
+
+          <!-- Round Duration -->
+          <template v-if="tabIndex == 30">
             <label for="circleRoundDays" class="input-label">
-              Round Period
+              Round Duration
             </label>
             <button
               class="account-circles-deploy-button"
@@ -123,6 +141,60 @@
             <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
               Select the duration of each round, indicating the frequency as weekly, biweekly, or monthly.<br>
               The input specifies the duration of each round in days based on the selected frequency.
+            </p>
+          </template>
+          
+          <!-- Round Duration -->
+          <template v-if="tabIndex == 3">
+            <label for="circleRoundDays" class="input-label">
+              Round Duration
+              <span class="input-label-small">(Required)</span>
+            </label>
+            <input
+              ref="circle_round_days"
+              id="circleRoundDays"
+              type="number"
+              placeholder="e.g. 30"
+              class="tiny-input mb-0"
+              :class="hasError['circle_round_days'] ? 'has-error' : ''"
+              aria-describedby="circleRoundDaysHelp"
+              v-model="circleInfo.circle_round_days"
+            />
+            <p id="circleRoundDaysHelp" class="help-text pt-2 mb-3">
+              Enter the duration of each round in days.
+            </p>
+          </template>
+
+          <!-- Round Payments -->
+          <template v-if="tabIndex == 3">
+            <label for="circleRoundPayments" class="input-label mt-2">
+              Round Payments
+              <span class="input-label-small">(Required)</span>
+            </label>
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <input
+                ref="circle_round_payments"
+                id="circleRoundPayments"
+                type="number"
+                step="any"
+                :placeholder="`${minRoundPayment} to ${maxRoundPayment}`"
+                class="smaller-input mb-0"
+                :class="hasError['circle_round_payments'] ? 'has-error' : ''"
+                aria-describedby="circleRoundPaymentsHelp"
+                v-model="circleInfo.circle_round_payments"
+              />
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="circleInfo.circle_payment_token"
+                :tooltip="false"
+                :height="16"
+                customClass="mt-1 ms-2 me-1"
+              />
+              <p class="info-text mt-1">{{ tokenSymbol }}</p>
+            </div>
+
+            <p id="circleRoundPaymentsHelp" class="help-text pt-2 mb-3">
+              Enter the fixed amount that each participant will contribute in every round.
             </p>
           </template>
 
@@ -227,156 +299,120 @@
           </template>
           
           <!-- Review & Deploy -->
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <!-- Blockchain -->
-              <template v-if="tabIndex == 6">
-                <label for="circleContractChain" class="input-label">Blockchain</label>
-                <button class="account-circles-deploy-button selected locked">
-                  <SvgPaymentToken
-                    :chainId="circleInfo.circle_chain_id"
-                    :paymentToken="this.defaultchain.nativeCurrency.address"
-                    :tooltip="false"
-                    customClass="m-1"
-                  />
-                  <p>{{ defaultchain.chainName }}</p>
-                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
-                </button>
-              </template>
-              
-              <!-- Payment Token -->
-              <template v-if="tabIndex == 6">
-                <label for="circlePaymentToken" class="input-label mt-2">
-                  Payment Token
-                </label>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address ? 'selected locked' : 'd-none'"
-                >
-                  <SvgPaymentToken
-                    :chainId="circleInfo.circle_chain_id"
-                    :paymentToken="this.defaultchain.nativeCurrency.address"
-                    :tooltip="false"
-                    customClass="m-1"
-                  />
-                  <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_payment_token == this.defaultchain.CUSD.address ? 'selected locked' : 'd-none'"
-                >
-                  <SvgPaymentToken
-                    :chainId="circleInfo.circle_chain_id"
-                    :paymentToken="this.defaultchain.CUSD.address"
-                    :tooltip="false"
-                    customClass="m-1"
-                  />
-                  <p>{{ this.defaultchain.CUSD.symbol }}</p>
-                </button>
-              </template>
+          <template v-if="tabIndex == 6">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <!-- Blockchain -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Blockchain</p>
+                  <div class="d-flex flex-row justify-content-start align-items-center">
+                    <SvgPaymentToken
+                      :chainId="defaultchain.id"
+                      :paymentToken="defaultchain.nativeCurrency.address"
+                      :tooltip="false"
+                      customClass="mt-1 pe-1"
+                    />
+                    <p class="top-text small mt-1">{{ defaultchain.chainName }}</p>
+                    <i class="fa fa-lock info-text darkblue-text ps-2" aria-hidden="true"></i>
+                  </div>
+                </div>
 
-              <!-- Payment Type -->
-              <template v-if="tabIndex == 6">
-                <label for="circlePaymentType" class="input-label mt-2">Payment Type</label>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_payment_type == 'fixed_pay' ? 'selected locked' : 'd-none'"
-                >
-                  <p>Fixed Payment</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_payment_type == 'fixed_loan' ? 'selected locked' : 'd-none'"
-                >
-                  <p>Fixed Loan</p>
-                </button>
-              </template>
+                <!-- Payment Token -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Payment Token</p>
+                  <div class="d-flex flex-row justify-content-start align-items-center">
+                    <SvgPaymentToken
+                      :chainId="circleInfo.circle_chain_id"
+                      :paymentToken="circleInfo.circle_payment_token"
+                      :tooltip="false"
+                      customClass="mt-1 pe-1"
+                    />
+                    <p class="top-text small mt-1">{{ tokenSymbol }}</p>
+                  </div>
+                </div>
+                
+                <!-- Circle Name -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Circle Name</p>
+                  <p class="top-text small mt-1">{{ circleInfo.circle_name }}</p>
+                </div>
+  
+                <!-- Circle Size -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Circle Size</p>
+                  <p class="top-text small mt-1">{{ circleInfo.circle_size }}
+                    <span class="main-text tiny">people</span>
+                  </p>
+                </div>
+  
+                <!-- Round Duration -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Round Duration</p>
+                  <p v-if="circleInfo.circle_round_days == 1" class="top-text small mt-1">Daily
+                    <span class="main-text tiny">{{ `(${circleInfo.circle_round_days} day)` }}</span>
+                  </p>
+                  <p v-else-if="circleInfo.circle_round_days == 7" class="top-text small mt-1">Weekly
+                    <span class="main-text tiny">{{ `(${circleInfo.circle_round_days} days)` }}</span>
+                  </p>
+                  <p v-else-if="circleInfo.circle_round_days == 14" class="top-text small mt-1">Biweekly
+                    <span class="main-text tiny">{{ `(${circleInfo.circle_round_days} days)` }}</span>
+                  </p>
+                  <p v-else-if="circleInfo.circle_round_days == 30" class="top-text small mt-1">Monthly
+                    <span class="main-text tiny">{{ `(${circleInfo.circle_round_days} days)` }}</span>
+                  </p>
+                  <p v-else class="top-text small mt-1">{{ circleInfo.circle_round_days }}
+                    <span class="main-text tiny">days</span>
+                  </p>
+                </div>
+              </div>
+  
+              <div class="col-12 col-md-6">
+                <!-- Round Payments -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Round Payments</p>
+                  <p class="top-text small mt-1">{{ utils.formatPrice(circleInfo.circle_round_payments) }}
+                    <span class="main-text tiny">{{ tokenSymbol }}</span>
+                  </p>
+                </div>
+                
+                <!-- Winner Selection Method -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Winner Selection Method</p>
+                  <p v-if="circleInfo.circle_winners_order == 'random'" class="top-text small mt-1">Random</p>
+                  <p v-if="circleInfo.circle_winners_order == 'fixed'" class="top-text small mt-1">FCFS</p>
+                  <p v-if="circleInfo.circle_winners_order == 'bidding'" class="top-text small mt-1">Bidding</p>
+                </div>
 
-              <!-- Round Period -->
-              <template v-if="tabIndex == 6">
-                <label for="circleRoundDays" class="input-label mt-2">Round Period</label>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_round_days == 7 ? 'selected locked' : 'd-none'"
-                >
-                  <p>Weekly (7 days)</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_round_days == 14 ? 'selected locked' : 'd-none'"
-                >
-                  <p>Biweekly (14 days)</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_round_days == 30 ? 'selected locked' : 'd-none'"
-                >
-                  <p>Monthly (30 days)</p>
-                </button>
-              </template>
+                <!-- Patience Benefit -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Patience Benefit</p>
+                  <p class="top-text small mt-1">{{ utils.formatPrice(circleInfo.circle_patience_benefit) }}
+                    <span class="main-text tiny">%</span>
+                  </p>
+                </div>
+  
+                <!-- Creator Earnings -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Creator Earnings</p>
+                  <p class="top-text small mt-1">{{ utils.formatPrice(circleInfo.circle_creator_earnings) }}
+                    <span class="main-text tiny">%</span>
+                  </p>
+                </div>
+                
+                <!-- Service Charge -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Service Charge</p>
+                  <p class="top-text small mt-1">{{ circleInfo.circle_service_charge / 100 }}
+                    <span class="main-text tiny">{{ `(${circleInfo.circle_service_charge}%)` }}</span>
+                    <i class="fa fa-lock info-text darkblue-text ps-2" aria-hidden="true"></i>
+                  </p>
+                  <p class="note-text tiny">
+                    Service charge rate that is deducted from the loan amount.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="col-12 col-md-6">
-              <!-- Winner Selection Method -->
-              <template v-if="tabIndex == 6">
-                <label for="circlePaymentType" class="input-label">Winner Selection Method</label>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_winners_order == 'random' ? 'selected locked' : 'd-none'"
-                >
-                  <p>Random</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_winners_order == 'fixed' ? 'selected locked' : 'd-none'"
-                >
-                  <p>FCFS</p>
-                </button>
-                <button
-                  class="account-circles-deploy-button"
-                  :class="circleInfo.circle_winners_order == 'bidding' ? 'selected locked' : 'd-none'"
-                >
-                  <p>Bidding</p>
-                </button>
-              </template>
-
-              <!-- Patience Benefit -->
-              <template v-if="tabIndex == 6">
-                <label for="circleServiceCharge" class="input-label mt-2">Patience Benefit</label>
-                <button
-                  class="account-circles-deploy-button selected locked"
-                >
-                  <p>{{ circleInfo.circle_patience_benefit }}%</p>
-                </button>
-              </template>
-            
-              <!-- Creator Earnings -->
-              <template v-if="tabIndex == 6">
-                <label for="circleServiceCharge" class="input-label mt-2">Creator Earnings</label>
-                <button
-                  class="account-circles-deploy-button selected locked"
-                >
-                  <p>{{ circleInfo.circle_creator_earnings }}%</p>
-                </button>
-              </template>
-            
-              <!-- Service Charge -->
-              <template v-if="tabIndex == 6">
-                <label for="circleServiceCharge" class="input-label mt-2">
-                  Service Charge
-                  <span class="input-label-small">(Fixed Rate)</span>
-                </label>
-                <button
-                  class="account-circles-deploy-button selected locked"
-                >
-                  <p>{{ `${circleInfo.circle_service_charge / 100} (${circleInfo.circle_service_charge}%)` }}</p>
-                  <i class="fa fa-lock ps-2" aria-hidden="true"></i>
-                </button>
-                <p id="circleServiceChargeHelp" class="help-text pt-1">
-                  Service charge rate that is deducted from the loan amount.
-                </p>
-              </template>
-            </div>
-          </div>
+          </template>
           
           <!-- Contract Address -->
           <template v-if="tabIndex == 6">
@@ -392,7 +428,7 @@
                   <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
                     <!-- Copy Icon -->
                     <el-tooltip
-                      :content="this.copyAddressTooltip"
+                      :content="copyAddressTooltip"
                       placement="top"
                       :hide-after="0"
                     >
@@ -435,8 +471,8 @@
         <div class="d-flex flex-row justify-content-center align-items-center">
           <div
             type="button"
-            @click="tabIndex = 5"
-            class="main-btn blue-bg middle-text"
+            @click="tabIndex = 1"
+            class="main-btn blue-bg middle-text me-2"
             :class="tabIndex == 6 ? '' : 'd-none'"
           >
             <span class="m-0 p-0">Back to Edit</span>
@@ -451,24 +487,24 @@
           </div>
           <div
             type="button"
-            @click="tabIndex = tabIndex < 6 ? tabIndex + 1 : 6"
+            @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
             class="main-btn blue-bg middle-text"
-            :class="tabIndex == 6 ? 'd-none' : ''"
+            :class="tabIndex < 5 ? '' : 'd-none'"
           >
             <span class="m-0 p-0">Next</span>
           </div>
           <div
             type="button"
-            @click="tabIndex = 6"
-            class="main-btn darkblue-bg d-none ms-2"
-            :class="tabIndex == 6 ? '' : 'd-md-flex'"
+            @click="checkForm() ? tabIndex = 6 : ''"
+            class="main-btn darkblue-bg"
+            :class="tabIndex == 5 ? 'd-md-flex' : 'd-none'"
           >
             <span class="m-0 p-0">Review & Deploy</span>
           </div>
           <div
             type="button"
             @click="deployCircle"
-            class="main-btn green-bg ms-2"
+            class="main-btn green-bg"
             :class="tabIndex == 6 ? '' : 'd-none'"
           >
             <span class="m-0 p-0">DEPLOY CIRCLE</span>
@@ -511,11 +547,22 @@ export default {
     return {
       tabIndex: 1,
       circleInfo: null,
+      paymentToken: null,
+      tokenSymbol: '',
+      tokenDecimals: 0,
+      minMembers: 0,
+      maxMembers: 0,
+      minRoundPayment: 0,
+      maxRoundPayment: 0,
       maxPatienceBenefit: 0,
       maxCreatorEarnings: 0,
       hasError: {
-        circle_creator_earnings: false,
-        circle_patience_benefit: false
+        circle_name: false,
+        circle_size: false,
+        circle_round_days: false,
+        circle_round_payments: false,
+        circle_patience_benefit: false,
+        circle_creator_earnings: false
       },
       copyAddressTooltip: "Copy Address",
       explorerLink: null
@@ -556,7 +603,10 @@ export default {
           circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.CUSD.address,
           circle_payment_type: 'fixed_pay',
-          circle_round_days: 30,
+          circle_name: '',
+          circle_size: '',
+          circle_round_days: '',
+          circle_round_payments: '',
           circle_winners_order: 'random',
           circle_patience_benefit: 0,
           circle_creator_earnings: 0
@@ -566,6 +616,13 @@ export default {
     },
     async setupConst() {
       if(this.circleConstProps) {
+        this.paymentToken = this.circleConstProps['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
+        this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL'];
+        this.tokenDecimals = this.paymentToken['TOKEN_DECIMALS'];
+        this.minRoundPayment = this.paymentToken['MIN_ROUND_PAY'] / 10**this.tokenDecimals;
+        this.maxRoundPayment = this.paymentToken['MAX_ROUND_PAY'] / 10**this.tokenDecimals;
+        this.minMembers = this.circleConstProps['CIRCLES_MIN_MEMBERS'];
+        this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
         this.maxPatienceBenefit = this.circleConstProps['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
         this.maxCreatorEarnings = this.circleConstProps['CIRCLES_MAX_CREATOR_EARNINGS_X10000'] / 100;
         this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;
@@ -577,8 +634,10 @@ export default {
         const deployArgs = [[
           this.accountProfile.account_tba_address,
           this.circleInfo.circle_payment_token,
-          this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
-          this.circleInfo.circle_round_days,
+          this.circleInfo.circle_name,
+          parseInt(this.circleInfo.circle_size),
+          parseInt(this.circleInfo.circle_round_days),
+          (parseInt(this.circleInfo.circle_round_payments * 10**this.tokenDecimals)).toString(),
           this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
           parseInt(this.circleInfo.circle_patience_benefit * 100),
           parseInt(this.circleInfo.circle_creator_earnings * 100)
@@ -627,7 +686,6 @@ export default {
         const deployArgs = [[
           this.circleInfo.circle_payment_token,
           this.circleInfo.circle_round_days,
-          this.circleInfo.circle_payment_type == 'fixed_pay' ? 0 : 1,
           this.circleInfo.circle_creator_earnings * 100
         ]];
 
@@ -670,21 +728,72 @@ export default {
     checkForm() {
       try {
         Object.keys(this.hasError).forEach(element => {
-          if(this.circleInfo[element] == null || this.circleInfo[element].length <= 0) {
-            this.tabIndex = 5;
-            if(this.$refs[element]) this.$refs[element].focus();
-            this.hasError[element] = true;
-            this.notif({
-              message: "Make sure all required fields are filled in correctly.",
-              type: "error",
-              duration: 3000,
-              onClose: () => { this.hasError[element] = false }
-            })
-            throw false;
+          if(element == 'circle_name') {
+            if(this.circleInfo[element] == null || this.circleInfo[element].length <= 0) {
+              this.tabIndex = 2;
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: "Make sure all required fields are filled in correctly.",
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 3000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'circle_size') {
+            this.circleInfo[element] = parseInt(this.circleInfo[element]);
+            if(!this.circleInfo[element] || this.circleInfo[element] < this.minMembers || this.circleInfo[element] > this.maxMembers) {
+              this.tabIndex = 2;
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The circle size should be between ${this.minMembers} and ${this.maxMembers}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 3000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'circle_round_days') {
+            this.circleInfo[element] = parseInt(this.circleInfo[element]);
+            if(!this.circleInfo[element]) {
+              this.tabIndex = 3;
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: "The duration of the round should be a minimum of 1 day.",
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 3000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'circle_round_payments') {
+            this.circleInfo[element] = isNaN(parseInt(this.circleInfo[element])) ? '' : parseInt(this.circleInfo[element] * 100) / 100;
+            if(isNaN(parseInt(this.circleInfo[element])) || this.circleInfo[element] < this.minRoundPayment || this.circleInfo[element] > this.maxRoundPayment) {
+              this.tabIndex = 3;
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The round payments should be between ${this.minRoundPayment} and ${this.maxRoundPayment} ${this.tokenSymbol}.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 3000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
           }
           if(element == 'circle_patience_benefit') {
-            this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.maxPatienceBenefit * 100) {
+            this.circleInfo[element] = parseInt(this.circleInfo[element] * 100) ? parseInt(this.circleInfo[element] * 100) / 100 : 0;
+            if(this.circleInfo[element] < 0 || this.circleInfo[element] > this.maxPatienceBenefit) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
@@ -692,23 +801,23 @@ export default {
                 message: `The benefit of patience should be between 0% and ${this.maxPatienceBenefit}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
-                duration: 5000,
+                duration: 3000,
                 onClose: () => { this.hasError[element] = false }
               })
               throw false;
             }
           }
           if(element == 'circle_creator_earnings') {
-            this.circleInfo[element] = this.circleInfo[element] < 0 ? 0 : parseInt(this.circleInfo[element] * 100) / 100;
-            if(parseInt(this.circleInfo[element] * 100) > this.maxCreatorEarnings * 100) {
+            this.circleInfo[element] = parseInt(this.circleInfo[element] * 100) ? parseInt(this.circleInfo[element] * 100) / 100 : 0;
+            if(this.circleInfo[element] < 0 || this.circleInfo[element] > this.maxCreatorEarnings) {
               this.tabIndex = 5;
               if(this.$refs[element]) this.$refs[element].focus();
               this.hasError[element] = true;
               this.notif({
-                message: `The creator earnings should not be more than ${this.maxCreatorEarnings}%.`,
+                message: `The creator earnings should be between 0% and ${this.maxCreatorEarnings}%.`,
                 dangerouslyUseHTMLString: true,
                 type: "error",
-                duration: 5000,
+                duration: 3000,
                 onClose: () => { this.hasError[element] = false }
               })
               throw false;
@@ -775,14 +884,17 @@ export default {
   color: rgba(var(--ptn-second-blue-rgb), 0.7) !important;
   border: 1px solid rgba(var(--ptn-second-blue-rgb), 0.7) !important;
 }
-.date-button {
-  color: var(--ptn-second-blue);
-  width: 95%;
-  max-width: 150px;
+.account-circles-deploy-review {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: rgba(var(--ptn-color-rgb), 0.9);
+  border: none;
+  margin: 5px 0 0;
+  padding: 0;
 }
-.front-icon {
-  height: 40px;
-}
+
 .choosing-winners-button,
 .account-circles-setup-button {
   display: flex;

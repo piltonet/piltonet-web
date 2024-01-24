@@ -41,40 +41,24 @@
       <div class="d-flex flex-column justify-content-center align-items-start">
         <p class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
-          The circle requires a minimum of
-          <span class="top-text-small">{{ `${circleInfo.circle_min_members} members` }}</span>
+          The circle requires
+          <span class="top-text small">{{ `${circleInfo.circle_size} members` }}</span>
           to commence. If this threshold is not met by the start date, the circle will be automatically disbanded, and all payments will be reimbursed.
-        </p>
-        <p v-if="parseInt(circleInfo.circle_min_members) < parseInt(circleInfo.circle_max_members)" class="main-text small mt-3">
-          <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
-          If the number of participating accounts does not reach the maximum limit of circle members
-          (<span class="top-text-small">{{ `${circleInfo.circle_max_members} people` }}</span>)
-          by the start date, the remaining slots will be vacated while maintaining the order of the winners.
         </p>
         <p v-if="circleInfo.circle_payment_type == 'fixed_pay'" class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
             To join the circle, a payment of
-            <span class="top-text-small">
+            <span class="top-text small">
             {{ `${paymentAmount} ${circleInfo.circle_payment_token == defaultchain.CUSD.address ?
               defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol}` }}
             </span>
             is required.
         </p>
         <p v-if="circleInfo.circle_payment_type == 'fixed_loan'" class="main-text small mt-3">
-          <span v-if="parseInt(circleInfo.circle_min_members) < parseInt(circleInfo.circle_max_members)">
+          <span>
             <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
               To join the circle, a payment of
-              <span class="top-text-small">
-                {{ `${paymentAmount}
-                  ${circleInfo.circle_payment_token == defaultchain.CUSD.address ? defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol}` }}
-              </span>
-              is required. This amount is calculated based on the minimum number of members. If the number of members exceeds
-              {{ circleInfo.circle_min_members }}, the additional amount will be refunded.
-          </span>
-          <span v-else>
-            <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
-              To join the circle, a payment of
-              <span class="top-text-small">
+              <span class="top-text small">
                 {{ `${paymentAmount}
                 ${circleInfo.circle_payment_token == defaultchain.CUSD.address ? defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol}` }}
               </span>
@@ -192,11 +176,11 @@ export default {
       if(apiResponse && apiResponse.data.done) {  
         this.circleInfo = apiResponse.data.result[0];
         if(this.circleInfo.circle_payment_type == 'fixed_pay') {
-          this.paymentAmount = this.circleInfo.circle_fixed_amount;
-          this.loanAmount = this.circleInfo.circle_fixed_amount * this.circleInfo.circle_max_members;
+          this.paymentAmount = this.circleInfo.circle_round_payments;
+          this.loanAmount = this.circleInfo.circle_round_payments * this.circleInfo.circle_size;
         } else {
-          this.paymentAmount = Math.round(((this.circleInfo.circle_fixed_amount / this.circleInfo.circle_min_members) + Number.EPSILON) * 100) / 100;
-          this.loanAmount = this.circleInfo.circle_fixed_amount;
+          this.paymentAmount = Math.round(((this.circleInfo.circle_round_payments / this.circleInfo.circle_size) + Number.EPSILON) * 100) / 100;
+          this.loanAmount = this.circleInfo.circle_round_payments;
         }
         this.allowance = await this.$refs.circle_approve_modal.getAllowance(this.circleIdProps);
       } else {
