@@ -12,14 +12,24 @@
         "type": "address"
       },
       {
-        "internalType": "enum TLCC.PaymentType",
-        "name": "payment_type",
+        "internalType": "string",
+        "name": "circle_name",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "circle_size",
         "type": "uint8"
       },
       {
         "internalType": "uint16",
         "name": "round_days",
         "type": "uint16"
+      },
+      {
+        "internalType": "string",
+        "name": "round_payments",
+        "type": "string"
       },
       {
         "internalType": "enum TLCC.WinnersOrder",
@@ -447,19 +457,6 @@
   },
   {
     "inputs": [],
-    "name": "contributionSize",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "currentRound",
     "outputs": [
       {
@@ -717,6 +714,19 @@
   },
   {
     "inputs": [],
+    "name": "roundPayments",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "serviceAdmin",
     "outputs": [
       {
@@ -737,7 +747,7 @@
       },
       {
         "internalType": "string",
-        "name": "fixed_amount",
+        "name": "round_payments",
         "type": "string"
       },
       {
