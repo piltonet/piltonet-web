@@ -412,56 +412,47 @@
                 </div>
               </div>
             </div>
-          </template>
-          
-          <!-- Contract Address -->
-          <template v-if="tabIndex == 6">
-            <div v-if="circleInfo.circle_id">
-              <label for="contractAddress" class="input-label mt-2">Contract Address</label>
-              <div class="row">
-                <button
-                  class="account-circles-deploy-button selected locked"
-                >
-                  <p>{{ utils.truncate(circleInfo.circle_id, 17) }}</p>
-                </button>
-                <div class="col-12 col-sm-3">
-                  <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
-                    <!-- Copy Icon -->
-                    <el-tooltip
-                      :content="copyAddressTooltip"
-                      placement="top"
-                      :hide-after="0"
+            
+            <!-- Contract Address -->
+            <div v-if="circleInfo.circle_id" class="d-flex flex-column justify-content-center align-items-start mt-3">
+              <p class="note-text">Contract Address</p>
+              <p class="top-text small mt-2">
+                {{ utils.truncate(circleInfo.circle_id, 23) }}
+                <span class="main-text tiny">
+                  <!-- Copy Icon -->
+                  <el-tooltip
+                    :content="copyAddressTooltip"
+                    placement="top"
+                    :hide-after="0"
+                  >
+                    <a
+                      id="copy-contract-address"
+                      role="button"
+                      @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
+                      class="ms-2"
                     >
-                      <a
-                        id="copy-contract-address"
-                        role="button"
-                        @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
-                        class="ms-2"
-                      >
-                        <i class="far fa-copy" aria-hidden="true"></i>
-                      </a>
-                    </el-tooltip>
-                    <!-- Explore Icon -->
-                    <el-tooltip
-                      content="View in Explorer"
-                      placement="top"
-                      :hide-after="0"
+                      <i class="far fa-copy" aria-hidden="true"></i>
+                    </a>
+                  </el-tooltip>
+                  <!-- Explore Icon -->
+                  <el-tooltip
+                    content="View in Explorer"
+                    placement="top"
+                    :hide-after="0"
+                  >
+                    <a
+                      v-if="explorerLink"
+                      :href="explorerLink"
+                      target="_blank"
+                      class="ms-2"
                     >
-                      <a
-                        v-if="explorerLink"
-                        :href="explorerLink"
-                        target="_blank"
-                        class="ms-2"
-                      >
-                        <i class="fa fa-external-link" aria-hidden="true"></i>
-                      </a>
-                    </el-tooltip>
-                  </div>
-                </div>
-              </div>
+                      <i class="fa fa-external-link" aria-hidden="true"></i>
+                    </a>
+                  </el-tooltip>
+                </span>
+              </p>
             </div>
           </template>
-
         </form>
       </div>
       <form action=""></form>
@@ -602,12 +593,13 @@ export default {
           circle_creator_tba: this.accountProfile.account_tba_address,
           circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.CUSD.address,
-          circle_payment_type: 'fixed_pay',
+          circle_payment_type: 'fixed_pay', // To Do
           circle_name: '',
           circle_size: '',
           circle_round_days: '',
           circle_round_payments: '',
           circle_winners_order: 'random',
+          circle_winners_number: 1, // To Do
           circle_patience_benefit: 0,
           circle_creator_earnings: 0
         }
