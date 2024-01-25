@@ -10,24 +10,31 @@
       <div class="d-flex flex-column justify-content-center align-items-start p-2">
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
-          Circle name:
+          Circle Name:
           <span class="top-text small">{{ circleInfo.circle_name }}</span>
         </p>
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
-          Circle Admin:
+          Circle Host:
           <span class="top-text small">@{{ circleInfo.circle_creator.account_nickname }}</span>
         </p>
-        <p class="main-text small mt-3">
+        <!-- <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
           Invited By:
           <span class="top-text small">{{ circleInfo.circle_creator.account_fullname || circleInfo.circle_creator.account_nickname }}</span>
+        </p> -->
+        <p class="main-text small mt-3">
+          <i class="fa fa-square-check green-btn pe-1"></i>
+          Circle Size:
+          <span class="top-text small">{{ circleInfo.circle_size }}</span>
+          <span class="top-text tiny ps-1">people</span>
         </p>
         <p class="main-text small mt-3">
           <i class="fa fa-square-check green-btn pe-1"></i>
-          First Payment:
-          <span class="top-text small">{{ `${paymentAmount} ${circleInfo.circle_payment_token == defaultchain.CUSD.address ?
-              defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol}` }}</span>
+          Payment Amount:
+          <span class="top-text small">{{ paymentAmount }}</span>
+          <span class="top-text tiny ps-1">{{ circleInfo.circle_payment_token == defaultchain.CUSD.address ?
+              defaultchain.CUSD.symbol : defaultchain.nativeCurrency.symbol }}</span>
         </p>
         <!-- Confirm Text -->
         <div class="d-flex flex-row justify-content-start align-items-start mt-4 mb-3">

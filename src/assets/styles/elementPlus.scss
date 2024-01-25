@@ -88,7 +88,9 @@
     text-justify: inter-character;
     border-radius: 8px;
 }
-
+.el-top-layer {
+    z-index: 5000 !important;
+}
 .share-link-modal {
     background-color: var(--ptn-bg) !important;
     border-radius: 0.5rem !important;

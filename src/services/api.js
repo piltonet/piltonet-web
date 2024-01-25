@@ -117,6 +117,7 @@ class api {
 			text: '',
 			background: 'rgba(0, 0, 0, 0.7)',
 			fullscreen: true,
+			customClass: 'el-top-layer'
 		});
 		return loading;
 	}
