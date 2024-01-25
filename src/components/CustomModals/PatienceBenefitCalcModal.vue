@@ -179,20 +179,12 @@ export default {
       this.clearModal();
       
       this.circleInfo = circleInfo;
-      this.paymentToken = circleConst['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
-      this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
-      const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
-      this.minRoundPayment = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
-      this.maxRoundPayment = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
-      this.minMembers = circleConst['CIRCLES_MIN_MEMBERS'];
-      this.maxMembers = circleConst['CIRCLES_MAX_MEMBERS'];
-      this.maxPatienceBenefit = circleConst['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
-      
       if(this.circleInfo.circle_payment_type == 'fixed_loan') {
         this.minFixedAmount = this.minFixedAmount * this.minMembers;
         this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
       }
-
+      this.circleSize = this.circleInfo.circle_size;
+      this.fixedAmount = this.circleInfo.circle_round_payments;
       if(this.circleInfo.circle_round_days == 7) {
         this.roundPeriod = 'weekly';
       } else if(this.circleInfo.circle_round_days == 14) {
@@ -203,6 +195,15 @@ export default {
         this.roundPeriod = `${this.circleInfo.circle_round_days} days`;
       }
 
+      this.paymentToken = circleConst['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
+      this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
+      const tokenDecimals = this.paymentToken['TOKEN_DECIMALS']
+      this.minRoundPayment = this.paymentToken['MIN_ROUND_PAY'] / 10**tokenDecimals;
+      this.maxRoundPayment = this.paymentToken['MAX_ROUND_PAY'] / 10**tokenDecimals;
+      this.minMembers = circleConst['CIRCLES_MIN_MEMBERS'];
+      this.maxMembers = circleConst['CIRCLES_MAX_MEMBERS'];
+      this.maxPatienceBenefit = circleConst['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
+      
       this.showModal = true;
     },
     async calcRounds() {
