@@ -739,39 +739,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "circle_name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "round_payments",
-        "type": "string"
-      },
-      {
-        "internalType": "uint8",
-        "name": "circle_size",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "extra_members",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "round_winners",
-        "type": "uint8"
-      }
-    ],
-    "name": "updateCircle",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "startDate",
     "outputs": [
@@ -815,6 +782,39 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "circle_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "round_payments",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "circle_size",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "extra_members",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "round_winners",
+        "type": "uint8"
+      }
+    ],
+    "name": "updateCircle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
