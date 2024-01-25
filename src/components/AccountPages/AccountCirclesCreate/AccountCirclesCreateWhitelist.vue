@@ -65,7 +65,7 @@
             </span>
           </p>
           <div
-            v-if="circleInfoProps.circle_status == 'setuped' && whitelist.account_tba_address != connectedAccount.account_tba_address"
+            v-if="circleInfoProps.circle_status == 'deployed' && whitelist.account_tba_address != connectedAccount.account_tba_address"
             type="button"
             @click="removeFromWhitelist(whitelist.account_tba_address)"
             class="front-btn red-btn ms-3"

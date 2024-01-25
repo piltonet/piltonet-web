@@ -206,7 +206,7 @@
     </div>
 
     <!-- LAUNCH CIRCLE -->
-    <div v-if="circleInfoProps.circle_status == 'setuped'" class="main-section">
+    <div v-if="circleInfoProps.circle_status == 'deployed'" class="main-section">
       <h3>LAUNCH CIRCLE</h3>
       <!-- Circle Start Date -->
       <div>

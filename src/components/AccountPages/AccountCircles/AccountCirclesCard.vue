@@ -289,8 +289,8 @@
       </div>
     </div>
     
-    <!-- Creating - Setuped -->
-    <div v-else-if="accountRoleProps == 'creating' && (accountCircleProps.circle_status == 'setuped' || accountCircleProps.circle_status == 'launched')"
+    <!-- Creating - Launched -->
+    <div v-else-if="accountRoleProps == 'creating' && accountCircleProps.circle_status == 'launched'"
       role="button"
       @click="accountCircleProps.circle_total_whitelisted < accountCircleProps.circle_size ?
         $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: accountCircleProps.circle_id}}) :
@@ -298,14 +298,14 @@
     >
       <div class="account-circles-card-main">
         <div class="d-flex flex-column justify-content-center align-items-center pt-3 pb-2">
-          <p v-if="accountCircleProps.circle_status == 'setuped'">
+          <!-- <p v-if="accountCircleProps.circle_status == 'setuped'">
             <span class="account-circles-card-title-icon third-gray-btn">
               <i class="fa fa-cog fa-spin" style="--fa-animation-duration: 7s;"></i>
               <span class="account-circles-card-title ms-1">
                 You are creating
               </span>
             </span>
-          </p>
+          </p> -->
           <p v-if="accountCircleProps.circle_status == 'launched'">
             <span class="account-circles-card-title-icon third-gray-btn">
               <i class="fa fa-rocket"></i>
