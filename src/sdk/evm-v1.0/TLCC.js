@@ -41,7 +41,7 @@ class SDK {
 		return this.contract.getMember(addr)
 	}
 
-	async setupCircle(
+	async updateCircle(
 		circle_name,
 		fixed_amount_x100,
 		min_members,
@@ -50,7 +50,7 @@ class SDK {
 		winners_number,
 		patience_benefit_x10000
 	) {
-		const tx = await this.contract.setupCircle(
+		const tx = await this.contract.updateCircle(
 			circle_name,
 			fixed_amount_x100,
 			min_members,

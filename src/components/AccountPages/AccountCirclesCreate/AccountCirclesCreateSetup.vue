@@ -162,13 +162,13 @@
               v-if="circleInfo.circle_status == 'deployed'"
               type="submit"
               value="SETUP"
-              @click="setupCircle"
+              @click="updateCircle"
             />
             <input
               v-else-if="circleInfo.circle_status == 'setuped'"
               type="submit"
               value="UPDATE"
-              @click="setupCircle"
+              @click="updateCircle"
             />
           </template>
 
@@ -281,7 +281,7 @@ export default {
         this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
       }
     },
-    async setupCircle() {
+    async updateCircle() {
       if(this.checkForm()) {
         try {
           // To Do
@@ -300,11 +300,11 @@ export default {
             this.accountProfile.account_tba_address, // sender tba address
             "ERC6551Account"
           );
-          // execute TLCC setupCircle
+          // execute TLCC updateCircle
           let abiResponse = await contract.interaction("executeFunction", [
             "TLCC", // contract name
-            "setupCircle", // function name
-            ["function setupCircle(string memory circle_name, string memory fixed_amount, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
+            "updateCircle", // function name
+            ["function updateCircle(string memory circle_name, string memory fixed_amount, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
             setupArgs, // function args
             0, // VIC amount
             this.circleInfo.circle_id // Contract Address

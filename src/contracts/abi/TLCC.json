@@ -766,7 +766,7 @@
         "type": "uint8"
       }
     ],
-    "name": "setupCircle",
+    "name": "updateCircle",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
