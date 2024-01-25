@@ -652,7 +652,7 @@ export default {
               dangerouslyUseHTMLString: true,
               type: apiResponse.data.message_type,
               duration: 3000,
-              onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
+              onClose: () => { this.$emit('setActivePage', 'whitelist', this.circleInfo.circle_id, true) }
             })
           } else {
             if(apiResponse.data.status_code == "401") {
@@ -694,7 +694,7 @@ export default {
               dangerouslyUseHTMLString: true,
               type: apiResponse.data.message_type,
               duration: 3000,
-              onClose: () => { this.$emit('setActivePage', 'setup', this.circleInfo.circle_id, true) }
+              onClose: () => { this.$emit('setActivePage', 'whitelist', this.circleInfo.circle_id, true) }
             })
           } else {
             if(apiResponse.data.status_code == "401") {

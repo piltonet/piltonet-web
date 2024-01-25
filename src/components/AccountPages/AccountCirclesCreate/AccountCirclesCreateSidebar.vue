@@ -23,12 +23,12 @@
       </div>
       <div class="side-bar-item">
         <div
-          :type="activePage == 'whitelist' ? '' : circleInfoProps.circle_status == 'deployed' ? '' : 'button'"
-          @click="activePage != 'whitelist' && circleInfoProps.circle_status != 'deployed' ? $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: circleInfoProps.circle_id}}) : ''"
+          :type="activePage == 'whitelist' ? '' : 'button'"
+          @click="activePage != 'whitelist' ? $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
           :class="activePage == 'whitelist' ? 
             !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'active' : 'active done'
-            : (circleInfoProps.circle_status == 'deployed' ? 'disable'
+            : (circleInfoProps.circle_status == 'deployed' ? 'active'
             : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'done')"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">2</span>

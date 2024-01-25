@@ -215,7 +215,7 @@
     <!-- Creating - Deployed -->
     <div v-else-if="accountRoleProps == 'creating' && accountCircleProps.circle_status == 'deployed'"
       role="button"
-      @click="$router.push({path: '/account/circles/create', query: {active_page: 'setup', circle_id: accountCircleProps.circle_id}})"
+      @click="$router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: accountCircleProps.circle_id}})"
     >
       <div class="account-circles-card-main">
         <div class="d-flex flex-column justify-content-center align-items-center pt-3 pb-2">
