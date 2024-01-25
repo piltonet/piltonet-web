@@ -603,8 +603,8 @@ export default {
           circle_patience_benefit: 0,
           circle_creator_earnings: 0
         }
-        this.setupConst();
       }
+      this.setupConst();
     },
     async setupConst() {
       if(this.circleConstProps) {

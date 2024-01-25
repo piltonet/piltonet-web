@@ -15,7 +15,8 @@
           :type="activePage == 'deploy' ? '' : 'button'"
           @click="activePage != 'deploy' ? $router.push({path: '/account/circles/create', query: {active_page: 'deploy', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
-          :class="activePage == 'deploy' ? 'active done' : 'done'"
+          :class="activePage == 'deploy' ? (circleInfoProps.circle_status == 'deployed' ? 'active doing' : 'active done')
+            : (circleInfoProps.circle_status == 'deployed' ? 'doing' : 'done')"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">1</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Setup & Deploy</p>
@@ -27,9 +28,10 @@
           @click="activePage != 'whitelist' ? $router.push({path: '/account/circles/create', query: {active_page: 'whitelist', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
           :class="activePage == 'whitelist' ? 
-            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'active' : 'active done'
-            : (circleInfoProps.circle_status == 'deployed' ? 'active'
-            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'done')"
+            (!circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'active'
+            : circleInfoProps.whitelists.length < circleInfoProps.circle_size ? 'active doing' : 'active done')
+            : (!circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? ''
+            : circleInfoProps.whitelists.length < circleInfoProps.circle_size ? 'doing' : 'done')"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">2</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Whitelist Contacts</p>
@@ -154,8 +156,8 @@ export default {
   white-space: nowrap;
 }
 .side-bar-btn.active {
-  color: var(--ptn-second-blue);
-  border: solid 2px var(--ptn-second-blue);
+  color: rgba(var(--ptn-color-rgb), 0.9);
+  border: solid 2px rgba(var(--ptn-color-rgb), 0.9);
 }
 .side-bar-btn.active p {
   font-size: 21px;
@@ -163,9 +165,16 @@ export default {
 .side-bar-btn.disable {
   color: rgba(var(--ptn-third-gray-rgb), 0.7);
 }
+.side-bar-btn.doing {
+  color: rgba(var(--ptn-second-blue-rgb), 0.7);
+}
 .side-bar-btn.done {
   font-size: 23px;
   color: rgba(var(--ptn-green-rgb), 0.6);
+}
+.side-bar-btn.active.doing {
+  color: var(--ptn-second-blue);
+  border: solid 2px var(--ptn-second-blue);
 }
 .side-bar-btn.active.done {
   color: rgba(var(--ptn-green-rgb), 0.9);
