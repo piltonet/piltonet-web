@@ -171,7 +171,7 @@ export default {
             // execute
             abiResponse = await contract.interaction("transferVIC", [
               this.withdrawalAddress, // address
-              this.withdrawalAmount // amount
+              this.withdrawalAmount // value
             ]);
           } else {
             // execute VRC25PCUSD transfer

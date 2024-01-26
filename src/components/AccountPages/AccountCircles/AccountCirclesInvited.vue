@@ -65,7 +65,7 @@
               is required.
           </span>
         </p>
-        <p v-if="allowance < paymentAmount" class="main-text small mt-3">
+        <p v-if="circleInfo.circle_payment_token != defaultchain.nativeCurrency.address && allowance < paymentAmount" class="main-text small mt-3">
           <i class="fa fa-asterisk blue-btn pe-1" aria-hidden="true"></i>
             The circle contract requires approval before you can join. You can use a single transaction to approve all rounds of the circle.
         </p>
@@ -182,7 +182,9 @@ export default {
           this.paymentAmount = Math.round(((this.circleInfo.circle_round_payments / this.circleInfo.circle_size) + Number.EPSILON) * 100) / 100;
           this.loanAmount = this.circleInfo.circle_round_payments;
         }
-        this.allowance = await this.$refs.circle_approve_modal.getAllowance(this.circleIdProps);
+        if(this.circleInfo.circle_payment_token != this.defaultchain.nativeCurrency.address) {
+          this.allowance = await this.$refs.circle_approve_modal.getAllowance(this.circleIdProps);
+        }
       } else {
         this.circleInfo = null;
       }
@@ -201,7 +203,7 @@ export default {
         })
       }
 
-      if(this.allowance < this.paymentAmount) {
+      if(this.circleInfo.circle_payment_token != this.defaultchain.nativeCurrency.address && this.allowance < this.paymentAmount) {
         this.$refs.circle_approve_modal.setApproval(this.circleIdProps, this.paymentAmount, this.loanAmount);
       } else {
         this.$refs.circle_join_modal.setCircle(

@@ -306,7 +306,7 @@ export default {
             "updateCircle", // function name
             ["function updateCircle(string memory circle_name, string memory fixed_amount, uint8 min_members, uint8 max_members, uint8 winners_number)"], // function ABI
             setupArgs, // function args
-            0, // VIC amount
+            0, // value
             this.circleInfo.circle_id // Contract Address
           ]);
           if(abiResponse.done) {

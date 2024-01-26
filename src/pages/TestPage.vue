@@ -119,7 +119,7 @@ export default {
         "approve", // function name
         ["function approve(address spender, uint256 value)"], // function ABI
         [spender, 50 * 1e6], // function args
-        0 // VIC amount
+        0 // value
       ]);
       console.log(abiResponse);
     },

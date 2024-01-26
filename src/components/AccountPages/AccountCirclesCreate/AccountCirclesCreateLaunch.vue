@@ -351,7 +351,7 @@ export default {
           "launchCircle", // function name
           ["function launchCircle(uint256 start_date)"], // function ABI
           [this.startDate.getTime() / 1000], // function args
-          0, // VIC amount
+          0, // value
           this.circleInfoProps.circle_id // Contract Address
         ]);
         if(abiResponse.done) {

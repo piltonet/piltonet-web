@@ -34,10 +34,10 @@ class SDK {
 	// transfer VIC
 	async transferVIC(
 		address,
-		amount
+		value
 	) {
 		const to = ethers.getAddress(address)
-		const value = ethers.parseEther(amount.toString())
+		// const value = ethers.parseEther(amount.toString())
 		const tx = await this.contract.execute(to, value, "0x", 0, {
 			gasLimit: 300000
 		})
@@ -69,12 +69,12 @@ class SDK {
 		functionName,
 		functionAbi,
 		functionArgs,
-		amount,
+		value,
 		contractAddress = undefined
 	) {
 		let iface = new ethers.Interface(functionAbi)
 		let data = iface.encodeFunctionData(functionName, functionArgs)
-		const value = ethers.parseEther(amount.toString())
+		// const value = ethers.parseEther(amount.toString())
 		const to =  contractAddress ? ethers.getAddress(contractAddress) : contracts[contractName];
 		return await this.execute(
 			to,

@@ -209,7 +209,7 @@ export default {
         "addContact", // function name
         ["function addContact(address contactTBA)"], // function ABI
         [this.inviteAccount.account_tba_address], // function args
-        0 // VIC amount
+        0 // value
       ]);
       if(abiResponse.done) {
         let apiResponse = await api.post_account_contacts_accept_invite_code({invite_code: this.inviteAccount.account_invite_code});

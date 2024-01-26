@@ -103,7 +103,7 @@ export default {
             "joinCircle", // function name
             ["function joinCircle(uint8 selected_round)"], // function ABI
             [this.selectedRound], // function args
-            this.paymentAmount, // VIC amount
+            this.paymentAmount, // value
             this.circleInfo.circle_id // Contract Address
           ]);
         } else {
@@ -112,7 +112,7 @@ export default {
             "joinCircle", // function name
             ["function joinCircle(uint8 selected_round)"], // function ABI
             [this.selectedRound], // function args
-            0, // VIC amount
+            0, // value
             this.circleInfo.circle_id // Contract Address
           ]);
         }

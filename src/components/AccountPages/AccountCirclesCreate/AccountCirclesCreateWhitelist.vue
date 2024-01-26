@@ -294,7 +294,7 @@ export default {
             "addToWhitelist", // function name
             ["function addToWhitelist(address[] memory accounts)"], // function ABI
             [this.contactAdrs], // function args
-            0, // VIC amount
+            0, // value
             this.circleInfoProps.circle_id // Contract Address
           ]);
           if(abiResponse.done) {

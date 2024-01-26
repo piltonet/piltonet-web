@@ -214,7 +214,7 @@ export default {
         "addContact", // function name
         ["function addContact(address contactTBA)"], // function ABI
         [contactTBA], // function args
-        0 // VIC amount
+        0 // value
       ]);
       if(abiResponse.done) {
         let apiResponse = await api.post_account_contacts_accept_waiting_contact({contact_id: contactId});
