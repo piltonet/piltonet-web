@@ -432,7 +432,7 @@ export default {
       this.getBalance();
       this.interval = setInterval(() => {
         this.getBalance()
-      }, 2 * 60 * 1000) // 2 mins
+      }, 30 * 1000) // 30 seconds
     });
   },
   mounted() {
