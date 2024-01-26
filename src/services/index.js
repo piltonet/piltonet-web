@@ -1,7 +1,7 @@
-import api from "@/services/api.js";
-import abi from "@/services/abi.js";
+const api = require('@/services/api.js').default
+const abi = require('@/services/newabi.js')
 
-export default {
+module.exports = {
   api,
   abi
 }

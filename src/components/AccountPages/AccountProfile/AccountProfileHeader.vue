@@ -384,8 +384,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import abi from "@/services/abi";
-import api from "@/services/api";
+// import abi from "@/services/abi";
+const { abi, api } = require('@/services');
+// import api from "@/services/api";
 import wallets from "@/wallets";
 import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
 import WithdrawModal from "@/components/CustomModals/WithdrawModal.vue";
@@ -401,6 +402,7 @@ export default {
   },
   data() {
     return {
+      contract: null,
       totalBalance: 0,
       vicBalance: 0,
       cusdBalance: 0,
@@ -422,12 +424,21 @@ export default {
   created() {
     this.explorerProfile = `${this.defaultchain.blockExplorerUrl}/address/${this.accountProfile.profiles_contract_address}`;
     this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.accountProfile.account_tba_address}`;
-    this.getBalance();
+    abi.setAbi(
+      "0x", // fixed as VRC25PCUSD address in sdk
+      "VRC25PCUSD"
+    ).then((contract) => {
+      this.contract = contract;
+      this.getBalance();
+      this.interval = setInterval(() => {
+        this.getBalance()
+      }, 2 * 60 * 1000) // 2 mins
+    });
   },
   mounted() {
-    this.interval = setInterval(() => {
-      this.getBalance()
-    }, 2 * 60 * 1000) // 2 mins
+    // this.interval = setInterval(() => {
+    //   this.getBalance()
+    // }, 2 * 60 * 1000) // 2 mins
   },
   unmounted() {
     clearInterval(this.interval);
@@ -449,18 +460,13 @@ export default {
         clearInterval(this.interval);
       });
 
-      abi.setAbi(
-        "0x", // fixed as VRC25PCUSD address in sdk
-        "VRC25PCUSD"
-      ).then((contract) => {
-        contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
-          if(abiResponse.done) {
-            if(this.cusdBalance != abiResponse.result) {
-              this.cusdBalance = abiResponse.result;
-              this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
-            }
+      this.contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
+        if(abiResponse.done) {
+          if(this.cusdBalance != abiResponse.result) {
+            this.cusdBalance = abiResponse.result;
+            this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
           }
-        });
+        }
       }).catch((err) => {
         console.log('abi.err', err);
         clearInterval(this.interval);

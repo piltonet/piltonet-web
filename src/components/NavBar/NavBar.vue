@@ -195,7 +195,7 @@ export default {
       return this.getConnectionStore || {is_connected: false};
     },
     accountProfile() {
-      return this.getProfileStore;
+      return this.connectedAccount.account_status != 'fresh' ? this.getProfileStore : null;
     }
   },
   methods: {
