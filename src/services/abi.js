@@ -1,18 +1,13 @@
 const store = require('@/store').default;
-// const connectedAccount = store.getters.getConnectionStore;
 const wallets = require('@/wallets').default;
-// const wallet = wallets[connectedAccount.connected_wallet];
 const { ethers } = require('ethers');
 const { SDK } = require('@/sdk');
 const { ElLoading } = require('element-plus');
 const { notification } = require("@/plugins");
 
 class abi {
-	constructor(contractAddress, contractName, sdk, signer) {
-		this.contractAddress = contractAddress;
-		this.contractName = contractName;
-		this.signer = signer;
-		this.contract = new sdk(contractAddress, signer);
+	constructor(contractAddress, contractName, signer) {
+		this.contract = new SDK[contractName](contractAddress, signer);
 	}
 	
 	static async setAbi(contractAddress, contractName) {
@@ -20,8 +15,7 @@ class abi {
 		const wallet = wallets[connectedAccount.connected_wallet];
 		const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
     const signer = await provider.getSigner();
-		const sdk = SDK[contractName];
-		return new abi(contractAddress, contractName, sdk, signer);
+		return new abi(contractAddress, contractName, signer);
 	}
 
 	async interaction(_function, _params, _loading = true, _errNotif = true) {
