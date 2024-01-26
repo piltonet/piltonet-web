@@ -438,7 +438,7 @@ export default {
       console.log('getBalance');
       const vic2usdRatio = 0.81;
 
-      // get tokenbound-acount vicBalance
+      // get tokenbound-acount vic balance
       wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address).then((balance) => {
         if(this.vicBalance != balance) {
           this.vicBalance = balance;
