@@ -116,8 +116,6 @@ export default {
             this.circleInfo.circle_id // Contract Address
           ]);
         }
-console.log(abiResponse);
-        
         if(abiResponse.done) {
           let apiResponse = await api.post_account_circles_invited_accept({
             circle_id: this.circleInfo.circle_id,

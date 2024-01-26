@@ -441,7 +441,6 @@ export default {
       // get tokenbound-acount vicBalance
       wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address).then((balance) => {
         if(this.vicBalance != balance) {
-          console.log('New VIC Balance', balance);
           this.vicBalance = balance;
           this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
         }
@@ -457,7 +456,6 @@ export default {
         contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
           if(abiResponse.done) {
             if(this.cusdBalance != abiResponse.result) {
-              console.log('New CUSD Balance', abiResponse.result);
               this.cusdBalance = abiResponse.result;
               this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
             }
