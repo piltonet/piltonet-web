@@ -144,13 +144,6 @@ class api {
 			};
 		}
 	}
-	get_auth_temp(token) {
-		return {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-	}
 	async check_response(response, show) {
 		if(response.status != 200) {
 			response.data = {};
