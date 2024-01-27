@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import { api } from "@/services";
 
 const actions = {
   async fetchAccount({ commit }) {

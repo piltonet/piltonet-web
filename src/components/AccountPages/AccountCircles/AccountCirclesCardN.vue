@@ -66,6 +66,7 @@
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
+                  :height="12"
                   customClass="price-token-icon small"
                 />
               </div>
@@ -78,21 +79,20 @@
                 <!-- <p class="trusted-circles-value">{{ accountCircleProps.circle_round_days }}</p> -->
                 <!-- <p class="trusted-circles-info ps-1">(Monthly)</p> -->
               </div>
-              <p class="trusted-circles-key">ROUNDS</p>
+              <p class="trusted-circles-key">MEMBERS</p>
             </div>
             <!-- <p class="trusted-circles-value mb-3">=</p> -->
             <div class="d-flex flex-column justify-content-center align-items-center ps-1">
               <div class="d-flex flex-row justify-content-end align-items-center">
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_pay'" class="trusted-circles-value big">
-                  {{ utils.formatPrice(accountCircleProps.circle_size * accountCircleProps.circle_round_payments) }}
+                  {{ `~ ${utils.formatPrice(accountCircleProps.circle_size * accountCircleProps.circle_round_payments, 0)}` }}
                 </p>
                 <p v-if="accountCircleProps.circle_payment_type == 'fixed_loan'" class="trusted-circles-value big">
-                  {{ utils.formatPrice(accountCircleProps.circle_round_payments) }}
+                  {{ `~ ${utils.formatPrice(accountCircleProps.circle_round_payments, 0)}` }}
                 </p>
                 <SvgPaymentToken
                   :chainId="accountCircleProps.circle_chain_id"
                   :paymentToken="accountCircleProps.circle_payment_token"
-                  :height="20"
                   customClass="price-token-icon"
                 />
               </div>
@@ -237,7 +237,7 @@ export default {
   font-family: "Circular", arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   color: rgba(var(--ptn-third-gray-rgb), 0.7);
   margin: 0;
   padding: 0;

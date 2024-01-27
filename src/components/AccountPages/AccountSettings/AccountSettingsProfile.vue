@@ -205,7 +205,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 import CropperModal from "@/components/CustomModals/CropperModal.vue";
 import wallets from "@/wallets";
 

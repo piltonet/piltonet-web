@@ -39,7 +39,7 @@ import AccountContactsInviteCode from '@/components/AccountPages/AccountContacts
 import AccountContactsList from '@/components/AccountPages/AccountContacts/AccountContactsList.vue'
 import FooterBar from '@/components/FooterBar/FooterBar.vue'
 import { mapActions, mapGetters } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 
 export default {
   name: 'AccountContacts',

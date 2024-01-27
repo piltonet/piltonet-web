@@ -5,7 +5,7 @@ const defaultchain = blockchains[process.env.VUE_APP_DEFAULT_NETWORK]
 
 import router from '@/router'
 import store from "@/store"
-import api from "@/services/api"
+import { api } from "@/services";
 import { ElLoading } from 'element-plus'
 import { ethers } from 'ethers'
 

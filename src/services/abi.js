@@ -1,5 +1,5 @@
-const store = require('@/store').default;
-const wallets = require('@/wallets').default;
+// const store = require('@/store').default;
+// const wallets = require('@/wallets').default;
 const { ethers } = require('ethers');
 const { SDK } = require('@/sdk');
 const { ElLoading } = require('element-plus');
@@ -7,15 +7,52 @@ const { notification } = require("@/plugins");
 
 class abi {
 	constructor(contractAddress, contractName, signer) {
+		this.contractAddress = contractAddress;
+		this.contractName = contractName;
 		this.contract = new SDK[contractName](contractAddress, signer);
 	}
 	
 	static async setAbi(contractAddress, contractName) {
+		const store = require('@/store').default;
+		const wallets = require('@/wallets').default;
 		const connectedAccount = store.getters.getConnectionStore;
 		const wallet = wallets[connectedAccount.connected_wallet];
 		const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
     const signer = await provider.getSigner();
 		return new abi(contractAddress, contractName, signer);
+	}
+
+	// PERSONAL SIGN
+	static async personalSign(challenge, address, deniedMessage) {
+		// let loading = this.showLoading();
+		let personalSign = null;
+		try {
+			const store = require('@/store').default;
+			const wallets = require('@/wallets').default;
+			const connectedAccount = store.getters.getConnectionStore;
+			const wallet = wallets[connectedAccount.connected_wallet];
+			const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
+			personalSign = await provider.send("personal_sign", [challenge, address]);
+		} catch (err) {
+			console.log(err);
+			if(err.code == 4001 && deniedMessage) {
+				notification({
+					// title: "OOPS!",
+					message: deniedMessage,
+					type: "error",
+					duration: 3000,
+				});
+			} else if(err.code != 4001) {
+				notification({
+					title: "OOPS!",
+					message: "Something went wrong, you might need to disconnect and reconnect your wallet.",
+					type: "error",
+					duration: 3000,
+				});
+			}
+		}
+		// loading.close();
+		return personalSign;
 	}
 
 	async interaction(_function, _params, _loading = true, _errNotif = true) {

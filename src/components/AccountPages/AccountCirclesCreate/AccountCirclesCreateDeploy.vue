@@ -517,8 +517,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import api from "@/services/api";
-import abi from "@/services/abi";
+import { abi, api } from "@/services";
 import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
 import PatienceBenefitCalcModal from "@/components/CustomModals/PatienceBenefitCalcModal.vue";

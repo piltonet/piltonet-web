@@ -30,7 +30,7 @@
 <script>
 import NavBar from '@/components/NavBar/NavBar.vue';
 import { mapGetters } from "vuex";
-import abi from "@/services/abi";
+import { abi } from "@/services";
 import { ethers } from "ethers";
 // import wallets from "@/wallets";
 // import { toRaw } from 'vue';

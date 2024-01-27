@@ -42,8 +42,7 @@ import AccountCirclesCreateWhitelist from '@/components/AccountPages/AccountCirc
 import AccountCirclesCreateLaunch from '@/components/AccountPages/AccountCirclesCreate/AccountCirclesCreateLaunch.vue';
 import FooterBar from '@/components/FooterBar/FooterBar.vue';
 import { mapGetters } from "vuex";
-import api from "@/services/api";
-import abi from "@/services/abi";
+import { abi, api } from "@/services";
 
 export default {
   name: 'AccountCirclesCreate',

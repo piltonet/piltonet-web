@@ -1,10 +1,64 @@
 <template>
   <div id="account-circles-list">
-    <div class="d-flex flex-row row">
-      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start align-items-center">
-        <h2 class="account-circles-list-title">LENDING CIRCLES</h2>
+    
+    <!-- Whitelisted -->
+    <template v-if="accountCirclesProps.whitelisted?.length > 0">
+      <div class="d-flex flex-row row">
+        <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
+          <h2 class="account-circles-list-title">YOU ARE INVITED</h2>
+        </div>
       </div>
-      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end align-items-center">
+      <div class="d-flex flex-row row">
+        <div
+          v-for="circle in accountCirclesProps.whitelisted || []"
+          :key="circle.circle_id"
+          :id="`circle-whitelisted-${index}`"
+          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
+        >
+          <AccountCirclesCardN
+            :accountCircleProps="circle"
+            accountRoleProps="whitelisted"
+          />
+        </div>
+      </div>
+  
+      <div class="d-flex justify-content-center justify-content-md-start align-items-center mt-5">
+        <div class="horizontal-line"></div>
+      </div>
+    </template>
+
+    <!-- Joined -->
+    <template v-if="accountCirclesProps.joined?.length > 0">
+      <div class="d-flex flex-row row">
+        <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
+          <h2 class="account-circles-list-title">YOU HAVE JOINED</h2>
+        </div>
+      </div>
+      <div class="d-flex flex-row row">
+        <div
+          v-for="(circle, index) in accountCirclesProps.joined || []"
+          :key="circle.circle_id"
+          :id="`circle-joined-${index}`"
+          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
+        >
+          <AccountCirclesCardN
+            :accountCircleProps="circle"
+            accountRoleProps="joined"
+          />
+        </div>
+      </div>
+  
+      <div class="d-flex justify-content-center justify-content-md-start align-items-center mt-5">
+        <div class="horizontal-line"></div>
+      </div>
+    </template>
+
+    <!-- Creating -->
+    <div class="d-flex flex-row row">
+      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
+        <h2 class="account-circles-list-title">YOUR CIRCLES</h2>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end align-items-center mt-4">
         <div
           type="button"
           @click="createNewCircleOnTestnet"
@@ -14,61 +68,7 @@
         </div>
       </div>
     </div>
-    
-    <!-- Whitelisted -->
-    <!-- <div class="my-4 row">
-      <div
-        v-for="circle in accountCirclesProps.whitelisted || []"
-        :key="circle.circle_id"
-        class="col-12 col-md-6 col-lg-4 col-xl-3"
-      >
-        <AccountCirclesCard
-          :accountCircleProps="circle"
-          accountRoleProps="whitelisted"
-        />
-      </div>
-    </div> -->
-    <div class="my-4 row">
-      <div
-        v-for="circle in accountCirclesProps.whitelisted || []"
-        :key="circle.circle_id"
-        :id="`circle-whitelisted-${index}`"
-        class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
-      >
-        <AccountCirclesCardN
-          :accountCircleProps="circle"
-          accountRoleProps="whitelisted"
-        />
-      </div>
-    </div>
-    <!-- Joined -->
-    <!-- <div class="my-4 row">
-      <div
-        v-for="circle in accountCirclesProps.joined || []"
-        :key="circle.circle_id"
-        class="col-12 col-md-6 col-lg-4 col-xl-3"
-      >
-        <AccountCirclesCard
-          :accountCircleProps="circle"
-          accountRoleProps="joined"
-        />
-      </div>
-    </div> -->
-    <div class="my-4 row">
-      <div
-        v-for="(circle, index) in accountCirclesProps.joined || []"
-        :key="circle.circle_id"
-        :id="`circle-joined-${index}`"
-        class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
-      >
-        <AccountCirclesCardN
-          :accountCircleProps="circle"
-          accountRoleProps="joined"
-        />
-      </div>
-    </div>
-    <!-- Creating -->
-    <div class="my-4 row">
+    <div class="d-flex flex-row row">
       <div
         v-for="circle in accountCirclesProps.creating || []"
         :key="circle.circle_id"
@@ -171,5 +171,9 @@ export default {
   height: auto;
   margin: 15px;
 }
-
+.horizontal-line {
+  border-top: 1px solid rgba(var(--ptn-color-rgb), 0.3);
+  width: calc(98% - 10px);
+  margin: auto;
+}
 </style>

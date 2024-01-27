@@ -54,7 +54,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 import AccountCirclesDetails from "@/components/AccountPages/AccountCircles/AccountCirclesDetails.vue";
 import AccountCirclesRotations from "@/components/AccountPages/AccountCircles/AccountCirclesRotations.vue";
 import AccountCirclesMembers from "@/components/AccountPages/AccountCircles/AccountCirclesMembers.vue";

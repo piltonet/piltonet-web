@@ -34,7 +34,7 @@ import AccountSettingsProfile from '@/components/AccountPages/AccountSettings/Ac
 import AccountSettingsAccounts from '@/components/AccountPages/AccountSettings/AccountSettingsAccounts.vue'
 import FooterBar from '@/components/FooterBar/FooterBar.vue'
 import { mapActions, mapGetters } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 
 export default {
   name: 'AccountSettings',

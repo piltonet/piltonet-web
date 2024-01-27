@@ -107,11 +107,15 @@
     ref="circle_join_modal"
   />
 
+  <MessageModal
+    ref="message_modal"
+  />
+
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import api from "@/services/api";
+import { abi, api } from "@/services";
 import wallets from "@/wallets";
 import AccountCirclesDetails from "@/components/AccountPages/AccountCircles/AccountCirclesDetails.vue";
 import AccountCirclesMembers from "@/components/AccountPages/AccountCircles/AccountCirclesMembers.vue";
@@ -201,6 +205,38 @@ export default {
           type: "error",
           duration: 3000
         })
+      }
+
+      if(this.circleInfo.circle_payment_token == this.defaultchain.nativeCurrency.address) {
+        // get vic balance
+        const vicBalance = await wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address);
+        if(vicBalance < this.paymentAmount) {
+          return this.$refs.message_modal.setMessage({
+            message: `Your account balance is "${vicBalance} VIC", but you need "${this.paymentAmount} VIC" to join the circle.`,
+            okBtn: null,
+            cancelBtn: "Close",
+            customStyle: 'width: 430px;'
+          })
+        }
+      } else if(this.circleInfo.circle_payment_token == this.defaultchain.CUSD.address) {
+        // get cusd balance
+        let cusdBalance = 0;
+        const contract = await abi.setAbi(
+          "0x", // fixed as VRC25PCUSD address in sdk
+          "VRC25PCUSD"
+        );
+        const abiResponse = await contract.interaction("balanceOf", [this.accountProfile.account_tba_address]);
+        if(abiResponse.done) {
+          cusdBalance = abiResponse.result;
+        }
+        if(cusdBalance < this.paymentAmount) {
+          return this.$refs.message_modal.setMessage({
+            message: `Your account balance is "${cusdBalance} CUSD", but you need "${this.paymentAmount} CUSD" to join the circle.`,
+            okBtn: null,
+            cancelBtn: "Close",
+            customStyle: 'width: 430px;'
+          })
+        }
       }
 
       if(this.circleInfo.circle_payment_token != this.defaultchain.nativeCurrency.address && this.allowance < this.paymentAmount) {

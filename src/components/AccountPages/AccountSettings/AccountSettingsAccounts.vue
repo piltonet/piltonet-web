@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import api from "@/services/api";
+import { api } from "@/services";
 import wallets from "@/wallets";
 
 export default {

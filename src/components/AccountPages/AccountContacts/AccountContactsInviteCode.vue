@@ -143,8 +143,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import api from "@/services/api";
-import abi from "@/services/abi";
+import { abi, api } from "@/services";
 import wallets from "@/wallets";
 
 export default {

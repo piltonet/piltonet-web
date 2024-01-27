@@ -8,37 +8,19 @@
           @profile-set-active-tab="setActiveTab"
         />
       </div>
-      <div class="profile-nfts my-5 px-3">
-        <div class="row">
-          <!-- <div class="col-3">
-            <ProfileSidebar />
-          </div> -->
-          <div class="col-12">
-            <ProfileNfts
-              :profileInfoProps="profileInfo"
-              :activeTabProps="activeTab"
-            />
-          </div>
-        </div>
-      </div>
     </div>
   </div>
   <NotFound v-else-if="!loading" />
 </template>
 
 <script>
-// import ProfileSidebar from '@/components/ProfilePage/ProfileSidebar.vue';
-import ProfileNfts from '@/components/ProfilePage/ProfileNfts.vue';
 import ProfileHeader from '@/components/ProfilePage/ProfileHeader.vue';
 import NotFound from '@/pages/NotFound.vue';
-// import { mapActions, mapGetters } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 
 export default {
   name: 'ProfilePage',
   components: {
-    // ProfileSidebar,
-    ProfileNfts,
     ProfileHeader,
     NotFound
   },
@@ -77,13 +59,5 @@ export default {
 </script>
 
 <style scoped>
-.profile-nfts {
-  min-height: 500px;
-  background-color: #f7f7f7;
-}
-
-/* Start Mini Mobile - None < 576px */
-@media (max-width: 575px) {
-}
 </style>
 

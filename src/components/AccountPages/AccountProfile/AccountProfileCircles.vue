@@ -61,7 +61,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 import AccountCirclesCardN from "@/components/AccountPages/AccountCircles/AccountCirclesCardN.vue";
 
 export default {

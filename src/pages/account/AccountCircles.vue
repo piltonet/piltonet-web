@@ -25,7 +25,7 @@
 <script>
 import { useRoute } from 'vue-router';
 import { mapActions, mapGetters } from "vuex";
-import api from "@/services/api";
+import { api } from "@/services";
 import NavBar from '@/components/NavBar/NavBar.vue';
 import AccountCirclesNew from "@/components/AccountPages/AccountCircles/AccountCirclesNew.vue";
 import AccountCirclesList from "@/components/AccountPages/AccountCircles/AccountCirclesList.vue";

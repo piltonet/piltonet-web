@@ -35,7 +35,6 @@ function errorNetworkModal() {
     `
 }
 
-
 class api {
 	constructor() {
 		this.endpoints = {
@@ -77,6 +76,7 @@ class api {
 
 			// public APIs
 			profile: `${process.env.VUE_APP_API_URL}v1/profile`,
+			vic_price: `${process.env.VUE_APP_API_URL}v1/oracles/price`,
 		}
 	}
 	async loadAPI(endPoint, options) {
@@ -89,26 +89,25 @@ class api {
 		// }
 	}
 	async postAPI(endpoint, formBE, headers = {}, show = true) {
-		let loading = this.showLoading();
+		let loading = show ? this.showLoading() : '';
 		try {
 			let response = await axios.post(endpoint, formBE, headers);
-			loading.close()
-			return this.check_response(response, show);
+			return this.check_response(response);
 		} catch (error) {
-			loading.close();
 			errorNetworkModal();
+		} finally {
+			if(show) loading.close();
 		}
 	}
-	async getAPI(endPoint, headers, show) {
-		let loading = this.showLoading();
+	async getAPI(endPoint, headers, show = true) {
+		let loading = show ? this.showLoading() : '';
 		try {
 			let response = await axios.get(endPoint, headers);
-			loading.close()
-			return this.check_response(response, show);
+			return this.check_response(response);
 		} catch (error) {
-			console.log(error);
-			loading.close();
-			errorNetworkModal();
+			if(show) errorNetworkModal();
+		} finally {
+			if(show) loading.close();
 		}
 	}
 	showLoading() {
@@ -144,7 +143,7 @@ class api {
 			};
 		}
 	}
-	async check_response(response, show) {
+	async check_response(response) {
 		if(response.status != 200) {
 			response.data = {};
 			response.data.done = false;
@@ -152,9 +151,6 @@ class api {
 			response.data.status_code = response.status_code;
 		} else if(store.getters.getConnectionStoreByKey('is_connected') && response.data.status_code == 401) {
 			await store.dispatch('logoutAccount');
-		}
-		if(!show) {
-			this.response_message(response.data.done.toString(), response.data.message);
 		}
 		return response;
 	}
@@ -267,6 +263,10 @@ class api {
 	// public APIs
 	async get_profile(params, show = true) {
 		return this.getAPI(`${this.endpoints.profile}?${params}`, {}, show)
+	}
+
+	async get_vic_price(show = true) {
+		return this.getAPI(`${this.endpoints.vic_price}?asset=vic`, {}, show)
 	}
 }
 

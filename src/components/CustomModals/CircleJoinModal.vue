@@ -57,8 +57,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import abi from "@/services/abi";
-import api from "@/services/api";
+import { abi, api } from "@/services";
 
 export default {
   name: "CircleJoinModal",

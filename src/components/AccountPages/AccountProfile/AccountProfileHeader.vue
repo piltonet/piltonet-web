@@ -232,7 +232,7 @@
           <!-- Total Assets -->
           <div class="d-flex flex-column justify-content-center align-items-start w-100 mt-4">
             <span class="account-title">Total Assets
-              <span class="account-smalltext mt-3">~ {{ utils.fixedNumber(totalBalance, 2, 2) }} $</span>
+              <span v-if="vic2usdRatio > 0" class="account-smalltext mt-3">{{ `≈ ${utils.fixedNumber(totalBalance, 2, 2)}` }} $</span>
             </span>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
@@ -384,9 +384,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-// import abi from "@/services/abi";
-const { abi, api } = require('@/services');
-// import api from "@/services/api";
+import { abi, api } from "@/services";
 import wallets from "@/wallets";
 import TopUpModal from "@/components/CustomModals/TopUpModal.vue";
 import WithdrawModal from "@/components/CustomModals/WithdrawModal.vue";
@@ -406,7 +404,9 @@ export default {
       totalBalance: 0,
       vicBalance: 0,
       cusdBalance: 0,
+      vic2usdRatio: 0,
       totalDebt: 0,
+      interval: null,
       copyAddressTooltip: "Copy Address",
       explorerProfile: null,
       explorerLink: null
@@ -445,26 +445,35 @@ export default {
   },
   methods: {
     async getBalance() {
-      // To Do
-      console.log('getBalance');
-      const vic2usdRatio = 0.81;
+      api.get_vic_price(false).then((apiResponse) => {
+        if(apiResponse && apiResponse.data.done) {
+          if(this.vic2usdRatio != apiResponse.data.result[0]) {
+            this.vic2usdRatio = apiResponse.data.result[0];
+            this.totalBalance = (this.vicBalance * this.vic2usdRatio) + this.cusdBalance;
+          }
+        } else {
+          this.vic2usdRatio = 0;
+          this.totalBalance = 0;
+        }
+      });
 
       // get tokenbound-acount vic balance
       wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address).then((balance) => {
         if(this.vicBalance != balance) {
           this.vicBalance = balance;
-          this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+          this.totalBalance = (this.vicBalance * this.vic2usdRatio) + this.cusdBalance;
         }
       }).catch((err) => {
         console.log('getSigner.err', err);
         clearInterval(this.interval);
       });
 
+      // get tokenbound-acount cusd balance
       this.contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
         if(abiResponse.done) {
           if(this.cusdBalance != abiResponse.result) {
             this.cusdBalance = abiResponse.result;
-            this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+            this.totalBalance = (this.vicBalance * this.vic2usdRatio) + this.cusdBalance;
           }
         }
       }).catch((err) => {
@@ -488,8 +497,7 @@ export default {
       let apiResponse = await api.post_account_testnet_faucet({account_tba_address: this.accountProfile.account_tba_address});
       if(apiResponse.data.done) {
         this.cusdBalance = apiResponse.data.result[0];
-        const vic2usdRatio = 0.78;
-        this.totalBalance = (this.vicBalance * vic2usdRatio) + this.cusdBalance;
+        this.totalBalance = (this.vicBalance * this.vic2usdRatio) + this.cusdBalance;
         this.notif({
           title: "SUCCESS!",
           message: apiResponse.data.message,

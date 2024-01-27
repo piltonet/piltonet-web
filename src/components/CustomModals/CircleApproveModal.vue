@@ -90,7 +90,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import abi from "@/services/abi";
+import { abi } from "@/services";
 
 export default {
   name: "CircleApproveModal",
