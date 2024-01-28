@@ -354,7 +354,7 @@
             class="profile-link d-flex flex-row justify-content-center align-items-center p-2 mx-2"
           >
             <i class="far fa-circle-dot me-2" aria-hidden="true"></i>
-            Lending Circles
+            Your Circles
             <!-- To Do -->
             <span v-if="false" class="ms-1">
               {{ accountProfile?.account_circles_number }}

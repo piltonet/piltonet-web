@@ -9,7 +9,7 @@
       <button
         type="button" 
         class="back-btn p-0"
-        @click="$router.push('/account/circles')"
+        @click="$router.push('/account/profile')"
       >
         <i class="fa fa-arrow-left px-2" aria-hidden="true"></i>
         <span class="pe-2">Back</span>

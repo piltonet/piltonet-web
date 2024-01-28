@@ -40,19 +40,6 @@
               Payment Token
             </label>
             <button
-              class="account-circles-deploy-button"
-              :class="circleInfo.circle_payment_token == defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_payment_token = defaultchain.nativeCurrency.address; setupConst();"
-            >
-              <SvgPaymentToken
-                :chainId="circleInfo.circle_chain_id"
-                :paymentToken="defaultchain.nativeCurrency.address"
-                :tooltip="false"
-                customClass="m-1"
-              />
-              <p>{{ defaultchain.nativeCurrency.symbol }}</p>
-            </button>
-            <button
               class="account-circles-deploy-button mt-2"
               :class="circleInfo.circle_payment_token == defaultchain.CUSD.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
               @click="circleInfo.circle_payment_token = defaultchain.CUSD.address; setupConst();"
@@ -64,6 +51,19 @@
                 customClass="m-1"
               />
               <p>{{ defaultchain.CUSD.symbol }}</p>
+            </button>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_payment_token == defaultchain.nativeCurrency.address ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_payment_token = defaultchain.nativeCurrency.address; setupConst();"
+            >
+              <SvgPaymentToken
+                :chainId="circleInfo.circle_chain_id"
+                :paymentToken="defaultchain.nativeCurrency.address"
+                :tooltip="false"
+                customClass="m-1"
+              />
+              <p>{{ defaultchain.nativeCurrency.symbol }}</p>
             </button>
             <p id="circlePaymentTokenHelp" class="help-text pt-2 mb-3">
               This token is used to pay contributions and receive loans.

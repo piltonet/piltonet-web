@@ -6,9 +6,9 @@
   </div>
   
   <div v-else id="account-circles" class="row">
-    <AccountCirclesNew v-if="activePage == 'list' && !accountCircles" />
+    <AccountCirclesNew v-if="activePage == 'list' && (!accountCircles || !accountCircles.creating)" />
     <AccountCirclesList v-else-if="activePage == 'list' && accountCircles"
-      :accountCirclesProps="accountCircles"
+      :accountCirclesProps="accountCircles.creating"
     />
     <AccountCirclesInvited v-else-if="activePage == 'invited'"
       :circleIdProps="circleId"

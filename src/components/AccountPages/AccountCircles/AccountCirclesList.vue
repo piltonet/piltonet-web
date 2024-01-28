@@ -1,59 +1,7 @@
 <template>
   <div id="account-circles-list">
     
-    <!-- Whitelisted -->
-    <template v-if="accountCirclesProps.whitelisted?.length > 0">
-      <div class="d-flex flex-row row">
-        <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
-          <h2 class="account-circles-list-title">YOU ARE INVITED</h2>
-        </div>
-      </div>
-      <div class="d-flex flex-row row">
-        <div
-          v-for="circle in accountCirclesProps.whitelisted || []"
-          :key="circle.circle_id"
-          :id="`circle-whitelisted-${index}`"
-          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
-        >
-          <AccountCirclesCardN
-            :accountCircleProps="circle"
-            accountRoleProps="whitelisted"
-          />
-        </div>
-      </div>
-  
-      <div class="d-flex justify-content-center justify-content-md-start align-items-center mt-5">
-        <div class="horizontal-line"></div>
-      </div>
-    </template>
-
-    <!-- Joined -->
-    <template v-if="accountCirclesProps.joined?.length > 0">
-      <div class="d-flex flex-row row">
-        <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
-          <h2 class="account-circles-list-title">YOU HAVE JOINED</h2>
-        </div>
-      </div>
-      <div class="d-flex flex-row row">
-        <div
-          v-for="(circle, index) in accountCirclesProps.joined || []"
-          :key="circle.circle_id"
-          :id="`circle-joined-${index}`"
-          class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
-        >
-          <AccountCirclesCardN
-            :accountCircleProps="circle"
-            accountRoleProps="joined"
-          />
-        </div>
-      </div>
-  
-      <div class="d-flex justify-content-center justify-content-md-start align-items-center mt-5">
-        <div class="horizontal-line"></div>
-      </div>
-    </template>
-
-    <!-- Creating -->
+    <!-- Your Circles -->
     <div class="d-flex flex-row row">
       <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
         <h2 class="account-circles-list-title">YOUR CIRCLES</h2>
@@ -70,7 +18,7 @@
     </div>
     <div class="d-flex flex-row row">
       <div
-        v-for="circle in accountCirclesProps.creating || []"
+        v-for="circle in accountCirclesProps || []"
         :key="circle.circle_id"
         class="col-12 col-md-6 col-lg-4 col-xl-3"
       >
@@ -93,13 +41,13 @@
 <script>
 import { mapGetters } from "vuex";
 import AccountCirclesCard from "@/components/AccountPages/AccountCircles/AccountCirclesCard.vue";
-import AccountCirclesCardN from "@/components/AccountPages/AccountCircles/AccountCirclesCardN.vue";
+// import AccountCirclesCardN from "@/components/AccountPages/AccountCircles/AccountCirclesCardN.vue";
 
 export default {
   name: "AccountCirclesList",
   components: {
     AccountCirclesCard,
-    AccountCirclesCardN
+    // AccountCirclesCardN
   },
   props: {
     accountCirclesProps: Object,

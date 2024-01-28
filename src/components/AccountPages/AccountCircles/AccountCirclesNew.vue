@@ -2,9 +2,9 @@
   <div id="account-circles-new">
     <div class="account-circles-new-main row">
       
-      <h2>YOU DON'T HAVE ANY LENDING CIRCLES YET.</h2>
-      <h3>All your lending circles that you've created, been invited to, and joined will appear here.<br />
-        If you'd like, you can create a new one yourself.</h3>
+      <h2>YOU HAVEN'T CREATED ANY CIRCLES YET.</h2>
+      <h3>All the lending circles you've created will be displayed here. If you want, 
+        you can start creating a new one now and invite your contacts to join.</h3>
 			
       <div class="col-12">
         <!-- New Circle -->
