@@ -212,6 +212,7 @@ export default {
         const vicBalance = await wallets[this.connectedAccount.connected_wallet].getBalance(this.accountProfile.account_tba_address);
         if(vicBalance < this.paymentAmount) {
           return this.$refs.message_modal.setMessage({
+            title: 'Low Balance',
             message: `Your account balance is "${vicBalance} VIC", but you need "${this.paymentAmount} VIC" to join the circle.`,
             okBtn: null,
             cancelBtn: "Close",
@@ -231,6 +232,7 @@ export default {
         }
         if(cusdBalance < this.paymentAmount) {
           return this.$refs.message_modal.setMessage({
+            title: 'Low Balance',
             message: `Your account balance is "${cusdBalance} CUSD", but you need "${this.paymentAmount} CUSD" to join the circle.`,
             okBtn: null,
             cancelBtn: "Close",
