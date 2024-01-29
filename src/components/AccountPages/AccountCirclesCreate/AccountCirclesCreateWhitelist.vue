@@ -204,6 +204,7 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { abi, api } from "@/services";
+import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
 
 // const { LendingCircleContract } = require('@/contracts');
@@ -283,19 +284,12 @@ export default {
     async addToWhitelist() {
       if(this.contactAdrs.length > 0) {
         try {
-          const contract = await abi.setAbi(
-            this.accountProfile.account_tba_address, // sender tba address
-            "ERC6551Account"
-          );
-          // execute TLCC addToWhitelist
-          let abiResponse = await contract.interaction("executeFunction", [
-            "TLCC", // contract name
-            "addToWhitelist", // function name
-            ["function addToWhitelist(address[] memory accounts)"], // function ABI
-            [this.contactAdrs], // function args
-            0, // value
-            this.circleInfoProps.circle_id // Contract Address
-          ]);
+          let abiResponse = null;
+          if(this.circleInfoProps.circle_mode == 'fully_dec') {
+            abiResponse = await this.addToWhitelistFDCircle();
+          } else {
+            abiResponse = await this.addToWhitelistSDCircle();
+          }
           if(abiResponse.done) {
             let apiResponse = await api.post_account_circles_creator_whitelists_add(
               {
@@ -338,6 +332,29 @@ export default {
           })
           console.log(err);
         }
+      }
+    },
+    async addToWhitelistFDCircle() {
+      const contract = await abi.setAbi(
+        this.accountProfile.account_tba_address, // sender tba address
+        "ERC6551Account"
+      );
+      // execute TLCC addToWhitelist
+      return await contract.interaction("executeFunction", [
+        "TLCC", // contract name
+        "addToWhitelist", // function name
+        ["function addToWhitelist(address[] memory accounts)"], // function ABI
+        [this.contactAdrs], // function args
+        0, // value
+        this.circleInfoProps.circle_id // Contract Address
+      ]);
+    },
+    async addToWhitelistSDCircle() {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        return {done: true};
+      } else {
+        return {done: false};
       }
     },
     async removeFromWhitelist(whitelistedAdr) {
@@ -427,6 +444,15 @@ export default {
       } else {
         document.getElementById(elementId).innerHTML = '<i class="far fa-square" aria-hidden="true" style="color: rgba(var(--ptn-color-rgb), 0.9)"></i>'
       }
+    },
+    async personalSign() {
+      let personalSignResult = await wallets[this.connectedAccount.connected_wallet].personalSign(
+        "This request requires your signature. It won't cost you anything." +
+          `\nTimestamp: ${new Date().getTime()}`,
+        this.connectedAccount.account_address,
+				null
+      );
+      return personalSignResult;
     }
   }
 }

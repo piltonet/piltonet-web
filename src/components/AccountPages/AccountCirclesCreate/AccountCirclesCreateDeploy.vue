@@ -406,9 +406,7 @@
                     <span class="main-text tiny">days</span>
                   </p>
                 </div>
-              </div>
-  
-              <div class="col-12 col-md-6">
+                
                 <!-- Round Payments -->
                 <div class="d-flex flex-column justify-content-center align-items-start mt-2">
                   <p class="note-text small">Round Payments</p>
@@ -416,7 +414,9 @@
                     <span class="main-text tiny">{{ tokenSymbol }}</span>
                   </p>
                 </div>
-                
+              </div>
+  
+              <div class="col-12 col-md-6">
                 <!-- Winner Selection Method -->
                 <div class="d-flex flex-column justify-content-center align-items-start mt-2">
                   <p class="note-text small">Winner Selection Method</p>
@@ -441,6 +441,13 @@
                   </p>
                 </div>
                 
+                <!-- Circle Mode -->
+                <div class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Circle Mode</p>
+                  <p v-if="circleInfo.circle_mode == 'fully_dec'" class="top-text small mt-1">Fully Decentralized</p>
+                  <p v-if="circleInfo.circle_mode == 'semi_dec'" class="top-text small mt-1">Semi Decentralized</p>
+                </div>
+
                 <!-- Service Charge -->
                 <div class="d-flex flex-column justify-content-center align-items-start mt-2">
                   <p class="note-text small">Service Charge</p>
@@ -449,47 +456,47 @@
                     <i class="fa fa-lock info-text darkblue-text ps-2" aria-hidden="true"></i>
                   </p>
                 </div>
+                
+                <!-- Contract Address -->
+                <div v-if="circleInfo.circle_id" class="d-flex flex-column justify-content-center align-items-start mt-2">
+                  <p class="note-text small">Contract Address</p>
+                  <p class="top-text small mt-1">
+                    {{ utils.truncate(circleInfo.circle_id, 23) }}
+                    <span class="main-text tiny">
+                      <!-- Copy Icon -->
+                      <el-tooltip
+                        :content="copyAddressTooltip"
+                        placement="top"
+                        :hide-after="0"
+                      >
+                        <a
+                          id="copy-contract-address"
+                          role="button"
+                          @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
+                          class="ms-2"
+                        >
+                          <i class="far fa-copy" aria-hidden="true"></i>
+                        </a>
+                      </el-tooltip>
+                      <!-- Explore Icon -->
+                      <el-tooltip
+                        content="View in Explorer"
+                        placement="top"
+                        :hide-after="0"
+                      >
+                        <a
+                          v-if="explorerLink"
+                          :href="explorerLink"
+                          target="_blank"
+                          class="ms-2"
+                        >
+                          <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </a>
+                      </el-tooltip>
+                    </span>
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            <!-- Contract Address -->
-            <div v-if="circleInfo.circle_id" class="d-flex flex-column justify-content-center align-items-start mt-3">
-              <p class="note-text">Contract Address</p>
-              <p class="top-text small mt-2">
-                {{ utils.truncate(circleInfo.circle_id, 23) }}
-                <span class="main-text tiny">
-                  <!-- Copy Icon -->
-                  <el-tooltip
-                    :content="copyAddressTooltip"
-                    placement="top"
-                    :hide-after="0"
-                  >
-                    <a
-                      id="copy-contract-address"
-                      role="button"
-                      @click="copyAddress('copy-contract-address', circleInfo.circle_id)"
-                      class="ms-2"
-                    >
-                      <i class="far fa-copy" aria-hidden="true"></i>
-                    </a>
-                  </el-tooltip>
-                  <!-- Explore Icon -->
-                  <el-tooltip
-                    content="View in Explorer"
-                    placement="top"
-                    :hide-after="0"
-                  >
-                    <a
-                      v-if="explorerLink"
-                      :href="explorerLink"
-                      target="_blank"
-                      class="ms-2"
-                    >
-                      <i class="fa fa-external-link" aria-hidden="true"></i>
-                    </a>
-                  </el-tooltip>
-                </span>
-              </p>
             </div>
           </template>
         </form>
@@ -557,9 +564,9 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { abi, api } from "@/services";
-import NotFound from '@/pages/NotFound.vue';
 import wallets from "@/wallets";
 import PatienceBenefitCalcModal from "@/components/CustomModals/PatienceBenefitCalcModal.vue";
+import NotFound from '@/pages/NotFound.vue';
 
 export default {
   name: "AccountCirclesCreateDeploy",
@@ -657,8 +664,10 @@ export default {
         this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
         this.maxPatienceBenefit = this.circleConstProps['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
         this.maxCreatorEarnings = this.circleConstProps['CIRCLES_MAX_CREATOR_EARNINGS_X10000'] / 100;
-        this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_FD_SERVICE_CHARGE_X10000'] / 100;
-        this.circleInfo['circle_service_address'] = this.circleConstProps['PILTONET_SERVICE_ADMIN'];
+        if(!this.circleInfoProps) {
+          this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_FD_SERVICE_CHARGE_X10000'] / 100;
+          this.circleInfo['circle_service_address'] = this.circleConstProps['PILTONET_SERVICE_ADMIN'];
+        }
       }
     },
     async deployCircle() {
