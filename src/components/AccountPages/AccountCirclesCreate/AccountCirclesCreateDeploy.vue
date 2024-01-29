@@ -663,26 +663,18 @@ export default {
     },
     async deployCircle() {
       if(this.checkForm()) {
-        const deployArgs = [[
-          this.accountProfile.account_tba_address,
-          this.circleInfo.circle_payment_token,
-          this.circleInfo.circle_name,
-          parseInt(this.circleInfo.circle_size),
-          parseInt(this.circleInfo.circle_round_days),
-          (parseInt(this.circleInfo.circle_round_payments * 10**this.tokenDecimals)).toString(),
-          this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
-          parseInt(this.circleInfo.circle_patience_benefit * 100),
-          parseInt(this.circleInfo.circle_creator_earnings * 100)
-        ]];
-
-        const contract = await abi.setAbi(
-          "0x", // deploy new contract
-          "DeployCustomContract"
-        );
-        // deploy TLCC
-        let abiResponse = await contract.interaction('deployTLCC', deployArgs);
+        let abiResponse = null;
+        if(this.circleInfo.circle_mode == 'fully_dec') {
+          abiResponse = await this.deployFDCircle();
+        } else {
+          abiResponse = await this.deploySDCircle();
+        }
         if(abiResponse.done) {
-          this.circleInfo.circle_id = abiResponse.result.target;
+          if(this.circleInfo.circle_mode == 'fully_dec') {
+            this.circleInfo.circle_id = abiResponse.result.target;
+          } else {
+            this.circleInfo.circle_round_payments_string = (parseInt(this.circleInfo.circle_round_payments * 10**this.tokenDecimals)).toString();
+          }
           let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
           if(apiResponse.data.done) {
             this.circleInfo = apiResponse.data.result[0];
@@ -713,45 +705,32 @@ export default {
         }
       }
     },
-    async deployCircleByService() {
-      if(this.checkForm()) {
-        const deployArgs = [[
-          this.circleInfo.circle_payment_token,
-          this.circleInfo.circle_round_days,
-          this.circleInfo.circle_creator_earnings * 100
-        ]];
+    async deployFDCircle() {
+      // deploy TLCC
+      const deployArgs = [[
+        '0x0000000000000000000000000000000000000000', // address(0)
+        this.circleInfo.circle_payment_token,
+        this.circleInfo.circle_name,
+        parseInt(this.circleInfo.circle_size),
+        parseInt(this.circleInfo.circle_round_days),
+        (parseInt(this.circleInfo.circle_round_payments * 10**this.tokenDecimals)).toString(),
+        this.circleInfo.circle_winners_order == 'random' ? 0 : this.circleInfo.circle_winners_order == 'fixed' ? 1 : 2,
+        parseInt(this.circleInfo.circle_patience_benefit * 100),
+        parseInt(this.circleInfo.circle_creator_earnings * 100)
+      ]];
 
-        let personalSign = await this.personalSign();
-        if(personalSign) {
-          // this.circleInfo.circle_id = abiResponse.result.target;
-          // let apiResponse = await api.post_account_circles_creator_create(this.circleInfo);
-          let apiResponse = await api.post_account_circles_creator_create_by_service(deployArgs);
-          if(apiResponse.data.done) {
-            this.circleInfo = apiResponse.data.result[0];
-            this.notif({
-              title: "SUCCESS!",
-              message: apiResponse.data.message,
-              dangerouslyUseHTMLString: true,
-              type: apiResponse.data.message_type,
-              duration: 3000,
-              onClose: () => { this.$emit('setActivePage', 'whitelist', this.circleInfo.circle_id, true) }
-            })
-          } else {
-            if(apiResponse.data.status_code == "401") {
-              this.setConnectionStore({ is_connected: false });
-              this.setProfileStore(null);
-              this.$router.go();
-            } else {
-              this.notif({
-                title: "OOPS!",
-                message: apiResponse.data.message,
-                dangerouslyUseHTMLString: true,
-                type: apiResponse.data.message_type,
-                duration: 3000,
-              })
-            }
-          }
-        }
+      const contract = await abi.setAbi(
+        "0x", // deploy new contract
+        "DeployCustomContract"
+      );
+      return await contract.interaction('deployTLCC', deployArgs);
+    },
+    async deploySDCircle() {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        return {done: true};
+      } else {
+        return {done: false};
       }
     },
     async patienceBenefitCalc() {
