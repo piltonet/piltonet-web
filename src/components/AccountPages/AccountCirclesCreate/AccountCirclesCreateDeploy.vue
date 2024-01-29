@@ -298,8 +298,50 @@
             </div>
           </template>
           
-          <!-- Review & Deploy -->
+          <!-- Circle Mode -->
           <template v-if="tabIndex == 6">
+            <label for="circleType" class="input-label mt-2">
+              Circle Mode
+            </label>
+            <button
+              class="account-circles-deploy-button mt-2"
+              :class="circleInfo.circle_mode == 'fully_dec' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_mode = 'fully_dec'; circleInfo.circle_service_charge = circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;"
+            >
+              <p>Fully Decentralized</p>
+            </button>
+            <button
+              class="account-circles-deploy-button"
+              :class="circleInfo.circle_mode == 'semi_dec' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
+              @click="circleInfo.circle_mode = 'semi_dec'; circleInfo.circle_service_charge = (circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] * 1.5) / 100;"
+            >
+              <p>Semi Decentralized</p>
+            </button>
+            <p id="circleModeHelp" class="help-text pt-2 mb-3">
+              In a fully decentralized circle, only the circle creator is allowed to perform administrative transactions.<br/>
+              In a semi-decentralized circle, you authorize Piltonet to handle certain administrative tasks to facilitate circle deployment and management.
+            </p>
+          </template>
+
+          <!-- Service Charge -->
+          <template v-if="tabIndex == 6">
+            <label for="circleServiceCharge" class="input-label mt-2">
+              Service Charge
+            </label>
+            <div class="account-circles-deploy-button selected locked mt-2">
+              <p>
+                {{ circleInfo.circle_service_charge / 100 }}
+                <span>{{ `(${circleInfo.circle_service_charge}%)` }}</span>
+                <i class="fa fa-lock ps-2" aria-hidden="true"></i>
+              </p>
+            </div>
+            <p id="circleServiceChargeHelp" class="help-text pt-2 mb-3">
+              Service charge rate that is deducted from the loan amount.
+            </p>
+          </template>
+
+          <!-- Review & Deploy -->
+          <template v-if="tabIndex == lastTabIndex">
             <div class="row">
               <div class="col-12 col-md-6">
                 <!-- Blockchain -->
@@ -406,9 +448,6 @@
                     <span class="main-text tiny">{{ `(${circleInfo.circle_service_charge}%)` }}</span>
                     <i class="fa fa-lock info-text darkblue-text ps-2" aria-hidden="true"></i>
                   </p>
-                  <p class="note-text tiny">
-                    Service charge rate that is deducted from the loan amount.
-                  </p>
                 </div>
               </div>
             </div>
@@ -462,9 +501,9 @@
         <div class="d-flex flex-row justify-content-center align-items-center">
           <div
             type="button"
-            @click="tabIndex = 1"
+            @click="tabIndex = lastTabIndex - 1"
             class="main-btn blue-bg middle-text me-2"
-            :class="tabIndex == 6 ? '' : 'd-none'"
+            :class="tabIndex == lastTabIndex ? '' : 'd-none'"
           >
             <span class="m-0 p-0">Back to Edit</span>
           </div>
@@ -472,23 +511,23 @@
             type="button"
             @click="tabIndex = tabIndex > 1 ? tabIndex - 1 : 1"
             class="main-btn blue-bg middle-text me-2"
-            :class="tabIndex == 1 || tabIndex == 6 ? 'd-none' : ''"
+            :class="tabIndex == 1 || tabIndex == lastTabIndex ? 'd-none' : ''"
           >
             <span class="m-0 p-0">Previous</span>
           </div>
           <div
             type="button"
-            @click="tabIndex = tabIndex < 5 ? tabIndex + 1 : 5"
+            @click="tabIndex = tabIndex < lastTabIndex - 1 ? tabIndex + 1 : lastTabIndex - 1"
             class="main-btn blue-bg middle-text"
-            :class="tabIndex < 5 ? '' : 'd-none'"
+            :class="tabIndex < lastTabIndex - 1 ? '' : 'd-none'"
           >
             <span class="m-0 p-0">Next</span>
           </div>
           <div
             type="button"
-            @click="checkForm() ? tabIndex = 6 : ''"
+            @click="checkForm() ? tabIndex = lastTabIndex : ''"
             class="main-btn darkblue-bg"
-            :class="tabIndex == 5 ? 'd-md-flex' : 'd-none'"
+            :class="tabIndex == lastTabIndex - 1 ? 'd-md-flex' : 'd-none'"
           >
             <span class="m-0 p-0">Review & Deploy</span>
           </div>
@@ -496,7 +535,7 @@
             type="button"
             @click="deployCircle"
             class="main-btn green-bg"
-            :class="tabIndex == 6 ? '' : 'd-none'"
+            :class="tabIndex == lastTabIndex ? '' : 'd-none'"
           >
             <span class="m-0 p-0">DEPLOY CIRCLE</span>
           </div>
@@ -536,6 +575,7 @@ export default {
   data() {
     return {
       tabIndex: 1,
+      lastTabIndex: 7,
       circleInfo: null,
       paymentToken: null,
       tokenSymbol: '',
@@ -584,11 +624,12 @@ export default {
       if(this.circleInfoProps) {
         this.circleInfo = this.circleInfoProps;
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfo.circle_id}`;
-        this.tabIndex = 6;
+        this.tabIndex = this.lastTabIndex;
       } else {
         // New Circle
         this.circleInfo = {
           circle_id: null,
+          circle_mode: 'fully_dec',
           circle_creator_tba: this.accountProfile.account_tba_address,
           circle_chain_id: this.defaultchain.id,
           circle_payment_token: this.defaultchain.CUSD.address,

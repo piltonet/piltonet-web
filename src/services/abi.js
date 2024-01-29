@@ -3,12 +3,13 @@
 const { ethers } = require('ethers');
 const { SDK } = require('@/sdk');
 const { ElLoading } = require('element-plus');
-const { notification } = require("@/plugins");
+const { notification } = require('@/plugins');
 
 class abi {
-	constructor(contractAddress, contractName, signer) {
+	constructor(contractAddress, contractName, connectedAccount, signer) {
 		this.contractAddress = contractAddress;
 		this.contractName = contractName;
+		this.connectedAccount = connectedAccount;
 		this.contract = new SDK[contractName](contractAddress, signer);
 	}
 	
@@ -19,40 +20,7 @@ class abi {
 		const wallet = wallets[connectedAccount.connected_wallet];
 		const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
     const signer = await provider.getSigner();
-		return new abi(contractAddress, contractName, signer);
-	}
-
-	// PERSONAL SIGN
-	static async personalSign(challenge, address, deniedMessage) {
-		// let loading = this.showLoading();
-		let personalSign = null;
-		try {
-			const store = require('@/store').default;
-			const wallets = require('@/wallets').default;
-			const connectedAccount = store.getters.getConnectionStore;
-			const wallet = wallets[connectedAccount.connected_wallet];
-			const provider = new ethers.BrowserProvider(wallet.getProvider() || window.ethereum);
-			personalSign = await provider.send("personal_sign", [challenge, address]);
-		} catch (err) {
-			console.log(err);
-			if(err.code == 4001 && deniedMessage) {
-				notification({
-					// title: "OOPS!",
-					message: deniedMessage,
-					type: "error",
-					duration: 3000,
-				});
-			} else if(err.code != 4001) {
-				notification({
-					title: "OOPS!",
-					message: "Something went wrong, you might need to disconnect and reconnect your wallet.",
-					type: "error",
-					duration: 3000,
-				});
-			}
-		}
-		// loading.close();
-		return personalSign;
+		return new abi(contractAddress, contractName, connectedAccount, signer);
 	}
 
 	async interaction(_function, _params, _loading = true, _errNotif = true) {
@@ -73,25 +41,44 @@ class abi {
 			
 			resp.done = true;
 			resp.message_type = 'success';
-			resp.message = "Show Log Message.";
+			resp.message = 'Show Log Message.';
 			resp.result = transaction;
 		} catch(err) {
-			console.log(err);
 			resp.done = false;
 			resp.message_type = 'error';
-			resp.message = "Make sure the address and network are correct and you have enough funds for the transaction.";
-			if(_errNotif) {
-				notification({
-					title: "OOPS!",
-					message: resp.message,
-					dangerouslyUseHTMLString: true,
-					type: resp.message_type,
-					duration: 3000,
-				});
-			}
+			resp.message = this.handleErrors(err, _errNotif);
 		}
 		if(_loading) loading.close();
 		return resp;
+	}
+
+	handleErrors(err, notif = true) {
+		let errTitle = 'Error';
+		let errMessage = 'Make sure the address and network are correct and you have enough funds for the transaction.';
+		let errType = 'error';
+
+		if(this.connectedAccount.connected_wallet == 'metamask') {
+			const error = JSON.parse(JSON.stringify(err));
+			errMessage = error?.shortMessage || errMessage;
+			if(error?.code && error.code == 'ACTION_REJECTED') {
+				errTitle = null;
+				errType = 'warning';
+			} else {
+				console.log(errMessage || err);
+			}
+		} else {
+			console.log(err);
+		}
+
+		if(notif) {
+			notification({
+				title: errTitle,
+				message: errMessage,
+				dangerouslyUseHTMLString: true,
+				type: errType,
+				duration: 3000,
+			});
+		}
 	}
 
 	showLoading() {
@@ -104,7 +91,6 @@ class abi {
 		});
 		return loading;
 	}
-
 }
 
 module.exports = abi
