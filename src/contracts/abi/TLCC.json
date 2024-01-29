@@ -411,12 +411,38 @@
   },
   {
     "inputs": [],
+    "name": "circleAdmin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "circleName",
     "outputs": [
       {
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "circleSize",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -581,6 +607,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "isFullyDecCircle",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint8",
@@ -714,6 +753,19 @@
   },
   {
     "inputs": [],
+    "name": "roundDays",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "roundPayments",
     "outputs": [
       {
@@ -792,24 +844,34 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "round_payments",
-        "type": "string"
-      },
-      {
         "internalType": "uint8",
         "name": "circle_size",
         "type": "uint8"
       },
       {
-        "internalType": "uint8",
-        "name": "extra_members",
+        "internalType": "uint16",
+        "name": "round_days",
+        "type": "uint16"
+      },
+      {
+        "internalType": "string",
+        "name": "round_payments",
+        "type": "string"
+      },
+      {
+        "internalType": "enum TLCC.WinnersOrder",
+        "name": "winners_order",
         "type": "uint8"
       },
       {
-        "internalType": "uint8",
-        "name": "round_winners",
-        "type": "uint8"
+        "internalType": "uint16",
+        "name": "patience_benefit_x10000",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "creator_earnings_x10000",
+        "type": "uint16"
       }
     ],
     "name": "updateCircle",
@@ -825,6 +887,19 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "winnersOrder",
+    "outputs": [
+      {
+        "internalType": "enum TLCC.WinnersOrder",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
