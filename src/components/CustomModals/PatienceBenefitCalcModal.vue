@@ -8,17 +8,17 @@
   >
     <div class="d-flex flex-column justify-content-center align-items-start p-2">
       <div class="row w-100">
-        <div class="col-12 col-md-6 my-2">
+        <div class="col-12 col-md-6">
           <!-- Circle Size -->
           <div class="d-flex flex-column justify-content-center align-items-start">
             <label for="circleSize" class="input-label">
               Circle Size
-              <span class="input-label-small">(Member Counts)</span>
+              <span class="input-label-small">(people)</span>
             </label>
             <div class="d-flex flex-column justify-content-center align-items-start">
               <input
                 ref="circleSize"
-                id="circle_size"
+                id="circleSize"
                 type="number"
                 :placeholder="`${minMembers} to ${maxMembers} people`"
                 class="small-input mb-0"
@@ -29,48 +29,68 @@
             </div>
           </div>
           
-          <!-- Round Payments / Loan Amount -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-4">
-            <label for="circleSize" class="input-label">
+          <!-- Round Duration -->
+          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+            <label for="roundPeriod" class="input-label">
+              Round Duration
+              <span class="input-label-small">(in days)</span>
+            </label>
+            <div class="d-flex flex-column justify-content-center align-items-start">
+              <input
+                ref="roundPeriod"
+                id="roundPeriod"
+                type="number"
+                :placeholder="`e.g. 5 days`"
+                class="small-input mb-0"
+                :class="hasError['roundPeriod'] ? 'has-error' : ''"
+                :disabled="calculate"
+                v-model="roundPeriod"
+              />
+            </div>
+          </div>
+
+          <!-- Round Payments -->
+          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+            <label for="roundPayments" class="input-label">
               <div class="d-flex flex-row justify-content-center align-items-center">
                 {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payments' : 'Loan Amount' }}
                 <span class="input-label-small ps-1">(</span>
                 <SvgPaymentToken
                   :chainId="circleInfo.circle_chain_id"
                   :paymentToken="circleInfo.circle_payment_token"
-                  :height="12"
+                  :height="10"
                   :tooltip="true"
-                  customClass="input-label-small m-0 pe-1"
+                  customClass="input-label-small me-1"
                 />
-                <span class="input-label-small">{{ `/ ${roundPeriod})` }}</span>
+                <span class="input-label-small">{{ `${tokenSymbol})` }}</span>
               </div>
             </label>
             <div class="d-flex flex-column justify-content-center align-items-start">
               <input
-                ref="fixedAmount"
-                id="fixed_amount"
+                ref="roundPayments"
+                id="roundPayments"
                 type="number"
                 :placeholder="circleInfo.circle_payment_type == 'fixed_loan' ? 
                   `${minRoundPayment * (parseInt(circleSize) || minMembers)} to ${maxRoundPayment * (parseInt(circleSize) || minMembers)} ${tokenSymbol}` :
                   `${minRoundPayment} to ${maxRoundPayment} ${tokenSymbol}`"
                 class="small-input mb-0"
-                :class="hasError['fixedAmount'] ? 'has-error' : ''"
+                :class="hasError['roundPayments'] ? 'has-error' : ''"
                 :disabled="calculate"
-                v-model="fixedAmount"
+                v-model="roundPayments"
               />
             </div>
           </div>
           
           <!-- Patience Benefit -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-4">
-            <label for="circleSize" class="input-label">
+          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+            <label for="patienceBenefit" class="input-label">
               Patience Benefit
               <span class="input-label-small">(%)</span>
             </label>
             <div class="d-flex flex-column justify-content-center align-items-start">
               <input
                 ref="patienceBenefit"
-                id="patience_benefit"
+                id="patienceBenefit"
                 type="number"
                 :placeholder="`up to ${maxPatienceBenefit}%`"
                 class="small-input mb-0"
@@ -93,14 +113,14 @@
                 {{ `Total of all ${roundPeriod} payments made during the circle.` }}
               </span>
               <span v-else class="info-text tiny text-start">
-                {{ `Loan amount awarded to the winner of each ${roundPeriod} round.` }}
+                {{ `Loan amount awarded to the winner of each round.` }}
               </span>
             </div>
             <div v-for="(result, index) in calcResult"
               :key="index"
               class="d-flex flex-row justify-content-center align-items-center w-100"
             >
-              <template v-if="index < 4 || index > calcResult.length - 4">
+              <template v-if="index < 4 || index > calcResult.length - 5">
                 <div class="d-flex flex-row justify-content-center align-items-center row w-100 calc-grid">
                   <div class="col-6 text-start mt-1">
                     <span class="main-text tiny">
@@ -153,7 +173,7 @@ export default {
     return {
       circleInfo: null,
       circleSize: '',
-      fixedAmount: '',
+      roundPayments: '',
       patienceBenefit: '',
       roundPeriod: '',
       paymentToken: null,
@@ -169,7 +189,8 @@ export default {
       openLoadings: [],
       hasError: {
         circleSize: false,
-        fixedAmount: false,
+        roundPeriod: false,
+        roundPayments: false,
         patienceBenefit: false
       }
     };
@@ -184,16 +205,8 @@ export default {
         this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
       }
       this.circleSize = this.circleInfo.circle_size;
-      this.fixedAmount = this.circleInfo.circle_round_payments;
-      if(this.circleInfo.circle_round_days == 7) {
-        this.roundPeriod = 'weekly';
-      } else if(this.circleInfo.circle_round_days == 14) {
-        this.roundPeriod = 'biweekly';
-      } else if(this.circleInfo.circle_round_days == 30) {
-        this.roundPeriod = 'monthly';
-      } else {
-        this.roundPeriod = `${this.circleInfo.circle_round_days} days`;
-      }
+      this.roundPeriod = this.circleInfo.circle_round_days;
+      this.roundPayments = this.circleInfo.circle_round_payments;
 
       this.paymentToken = circleConst['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
       this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
@@ -209,9 +222,9 @@ export default {
     async calcRounds() {
       if(this.checkForm()) {
         if(this.circleInfo.circle_payment_type == 'fixed_pay') {
-          this.calcResult = this.utils.calcLoanAmounts(this.circleSize, this.circleInfo.circle_round_days, this.fixedAmount, this.patienceBenefit);
+          this.calcResult = this.utils.calcLoanAmounts(this.circleSize, this.roundPeriod, this.roundPayments, this.patienceBenefit);
         } else {
-          this.calcResult = this.utils.calcTotalPayments(this.circleSize, this.circleInfo.circle_round_days, this.fixedAmount, this.patienceBenefit);
+          this.calcResult = this.utils.calcTotalPayments(this.circleSize, this.roundPeriod, this.roundPayments, this.patienceBenefit);
         }
         this.calculate = true;
       }
@@ -230,7 +243,7 @@ export default {
             })
             throw false;
           }
-          if(element == 'circleSize') {
+          if(element == 'circle_size') {
             this[element] = parseInt(this[element]);
             if(this[element] < this.minMembers || this[element] > this.maxMembers) {
               if(this.$refs[element]) this.$refs[element].focus();
@@ -245,7 +258,22 @@ export default {
               throw false;
             }
           }
-          if(element == 'fixedAmount') {
+          if(element == 'roundPeriod') {
+            this[element] = parseInt(this[element]);
+            if(this[element] < 1) {
+              if(this.$refs[element]) this.$refs[element].focus();
+              this.hasError[element] = true;
+              this.notif({
+                message: `The round duration should be more than zero.`,
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                duration: 5000,
+                onClose: () => { this.hasError[element] = false }
+              })
+              throw false;
+            }
+          }
+          if(element == 'roundPayments') {
             this[element] = parseInt(this[element] * 100) / 100;
             if(this.circleInfo.circle_payment_type == 'fixed_pay') {
               if(this[element] < this.minRoundPayment || this[element] > this.maxRoundPayment) {
@@ -298,8 +326,9 @@ export default {
       }
     },
     clearModal() {
-      this.circleSize = '';
-      this.fixedAmount = '';
+      this.circleSize = this.circleInfo?.circle_size || '';
+      this.roundPeriod = this.circleInfo?.circle_round_days || '';
+      this.roundPayments = this.circleInfo?.circle_round_payments || '';
       this.patienceBenefit = '';
       this.calculate = false;
     },
