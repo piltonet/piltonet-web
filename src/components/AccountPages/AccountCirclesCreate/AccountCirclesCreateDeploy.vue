@@ -306,14 +306,14 @@
             <button
               class="account-circles-deploy-button mt-2"
               :class="circleInfo.circle_mode == 'fully_dec' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_mode = 'fully_dec'; circleInfo.circle_service_charge = circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;"
+              @click="circleInfo.circle_mode = 'fully_dec'; circleInfo.circle_service_charge = circleConstProps['CIRCLES_FD_SERVICE_CHARGE_X10000'] / 100;"
             >
               <p>Fully Decentralized</p>
             </button>
             <button
               class="account-circles-deploy-button"
               :class="circleInfo.circle_mode == 'semi_dec' ? (circleInfo.circle_id ? 'selected locked' : 'selected') : (circleInfo.circle_id ? 'd-none' : '')"
-              @click="circleInfo.circle_mode = 'semi_dec'; circleInfo.circle_service_charge = (circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] * 1.5) / 100;"
+              @click="circleInfo.circle_mode = 'semi_dec'; circleInfo.circle_service_charge = circleConstProps['CIRCLES_SD_SERVICE_CHARGE_X10000'] / 100;"
             >
               <p>Semi Decentralized</p>
             </button>
@@ -657,7 +657,7 @@ export default {
         this.maxMembers = this.circleConstProps['CIRCLES_MAX_MEMBERS'];
         this.maxPatienceBenefit = this.circleConstProps['CIRCLES_MAX_PATIENCE_BENEFIT_X10000'] / 100;
         this.maxCreatorEarnings = this.circleConstProps['CIRCLES_MAX_CREATOR_EARNINGS_X10000'] / 100;
-        this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_SERVICE_CHARGE_X10000'] / 100;
+        this.circleInfo['circle_service_charge'] = this.circleConstProps['CIRCLES_FD_SERVICE_CHARGE_X10000'] / 100;
         this.circleInfo['circle_service_address'] = this.circleConstProps['PILTONET_SERVICE_ADMIN'];
       }
     },
