@@ -76,7 +76,7 @@
         <div v-if="!circleInfoProps.whitelists || circleInfoProps.whitelists.length < minMembers">
           <p class="help-text mt-4">
             <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
-            {{ `You need to add at least ${minMembers - circleInfoProps.whitelists.length} more contacts to the whitelist before launch the circle.` }}
+            {{ `You need to add at least ${minMembers - circleInfoProps.whitelists.length} more contact(s) to the whitelist before launch the circle.` }}
           </p>
         </div>
         <div v-else-if="circleInfoProps.whitelists.length <= circleInfoProps.circle_size">
