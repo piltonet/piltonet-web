@@ -343,8 +343,8 @@ export default {
       return await contract.interaction("executeFunction", [
         "TLCC", // contract name
         "addToWhitelist", // function name
-        ["function addToWhitelist(address[] memory accounts)"], // function ABI
-        [this.contactAdrs], // function args
+        ["function addToWhitelist(address moderator, address[] memory accounts)"], // function ABI
+        [this.accountProfile.account_tba_address, this.contactAdrs], // function args
         0, // value
         this.circleInfoProps.circle_id // Contract Address
       ]);
