@@ -11,145 +11,51 @@
       </button>
     </div>
     <div class="main-section row">
-      <h3>CIRCLE REVIEW</h3>
+      <h3>CIRCLE OVERVIEW</h3>
       <!-- Circle Name -->
       <div class="d-flex flex-row justify-content-start align-items-center mb-2">
         <span class="top-text">
           {{ circleInfoProps.circle_name }}
         </span>
       </div>
-      <!-- Contract Address -->
-      <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-        <span class="note-text">Contract Address:</span>
-        <span class="top-text small ps-2">
-          {{ utils.truncate(circleInfoProps.circle_id, 17) }}
-        </span>
-        <div class="d-flex flex-row justify-content-start align-items-center h-100 third-gray-btn ps-1">
-          <!-- Copy Icon -->
-          <el-tooltip
-            :content="this.copyAddressTooltip"
-            placement="top"
-            :hide-after="0"
-          >
-            <a
-              id="copy-contract-address"
-              role="button"
-              @click="copyAddress('copy-contract-address', circleInfoProps.circle_id)"
-              class="ms-2"
-            >
-              <i class="far fa-copy main-text small" aria-hidden="true"></i>
-            </a>
-          </el-tooltip>
-          <!-- Explore Icon -->
-          <el-tooltip
-            content="View in Explorer"
-            placement="top"
-            :hide-after="0"
-          >
-            <a
-              v-if="explorerLink"
-              :href="explorerLink"
-              target="_blank"
-              class="ms-2"
-            >
-              <i class="fa fa-external-link main-text small" aria-hidden="true"></i>
-            </a>
-          </el-tooltip>
-        </div>
-      </div>
+
       <div class="col-12 col-lg-6">
-        <!-- Round Period -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">
-            Round Period:
-          </span>
-          <span v-if="circleInfoProps.circle_round_days == 7" class="top-text small ps-2">
-            Weekly<span class="main-text small ps-2">(7 days)</span>
-          </span>
-          <span v-if="circleInfoProps.circle_round_days == 14" class="top-text small ps-2">
-            Biweekly<span class="main-text small ps-2">(14 days)</span>
-          </span>
-          <span v-else-if="circleInfoProps.circle_round_days == 30" class="top-text small ps-2">
-            Monthly<span class="main-text small ps-2">(30 days)</span>
-          </span>
-          <span v-else class="top-text small ps-2">
-            {{ circleInfoProps.circle_round_days }} days
-          </span>
-        </div>
-        <!-- Payment Type -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Payment Type:</span>
-          <span class="top-text small ps-2">
-            {{ circleInfoProps.circle_payment_type == 'fixed_pay' ? 'Fixed Payments' : 
-              circleInfoProps.circle_payment_type == 'fixed_loan' ? 'Fixed Loan' : ''
-            }}
-          </span>
-        </div>
         <!-- Circle Size -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
           <span class="note-text">Circle Size:</span>
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_size }}
           </span>
-          <span class="main-text small ps-2">people</span>
+          <span class="main-text small ps-1">people</span>
         </div>
-        <!-- Round Payments & Loan Amount - fixed_pay -->
-        <div v-if="circleInfoProps.circle_payment_type == 'fixed_pay'">
-          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Round Payments:</span>
-            <span class="top-text small ps-2">
-              {{ circleInfoProps.circle_round_payments }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-            <!-- <span class="main-text small ps-2">(fixed)</span> -->
-          </div>
-          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Average Gross Loan:</span>
-            <span class="top-text small ps-2">
-              {{ circleInfoProps.circle_round_payments * circleInfoProps.circle_size }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-          </div>
+        
+        <!-- Round Payments -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
+          <span class="note-text">Round Payments:</span>
+          <span class="top-text small ps-2">
+            {{ utils.formatPrice(circleInfoProps.circle_round_payments) }}
+          </span>
+          <SvgPaymentToken
+            :chainId="circleInfoProps.circle_chain_id"
+            :paymentToken="circleInfoProps.circle_payment_token"
+            customClass="ms-1"
+          />
         </div>
-        <!-- Round Payments & Loan Amount - fixed_loan -->
-        <div v-if="circleInfoProps.circle_payment_type == 'fixed_loan'">
-          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Round Payments:</span>
-            <span class="top-text small ps-2">
-              {{ Math.round(((circleInfoProps.circle_round_payments / circleInfoProps.circle_size) + Number.EPSILON) * 100) / 100 }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-          </div>
-  
-          <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-            <span class="note-text">Gross Loan Amount:</span>
-            <span class="top-text small ps-2">
-              {{ circleInfoProps.circle_round_payments }}
-            </span>
-            <SvgPaymentToken
-              :chainId="circleInfoProps.circle_chain_id"
-              :paymentToken="circleInfoProps.circle_payment_token"
-              customClass="ms-1"
-            />
-            <!-- <span class="main-text small ps-2">(fixed)</span> -->
-          </div>
-  
+
+        <!-- Round Period -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
+          <span class="note-text">
+            Round Period:
+          </span>
+          <span class="top-text small ps-2">
+            {{ circleInfoProps.circle_round_days }}
+          </span>
+          <span class="main-text small ps-1">days</span>
         </div>
+        
         <!-- Start Date -->
         <div v-if="circleInfoProps.circle_start_date"
-          class="d-flex flex-row justify-content-start align-items-center mt-4"
+          class="d-flex flex-row justify-content-start align-items-center mt-3"
         >
           <span class="note-text">Start Date:</span>
           <span class="top-text small ps-2">
@@ -159,7 +65,7 @@
       </div>
       <div class="col-12 col-lg-6">
         <!-- Winner Selection Method -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
           <span class="note-text">Winner Selection Method:</span>
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_winners_order == 'random' ? 'Random' : 
@@ -168,35 +74,25 @@
             }}
           </span>
         </div>
-        <!-- Round Winners Quantity -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Round Winners Quantity:</span>
+        
+        <!-- Loan Amount -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
+          <span class="note-text">Average Winner Loan:</span>
           <span class="top-text small ps-2">
-            {{ circleInfoProps.circle_winners_number }}
+            {{ `~${utils.formatPrice(avgLoan)}` }}
           </span>
-          <span class="main-text small ps-2">winner(s)</span>
+          <SvgPaymentToken
+            :chainId="circleInfoProps.circle_chain_id"
+            :paymentToken="circleInfoProps.circle_payment_token"
+            customClass="ms-1"
+          />
         </div>
+
         <!-- Patience Benefit -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
           <span class="note-text">Patience Benefit:</span>
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_patience_benefit }}
-          </span>
-          <span class="main-text small ps-1">%</span>
-        </div>
-        <!-- Creator Earnings -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Creator Earnings:</span>
-          <span class="top-text small ps-2">
-            {{ circleInfoProps.circle_creator_earnings }}
-          </span>
-          <span class="main-text small ps-1">%</span>
-        </div>
-        <!-- Service Charge -->
-        <div class="d-flex flex-row justify-content-start align-items-center mt-4">
-          <span class="note-text">Service Charge:</span>
-          <span class="top-text small ps-2">
-            {{ circleInfoProps.circle_service_charge }}
           </span>
           <span class="main-text small ps-1">%</span>
         </div>
@@ -211,7 +107,7 @@
       <!-- Circle Start Date -->
       <div>
         <label for="circleStartDate" class="input-label">Start Date</label>
-        <button class="account-circles-setup-button date-button" @click="showCalendarModal = true">
+        <button class="account-circles-setup-button date-button" @click="selectedDate = startDate || minStartDate; showCalendarModal = true">
           <p>{{ utils.formatDate(startDate, 'DD Month YYYY') || 'Not Set' }}</p>
         </button>
         <p id="circleStartDateHelp" class="help-text mt-1">
@@ -245,11 +141,11 @@
     <!-- Calendar Modal -->
     <div v-if="showCalendarModal" class="col-12">
       <el-dialog title="" v-model="showCalendarModal" class="modal-body calendar-modal text-center">
-        <v-date-picker v-model="startDate" :min-date='minStartDate' />
+        <v-date-picker v-model="selectedDate" :min-date='minStartDate' />
         <template #footer>
           <span class="dialog-footer">
             <el-button
-              @click="showCalendarModal = false"
+              @click="startDate = selectedDate; showCalendarModal = false"
               class="calendar-button mt-4 px-5"
             >
               Ok
@@ -287,9 +183,11 @@ export default {
   },
   data() {
     return {
-      showCalendarModal: false,
+      avgLoan: 0,
       startDate: null,
       minStartDate: '',
+      selectedDate: '',
+      showCalendarModal: false,
       copyAddressTooltip: "Copy Address",
       explorerLink: null
     }
@@ -310,11 +208,14 @@ export default {
   methods: {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     async setup() {
+      const totalFee = (parseFloat(this.circleInfoProps.circle_creator_earnings) + parseFloat(this.circleInfoProps.circle_service_charge)) / 100;
+      this.avgLoan = (parseFloat(this.circleInfoProps.circle_round_payments) * parseFloat(this.circleInfoProps.circle_size)) * (1 - totalFee);
       this.startDate = this.circleInfoProps.circle_start_date;
       const now = new Date();
       this.minStartDate = now;
       // this.minStartDate.setDate(now.getDate() + (now.getHours() < 12 ? 1 : 2 ))
-      this.minStartDate.setDate(now.getDate() + 2)
+      this.minStartDate.setDate(now.getDate() + 2);
+      this.selectedDate = this.startDate || this.minStartDate;
       if(this.circleInfoProps) {
         this.explorerLink = `${this.defaultchain.blockExplorerUrl}/address/${this.circleInfoProps.circle_id}`;
       }
@@ -338,20 +239,12 @@ export default {
     },
     async launchCircle() {
       try {
-        const contract = await abi.setAbi(
-          this.accountProfile.account_tba_address, // sender tba address
-          "ERC6551Account"
-        );
-
-        // execute TLCC launchCircle
-        let abiResponse = await contract.interaction("executeFunction", [
-          "TLCC", // contract name
-          "launchCircle", // function name
-          ["function launchCircle(uint256 start_date)"], // function ABI
-          [this.startDate.getTime() / 1000], // function args
-          0, // value
-          this.circleInfoProps.circle_id // Contract Address
-        ]);
+        let abiResponse = null;
+        if(this.circleInfoProps.circle_mode == 'fully_dec') {
+          abiResponse = await this.launchFDCircle();
+        } else {
+          abiResponse = await this.launchSDCircle();
+        }
         if(abiResponse.done) {
           let apiResponse = await api.post_account_circles_creator_launch(
             {
@@ -393,6 +286,30 @@ export default {
           duration: 3000,
         })
         console.log(err);
+      }
+    },
+    async launchFDCircle() {
+      const contract = await abi.setAbi(
+        this.accountProfile.account_tba_address, // sender tba address
+        "ERC6551Account"
+      );
+
+      // execute TLCC launchCircle
+      return await contract.interaction("executeFunction", [
+        "TLCC", // contract name
+        "launchCircle", // function name
+        ["function launchCircle(uint256 start_date)"], // function ABI
+        [this.startDate.getTime() / 1000], // function args
+        0, // value
+        this.circleInfoProps.circle_id // Contract Address
+      ]);
+    },
+    async launchSDCircle() {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        return {done: true};
+      } else {
+        return {done: false};
       }
     },
     async copyAddress(elementId, copyContent) {
