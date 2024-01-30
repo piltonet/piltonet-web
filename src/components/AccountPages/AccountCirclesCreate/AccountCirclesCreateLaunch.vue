@@ -336,7 +336,6 @@ export default {
         })
       }
     },
-
     async launchCircle() {
       try {
         const contract = await abi.setAbi(
