@@ -373,6 +373,11 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "moderator",
+        "type": "address"
+      },
+      {
         "internalType": "address[]",
         "name": "accounts",
         "type": "address[]"
@@ -714,11 +719,6 @@
       {
         "internalType": "bool",
         "name": "debtor",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isModerator",
         "type": "bool"
       }
     ],
