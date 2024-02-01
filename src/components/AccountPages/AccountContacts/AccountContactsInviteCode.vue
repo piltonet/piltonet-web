@@ -122,7 +122,7 @@
         <div class="row">
           <div
             type="button"
-            @click="acceptInviteCodeBySerice"
+            @click="acceptInviteCode"
             class="front-btn green-btn ms-3"
           >
             <span class="m-0 p-0">Yes, sure!</span>

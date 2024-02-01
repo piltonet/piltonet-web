@@ -56,7 +56,7 @@
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div
               type="button"
-              @click="acceptWaitingContactByService(accountContact.contact_id, accountContact.account_tba_address)"
+              @click="acceptWaitingContact(accountContact.contact_id, accountContact.account_tba_address)"
               class="front-btn green-btn ms-0 ms-md-3"
             >
               <span class="m-0 p-0">Mint Now</span>
