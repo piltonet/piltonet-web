@@ -171,7 +171,7 @@ export default {
             // execute
             abiResponse = await contract.interaction("transferVIC", [
               this.withdrawalAddress, // address
-              this.withdrawalAmount // value
+              this.withdrawalAmount // amount
             ]);
           } else {
             // execute VRC25PCUSD transfer
@@ -185,7 +185,7 @@ export default {
             this.txHash = abiResponse.result.hash;
             this.$refs.message_modal.setMessage({
               title: "Withdrawal Successful",
-              message: `Your withdrawal of ${this.withdrawalAmount} ${this.withdrawalToken} has been processed successfully.`,
+              message: `Your withdrawal of "${this.withdrawalAmount} ${this.withdrawalToken}" has been processed successfully.`,
               okBtn: 'Explore TX',
               cancelBtn: "Close",
               customStyle: 'width: 430px;'

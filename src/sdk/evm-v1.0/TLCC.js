@@ -58,28 +58,20 @@ class SDK {
 			winners_order,
 			winners_number,
 			patience_benefit_x10000
-		, {
-			gasLimit: 6000000
-		})
+		)
 		return await tx.wait()
 	}
 
 	async launchCircle(start_date) {
-		return await this.contract.launchCircle(start_date, {
-			gasLimit: 6000000
-		})
+		return await this.contract.launchCircle(start_date)
 	}
 	
 	async addToWhitelist(invited_adrs) {
-		return await this.contract.addInvites(JSON.parse(invited_adrs), {
-			gasLimit: 6000000
-		})
+		return await this.contract.addInvites(JSON.parse(invited_adrs))
 	}
 	
 	async removeFromWhitelist(invited_adrs) {
-		return await this.contract.removeFromWhitelist(JSON.parse(invited_adrs, {
-			gasLimit: 6000000
-		}))
+		return await this.contract.removeFromWhitelist(JSON.parse(invited_adrs))
 	}
 }
 

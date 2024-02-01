@@ -20,16 +20,12 @@ class SDK {
 	}
 	
 	async approve(spender, amount) {
-		const tx = await this.contract.approve(spender, amount, {
-			gasLimit: 4000000
-		})
+		const tx = await this.contract.approve(spender, amount)
 		return await tx.wait()
 	}
 	
 	async transfer(recipient, amount) {
-		const tx = await this.contract.transfer(recipient, amount, {
-			gasLimit: 4000000
-		})
+		const tx = await this.contract.transfer(recipient, amount)
 		return await tx.wait()
 	}
 }

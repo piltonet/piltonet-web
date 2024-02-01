@@ -25,23 +25,21 @@ class SDK {
 	) {
 		const _to = ethers.getAddress(to)
 		const _value = ethers.parseEther(value.toString())
-		const tx = await this.contract.execute(_to, _value, data, operation, {
-			gasLimit: 300000
-		})
+		const tx = await this.contract.execute(_to, _value, data, operation)
 		return await tx.wait()
 	}
 	
 	// transfer VIC
 	async transferVIC(
 		address,
-		value
+		amount
 	) {
-		const to = ethers.getAddress(address)
-		// const value = ethers.parseEther(amount.toString())
-		const tx = await this.contract.execute(to, value, "0x", 0, {
-			gasLimit: 300000
-		})
-		return await tx.wait()
+		return await this.execute(
+			address, // to
+			amount, // value
+			"0x", // data
+			0 // operation
+		)
 	}
 
 	// transfer CUSD
@@ -51,7 +49,7 @@ class SDK {
 	) {
 		const contractName = "VRC25PCUSD"
 		const functionName = "transfer"
-		const functionAbi = "function transfer(address recipient, uint256 amount)"
+		const functionAbi = ["function transfer(address recipient, uint256 amount)"]
 		const functionArgs = [ethers.getAddress(address), ethers.toBigInt(parseFloat(amount) * 1e6)]
 		let iface = new ethers.Interface(functionAbi)
 		let data = iface.encodeFunctionData(functionName, functionArgs)
