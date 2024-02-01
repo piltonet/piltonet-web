@@ -17,7 +17,7 @@
   
         <div class="d-flex flex-column justify-content-center align-items-start text-start">
           <div class="d-flex flex-row justify-content-start align-items-start row w-100">
-            <div class="col-6 text-start">
+            <div class="col-8 text-start">
               <div v-if="accountRoleProps == 'joined'" class="trusted-circles-key green-btn pb-2">
                 <!-- <i class="far fa-calendar" aria-hidden="true"></i> -->
                 You have joined
@@ -28,7 +28,7 @@
               </div>
               <p class="circle-name">{{ accountCircleProps.circle_name }}</p>
             </div>
-            <div class="col-6 text-end">
+            <div class="col-4 text-end">
               <p class="trusted-circles-info">START DATE</p>
               <p class="top-text-tiny">{{ utils.formatDate(accountCircleProps.circle_start_date, 'DD Month YYYY') || 'Open' }}</p>
             </div>

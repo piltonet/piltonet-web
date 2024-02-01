@@ -26,7 +26,7 @@
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_size }}
           </span>
-          <span class="main-text small ps-1">people</span>
+          <span class="top-text small ps-1">people</span>
         </div>
         
         <!-- Round Payments -->
@@ -50,20 +50,9 @@
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_round_days }}
           </span>
-          <span class="main-text small ps-1">days</span>
+          <span class="top-text small ps-1">days</span>
         </div>
         
-        <!-- Start Date -->
-        <div v-if="circleInfoProps.circle_start_date"
-          class="d-flex flex-row justify-content-start align-items-center mt-3"
-        >
-          <span class="note-text">Start Date:</span>
-          <span class="top-text small ps-2">
-            {{ utils.formatDate(circleInfoProps.circle_start_date, 'DD Month YYYY') }}
-          </span>
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
         <!-- Winner Selection Method -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-3">
           <span class="note-text">Winner Selection Method:</span>
@@ -74,12 +63,14 @@
             }}
           </span>
         </div>
-        
+      </div>
+      <div class="col-12 col-lg-6">
         <!-- Loan Amount -->
         <div class="d-flex flex-row justify-content-start align-items-center mt-3">
-          <span class="note-text">Average Winner Loan:</span>
+          <!-- <span class="note-text">Average Winner Loan:</span> -->
+          <span class="note-text">Gross Loan Amount:</span>
           <span class="top-text small ps-2">
-            {{ `~${utils.formatPrice(avgLoan)}` }}
+            {{ utils.formatPrice(grossLoan) }}
           </span>
           <SvgPaymentToken
             :chainId="circleInfoProps.circle_chain_id"
@@ -94,11 +85,28 @@
           <span class="top-text small ps-2">
             {{ circleInfoProps.circle_patience_benefit }}
           </span>
-          <span class="main-text small ps-1">%</span>
+          <span class="top-text small ps-1">%</span>
         </div>
         
+        <!-- Total Fee -->
+        <div class="d-flex flex-row justify-content-start align-items-center mt-3">
+          <span class="note-text">Total Fee:</span>
+          <span class="top-text small ps-2">
+            {{ utils.formatPrice(totalFee) }}
+          </span>
+          <span class="top-text small ps-1">%</span>
+        </div>
+        
+        <!-- Start Date -->
+        <div v-if="circleInfoProps.circle_start_date"
+          class="d-flex flex-row justify-content-start align-items-center mt-3"
+        >
+          <span class="note-text">Start Date:</span>
+          <span class="top-text small ps-2">
+            {{ utils.formatDate(circleInfoProps.circle_start_date, 'DD Month YYYY') }}
+          </span>
+        </div>
       </div>
-
     </div>
 
     <!-- LAUNCH CIRCLE -->
@@ -183,7 +191,8 @@ export default {
   },
   data() {
     return {
-      avgLoan: 0,
+      totalFee: 0,
+      grossLoan: 0,
       startDate: null,
       minStartDate: '',
       selectedDate: '',
@@ -208,8 +217,9 @@ export default {
   methods: {
     ...mapMutations(['setConnectionStore', 'setProfileStore']),
     async setup() {
-      const totalFee = (parseFloat(this.circleInfoProps.circle_creator_earnings) + parseFloat(this.circleInfoProps.circle_service_charge)) / 100;
-      this.avgLoan = (parseFloat(this.circleInfoProps.circle_round_payments) * parseFloat(this.circleInfoProps.circle_size)) * (1 - totalFee);
+      this.totalFee = parseFloat(this.circleInfoProps.circle_creator_earnings) + parseFloat(this.circleInfoProps.circle_service_charge);
+      this.grossLoan = (parseFloat(this.circleInfoProps.circle_round_payments) * parseFloat(this.circleInfoProps.circle_size));
+      // this.avgLoan = (parseFloat(this.circleInfoProps.circle_round_payments) * parseFloat(this.circleInfoProps.circle_size)) * (1 - (this.totalFee / 100));
       this.startDate = this.circleInfoProps.circle_start_date;
       const now = new Date();
       this.minStartDate = now;
