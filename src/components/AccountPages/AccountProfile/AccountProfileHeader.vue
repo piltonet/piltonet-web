@@ -2,8 +2,8 @@
   <div id="account-profile-header">
     <div class="d-flex flex-row justify-content-center align-items-start row">
       <!-- profile info -->
-      <div class="col-12 col-md-4 mt-5">
-        <div class="d-flex flex-column justify-content-center align-items-start pt-5">
+      <div class="col-12 col-md-5 mt-5">
+        <div class="d-flex flex-column justify-content-center align-items-start pt-5 ps-2">
           <AvatarImage
             :imageSrc="accountProfile?.account_image_url"
             :name="accountProfile?.account_fullname || accountProfile?.account_nickname"
@@ -12,7 +12,7 @@
             :border="accountProfile?.account_image_url ? false : true"
           />
 
-          <div v-if="accountProfile?.account_fullname" class="account-fullname mt-3 ms-2">
+          <div v-if="accountProfile?.account_fullname" class="account-fullname mt-3">
             {{ accountProfile?.account_fullname }}
             <el-tooltip
               content="Edit Profile"
@@ -24,7 +24,7 @@
               </a>
             </el-tooltip> 
           </div>
-          <div v-else class="mt-3 mb-1 ms-2">
+          <div v-else class="mt-3 mb-1">
             <div
               type="button"
               @click="$router.push('/account/settings?active_page=profile')"
@@ -34,10 +34,10 @@
             </div>
           </div>
 
-          <span class="account-data mt-2 ms-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
+          <span class="account-data mt-2">{{ accountProfile?.account_nickname ? `@${accountProfile?.account_nickname}` : '' }}</span>
           
           <!-- account social -->
-          <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-3 ms-2">
+          <div class="d-flex flex-row justify-content-center align-items-center gap-2 mt-3">
             <!-- account social twitter -->
             <span v-if="accountProfile?.account_social_twitter">
               <a
@@ -86,7 +86,7 @@
           </div>
 
           <!-- TBA Address -->
-          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3">
             <span class="account-midtext pe-2">Account Address
               <!-- TokenID Info -->
               <el-tooltip
@@ -133,7 +133,7 @@
             </div>
           </div>
           <!-- profile contact -->
-          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3 ms-2">
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-3">
             <span class="account-midtext pe-2">Profile Contract
               <!-- TokenID Info -->
               <el-tooltip
@@ -165,7 +165,7 @@
             </span>
           </div>
           <!-- profile TokenID -->
-          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-1 ms-2">
+          <div class="d-flex flex-row justify-content-start align-items-center w-100 mt-1">
             <span class="account-midtext pe-2">TokenID
               <!-- TokenID Info -->
               <el-tooltip
@@ -188,8 +188,8 @@
       </div>
 
       <!-- Token Bound Account -->
-      <div class="col-12 col-md-8">
-        <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4">
+      <div class="col-12 col-md-7">
+        <div class="d-flex flex-column justify-content-end align-items-start w-100 profile-header-top pt-2 pt-md-4 ps-2">
           
           <!-- To Do -->
           <!-- Badges -->
@@ -226,7 +226,7 @@
             <div class="horizontal-line mt-3"></div>
           </template>
           <template v-else>
-            <div style="height:200px"></div>
+            <div class="badges-div"></div>
           </template>
 
           <!-- Total Assets -->
@@ -252,7 +252,7 @@
             </div>
             
             <div class="d-flex flex-row justify-content-center align-items-center row w-100 mt-2">
-              <div class="col-12 col-md-3 d-flex flex-row justify-content-start align-items-center">
+              <div class="col-12 col-lg-3 d-flex flex-row justify-content-start align-items-center">
                 <span class="account-balance">{{ utils.fixedNumber(cusdBalance, 2, 2) }}</span>
                 <div class="d-flex flex-row justify-content-center align-items-center pt-1 ps-2">
                   <SvgPaymentToken
@@ -265,7 +265,7 @@
                 </div>
               </div>
               <!-- Top-up & Withdraw -->
-              <div class="col-12 col-md-9 d-flex flex-row justify-content-start align-items-center mt-2 mt-md-0">
+              <div class="col-12 col-lg-9 d-flex flex-row justify-content-start align-items-center mt-2 mt-lg-0">
                 <div class="d-flex flex-row justify-content-center align-items-center">
                   <div
                     type="button"
@@ -464,12 +464,12 @@ export default {
           this.totalBalance = (this.vicBalance * this.vic2usdRatio) + this.cusdBalance;
         }
       }).catch((err) => {
-        console.log('getSigner.err', err);
-        clearInterval(this.interval);
+        console.log('wallet.getBalance.err', err);
+        // clearInterval(this.interval);
       });
 
       // get tokenbound-acount cusd balance
-      this.contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false).then((abiResponse) => {
+      this.contract.interaction("balanceOf", [this.accountProfile.account_tba_address], false, false).then((abiResponse) => {
         if(abiResponse.done) {
           if(this.cusdBalance != abiResponse.result) {
             this.cusdBalance = abiResponse.result;
@@ -477,8 +477,8 @@ export default {
           }
         }
       }).catch((err) => {
-        console.log('abi.err', err);
-        clearInterval(this.interval);
+        console.log('abi.getBalance.err', err);
+        // clearInterval(this.interval);
       });
     },
     async topUpCUSD() {
@@ -657,6 +657,9 @@ export default {
   width: calc(100% - 10px);
   margin: auto;
 }
+.badges-div {
+  height: 200px;
+}
 .badge {
   background-color: var(--ptn-yellow);
   border-radius: 16px;
@@ -704,6 +707,9 @@ export default {
 
 /* Start Mobile - sm < 768px */
 @media (max-width: 767px) {
+  .badges-div {
+    height: 0;
+  }
 }
 
 /* Start Mini Mobile - None < 576px */

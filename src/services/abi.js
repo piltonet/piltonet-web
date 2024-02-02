@@ -64,7 +64,7 @@ class abi {
 				errTitle = null;
 				errType = 'warning';
 			} else {
-				console.log(error || err);
+				console.log(errMessage || err);
 			}
 		} else {
 			console.log(err);

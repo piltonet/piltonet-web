@@ -316,18 +316,19 @@ async function switchNetworkToDefault(provider = undefined) {
 
 // GET BALANCE
 async function getBalance(address) {
-	let balance = undefined;
+	let balance = 0;
 	try {
 		let walletName = store.getters.getConnectionStore?.connected_wallet;
 		const provider = getProvider(walletName);
 		if(await isDefaultNetwork(provider)) {
 			const _provider = new ethers.BrowserProvider(provider);
-			balance = await _provider.getBalance(address);
+			const _balance = await _provider.getBalance(address);
+			balance = _balance ? parseInt(_balance.toString()) / 1e18 : 0;
 		}
 	} catch (err) {
 		console.log(err);
 	}
-	return parseInt(balance.toString()) / 1e18 || 0;
+	return balance;
 }
 
 // PERSONAL SIGN
