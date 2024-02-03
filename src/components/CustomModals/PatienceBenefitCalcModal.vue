@@ -197,16 +197,13 @@ export default {
   },
   methods: {
     async setCalculator(circleInfo, circleConst) {
+      this.circleInfo = circleInfo;
       this.clearModal();
       
-      this.circleInfo = circleInfo;
       if(this.circleInfo.circle_payment_type == 'fixed_loan') {
         this.minFixedAmount = this.minFixedAmount * this.minMembers;
         this.maxFixedAmount = this.maxFixedAmount * this.maxMembers;
       }
-      this.circleSize = this.circleInfo.circle_size;
-      this.roundPeriod = this.circleInfo.circle_round_days;
-      this.roundPayments = this.circleInfo.circle_round_payments;
 
       this.paymentToken = circleConst['CIRCLES_PAYMENT_TOKENS'][this.utils.toString(this.circleInfo.circle_payment_token)];
       this.tokenSymbol = this.paymentToken['TOKEN_SYMBOL']
@@ -329,7 +326,7 @@ export default {
       this.circleSize = this.circleInfo?.circle_size || '';
       this.roundPeriod = this.circleInfo?.circle_round_days || '';
       this.roundPayments = this.circleInfo?.circle_round_payments || '';
-      this.patienceBenefit = '';
+      this.patienceBenefit = this.circleInfo?.circle_patience_benefit || '';
       this.calculate = false;
     },
     closeModal() {
