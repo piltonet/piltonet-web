@@ -44,22 +44,22 @@
         </div>
         <div class="d-flex flex-column justify-content-start align-items-start mt-2">
           <p class="info-text">
-            {{ `${accountContact.account_fullname || accountContact.account_nickname} has requested to be in your trusted contacts.` }}
+            {{ `${accountContact.account_fullname || accountContact.account_nickname} has requested to be added to your trusted contacts.` }}
           </p>
         </div>
-        <div class="d-flex flex-column flex-md-row justify-content-start align-items-start mt-2">
+        <div class="d-flex flex-column justify-content-start align-items-start mt-2">
           <div class="d-flex flex-column justify-content-center align-items-start">
-            <p class="main-text">
-              {{ `Mint your Trusted Contact NFT for ${accountContact.account_fullname || accountContact.account_nickname}` }}
+            <p class="main-text small">
+              {{ `Would you like to confirm this request and add ${accountContact.account_fullname || accountContact.account_nickname} to your contact list? ` }}
             </p>
           </div>
-          <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="d-flex flex-row justify-content-start align-items-center mt-2">
             <div
               type="button"
               @click="acceptWaitingContact(accountContact.contact_id, accountContact.account_tba_address)"
-              class="front-btn green-btn ms-0 ms-md-3"
+              class="front-btn green-btn"
             >
-              <span class="m-0 p-0">Mint Now</span>
+              <span class="m-0 p-0">Yes, for sure.</span>
             </div>
             <div
               type="button"

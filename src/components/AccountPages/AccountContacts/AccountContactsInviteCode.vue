@@ -117,15 +117,17 @@
         </div>
       </div>
       
-      <div v-if="inviteAccount" class="d-flex flex-column flex-md-row justify-content-start align-items-center my-2">
-        <p class="main-text">{{ `Is ${inviteAccount.account_fullname || inviteAccount.account_nickname} your trusted friend?` }}</p>
-        <div class="row">
+      <div v-if="inviteAccount" class="d-flex flex-column justify-content-center align-items-start my-2">
+        <p class="main-text small">
+          {{ `Would you like to add ${inviteAccount.account_fullname || inviteAccount.account_nickname} to your trusted contacts?` }}
+        </p>
+        <div class="row mt-2">
           <div
             type="button"
             @click="acceptInviteCode"
-            class="front-btn green-btn ms-3"
+            class="front-btn green-btn"
           >
-            <span class="m-0 p-0">Yes, sure!</span>
+            <span class="m-0 p-0">Yes, for sure.</span>
           </div>
           <div
             type="button"
