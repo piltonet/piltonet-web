@@ -4,7 +4,7 @@
         Work In Progress ...
     </div>
 
-    <div v-else-if="!accountCircles">
+    <div v-else-if="!activeCircles">
       <div class="account-profile-circles-main row mt-5">
         <h2>YOU HAVE NO ACTIVE CIRCLES.</h2>
         <h3>Lending Circles you've been invited to or joined will appear here.</h3>
@@ -13,7 +13,7 @@
           <div
             type="button"
             class="account-profile-circles-card"
-            @click="createNewCircleOnTestnet"
+            @click="ownCircles ? $router.push('/account/circles') : createNewCircleOnTestnet()"
           >
             <h3>
               <i class="fa fa-hands-holding-circle" aria-hidden="true"></i>
@@ -28,7 +28,7 @@
     
     <div v-else>
       <!-- Whitelisted -->
-      <template v-if="accountCircles.whitelisted?.length > 0">
+      <template v-if="activeCircles.whitelisted?.length > 0">
         <div class="d-flex flex-row row">
           <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
             <h2 class="account-circles-list-title">YOU ARE INVITED</h2>
@@ -36,7 +36,7 @@
         </div>
         <div class="d-flex flex-row row">
           <div
-            v-for="circle in accountCircles.whitelisted || []"
+            v-for="circle in activeCircles.whitelisted || []"
             :key="circle.circle_id"
             :id="`circle-whitelisted-${index}`"
             class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
@@ -50,7 +50,7 @@
       </template>
 
       <!-- Joined -->
-      <template v-if="accountCircles.joined?.length > 0">
+      <template v-if="activeCircles.joined?.length > 0">
         <div class="d-flex flex-row row">
           <div class="col-12 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
             <h2 class="account-circles-list-title">YOU HAVE JOINED</h2>
@@ -58,7 +58,7 @@
         </div>
         <div class="d-flex flex-row row">
           <div
-            v-for="(circle, index) in accountCircles.joined || []"
+            v-for="(circle, index) in activeCircles.joined || []"
             :key="circle.circle_id"
             :id="`circle-joined-${index}`"
             class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2"
@@ -78,7 +78,7 @@
     ref="message_modal"
     @ok-clicked="createNewCircle"
   />
-  
+
 </template>
 
 <script>
@@ -93,7 +93,8 @@ export default {
   },
   data () {
       return {
-        accountCircles: null,
+        activeCircles: null,
+        ownCircles: null,
         loading: true
       }
   },
@@ -108,7 +109,8 @@ export default {
       api.get_account_circles().then((apiResponse) => {
         if(apiResponse && apiResponse.data.done) {
           let circles = apiResponse.data.result[0];
-          this.accountCircles = circles && (circles.whitelisted || circles.joined) ? apiResponse.data.result[0] : null;
+          this.ownCircles = circles ? circles.creating : null;
+          this.activeCircles = circles && (circles.whitelisted || circles.joined) ? circles : null;
         } else {
           if(apiResponse.data.status_code == "401") {
             this.setConnectionStore({ is_connected: false });
