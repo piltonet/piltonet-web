@@ -103,7 +103,7 @@
                   @click="$router.push('/account/circles')"
                 >
                   <i class="far fa-circle-dot pe-3" aria-hidden="true"></i>
-                  Your Circles
+                  My Circles
                 </a>
               </li>
               <li v-if="connectedAccount.account_status != 'fresh' && connectedAccount.account_status != 'waiting'">

@@ -1,10 +1,10 @@
 <template>
   <div id="account-circles-list">
     
-    <!-- Your Circles -->
+    <!-- My Circles -->
     <div class="d-flex flex-row row">
       <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start align-items-center mt-5 mb-3">
-        <h2 class="account-circles-list-title">YOUR CIRCLES</h2>
+        <h2 class="account-circles-list-title">MY CIRCLES</h2>
       </div>
       <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end align-items-center mt-4">
         <div

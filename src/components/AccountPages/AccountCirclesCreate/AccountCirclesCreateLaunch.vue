@@ -309,7 +309,7 @@ export default {
         "TLCC", // contract name
         "launchCircle", // function name
         ["function launchCircle(uint256 start_date)"], // function ABI
-        [this.startDate.getTime() / 1000], // function args
+        [parseInt(this.startDate.getTime() / 1000)], // function args
         0, // value
         this.circleInfoProps.circle_id // Contract Address
       ]);

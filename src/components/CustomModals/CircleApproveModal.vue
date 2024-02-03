@@ -22,19 +22,19 @@
           Current Allowance
           <span class="input-label-small">(Circle Contract)</span>
         </label>
-        <div class="d-flex flex-column justify-content-center align-items-start">
+        <div class="d-flex flex-column justify-content-center align-items-start mt-2">
           <div class="d-flex flex-row justify-content-start align-items-center">
             <input
               disabled
               type="number"
-              class="small-input mb-0"
+              class="small-input m-0"
               v-model="currentAllowance"
             />
             <SvgPaymentToken
               :chainId="this.defaultchain.chainId"
               :paymentToken="this.defaultchain.CUSD.address"
               :tooltip="false"
-              customClass="m-1"
+              customClass="ms-2 me-1"
             />
             CUSD
           </div>
@@ -47,13 +47,13 @@
           New Allowance Cap
           <span class="input-label-small">{{ `(a minimum of ${this.minAmount} CUSD is necessary)` }}</span>
         </label>
-        <div class="d-flex flex-column justify-content-center align-items-start">
+        <div class="d-flex flex-column justify-content-center align-items-start mt-2">
           <div class="d-flex flex-row justify-content-start align-items-center">
             <input
               ref="approvalAmount"
               id="approval_amount"
               type="number"
-              class="small-input mb-0"
+              class="small-input m-0"
               :class="hasError['approvalAmount'] ? 'has-error' : ''"
               placeholder="Enter Amount"
               v-model="approvalAmount"
@@ -62,7 +62,7 @@
               :chainId="this.defaultchain.chainId"
               :paymentToken="this.defaultchain.CUSD.address"
               :tooltip="false"
-              customClass="m-1"
+              customClass="ms-2 me-1"
             />
             CUSD
           </div>

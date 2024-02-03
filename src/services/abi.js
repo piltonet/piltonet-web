@@ -59,12 +59,12 @@ class abi {
 
 		if(this.connectedAccount.connected_wallet == 'metamask') {
 			const error = JSON.parse(JSON.stringify(err));
-			errMessage = error?.shortMessage || errMessage;
 			if(error?.code && error.code == 'ACTION_REJECTED') {
 				errTitle = null;
+				errMessage = error.shortMessage;
 				errType = 'warning';
 			} else {
-				console.log(errMessage || err);
+				console.log(err);
 			}
 		} else {
 			console.log(err);
