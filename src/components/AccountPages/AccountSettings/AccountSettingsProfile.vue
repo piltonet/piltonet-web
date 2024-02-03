@@ -141,42 +141,48 @@
 					<label for="accountSocial" class="input-label mt-2">Social</label>
           <!-- Social Twitter -->
           <div class="account-social-links" @click="$refs.account_social_twitter.focus()">
-            <i class="fab fa-twitter fa-lg account-social-icons"></i>
-            <span class="ps-2">https://twitter.com/</span>
-            <input
-              ref="account_social_twitter"
-              id="linkTwitter"
-              type="text"
-              placeholder="YourTwitter"
-              class="account-social-links-input"
-              v-model="accountProfile.account_social_twitter"
-            />
+            <i class="fab fa-twitter fa-lg account-social-icons pe-2"></i>
+            <span class="account-social-links-prefix d-none d-sm-flex">https://twitter.com/</span>
+            <div class="w-100">
+              <input
+                ref="account_social_twitter"
+                id="linkTwitter"
+                type="text"
+                placeholder="YourTwitter"
+                class="account-social-links-input"
+                v-model="accountProfile.account_social_twitter"
+              />
+            </div>
           </div>
           <!-- Social Instagram -->
           <div class="account-social-links" @click="$refs.account_social_instagram.focus()">
-            <i class="fab fa-instagram fa-lg account-social-icons"></i>
-            <span class="ps-2">https://instagram.com/</span>
-            <input
-              ref="account_social_instagram"
-              id="linkInstagram"
-              type="text"
-              placeholder="YourInstagram"
-              class="account-social-links-input"
-              v-model="accountProfile.account_social_instagram"
-            />
+            <i class="fab fa-instagram fa-lg account-social-icons pe-2"></i>
+            <span class="account-social-links-prefix d-none d-sm-flex">https://instagram.com/</span>
+            <div class="w-100">
+              <input
+                ref="account_social_instagram"
+                id="linkInstagram"
+                type="text"
+                placeholder="YourInstagram"
+                class="account-social-links-input"
+                v-model="accountProfile.account_social_instagram"
+              />
+            </div>
           </div>
           <!-- Social Telegram -->
           <div class="account-social-links" @click="$refs.account_social_telegram.focus()">
-            <i class="fab fa-telegram fa-lg account-social-icons"></i>
-            <span class="ps-2">https://t.me/</span>
-            <input
-              ref="account_social_telegram"
-              id="linkTelegram"
-              type="text"
-              placeholder="YourTelegram"
-              class="account-social-links-input"
-              v-model="accountProfile.account_social_telegram"
-            />
+            <i class="fab fa-telegram fa-lg account-social-icons pe-2"></i>
+            <span class="account-social-links-prefix d-none d-sm-flex">https://t.me/</span>
+            <div class="w-100">
+              <input
+                ref="account_social_telegram"
+                id="linkTelegram"
+                type="text"
+                placeholder="YourTelegram"
+                class="account-social-links-input"
+                v-model="accountProfile.account_social_telegram"
+              />
+            </div>
           </div>
           
 					<!-- Token Bound Account -->
@@ -392,6 +398,9 @@ export default {
 }
 .account-social-icons {
 	color: var(--ptn-third-gray);
+}
+.account-social-links-prefix {
+	white-space: nowrap;
 }
 .account-social-links-input {
 	border: 0 !important;
