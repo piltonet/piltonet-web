@@ -13,13 +13,13 @@
           <div
             type="button"
             class="account-profile-circles-card"
-            @click="$router.push('/account/circles')"
+            @click="createNewCircleOnTestnet"
           >
             <h3>
               <i class="fa fa-hands-holding-circle" aria-hidden="true"></i>
             </h3>
             <h2>
-              MY CIRCLES
+              CREATE YOUR OWN CIRCLE
             </h2>
           </div>
         </div>
@@ -73,6 +73,12 @@
 
     </div>
   </div>
+
+  <MessageModal
+    ref="message_modal"
+    @ok-clicked="createNewCircle"
+  />
+  
 </template>
 
 <script>
@@ -123,6 +129,18 @@ export default {
       .catch((err) => { 
         console.log(err);
       })
+    },
+    createNewCircleOnTestnet() {
+      this.$refs.message_modal.setMessage({
+        title: 'Beta Version',
+        message: 'This is a test version of lending circles on Viction Testnet. In future updates, your information may be deleted without notice.',
+        okBtn: 'I Like To Test',
+        cancelBtn: null,
+        customStyle: 'text-align: start !important; padding-left: 1rem !important;'
+      });
+    },
+    createNewCircle() {
+      this.$router.push({path: '/account/circles/create', query: {active_page: 'deploy'}});
     }
   }
 };
