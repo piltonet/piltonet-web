@@ -39,13 +39,13 @@
       </div>
       <div class="side-bar-item">
         <div
-          :type="activePage == 'launch' ? '' : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? '' : 'button'"
-          @click="activePage != 'launch' && circleInfoProps.whitelists && circleInfoProps.whitelists.length >= circleConstProps['CIRCLES_MIN_MEMBERS'] ?
+          :type="activePage == 'launch' ? '' : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_size ? '' : 'button'"
+          @click="activePage != 'launch' && circleInfoProps.whitelists && circleInfoProps.whitelists.length >= circleInfoProps.circle_size ?
             $router.push({path: '/account/circles/create', query: {active_page: 'launch', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
           :class="activePage == 'launch' ? 
-            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'deployed' ? 'active' : 'active done'
-            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleConstProps['CIRCLES_MIN_MEMBERS'] ? 'disable' : circleInfoProps.circle_status == 'deployed' ? '' : 'done'"
+            !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_size ? 'disable' : circleInfoProps.circle_status == 'deployed' ? 'active' : 'active done'
+            : !circleInfoProps.whitelists || circleInfoProps.whitelists.length < circleInfoProps.circle_size ? 'disable' : circleInfoProps.circle_status == 'deployed' ? '' : 'done'"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">3</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Review & Launch</p>
