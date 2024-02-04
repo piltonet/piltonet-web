@@ -42,19 +42,12 @@
             :rounded="true"
             class="account-image-small"
           />
-          <!-- <JazzIcon
-            v-if="!whitelist.account_image_url"
-            :address="whitelist.whitelist_account_address"
-            :diameter="40"
-            :colors=jazzColors
-            class="account-image-small"
-          /> -->
           <p class="top-text small ms-2">
             <span :class="whitelist.whitelist_is_rejected ? 'text-decoration-line-through' : ''">
-              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
+              {{ whitelist.account_tba_address == accountProfile.account_tba_address ? 'You' : whitelist.account_fullname || whitelist.account_nickname }}
             </span>
             <span v-if="!whitelist.whitelist_is_joined && !whitelist.whitelist_is_rejected" class="note-text d-none d-sm-inline-block ps-2">
-              {{ whitelist.account_tba_address == connectedAccount.account_tba_address ? 'whitelisted as the circle host.' : `whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
+              {{ whitelist.account_tba_address == accountProfile.account_tba_address ? 'are whitelisted as the circle host.' : `was whitelisted on ${utils.formatDate(whitelist.updated_at, 'DD Month YYYY')}` }}
               <!-- <i class="fa fa-spinner fa-pulse ms-1" aria-hidden="true"></i> -->
             </span>
             <span v-if="whitelist.whitelist_is_joined" class="note-text d-none d-sm-inline-block ps-2">
@@ -65,7 +58,7 @@
             </span>
           </p>
           <div
-            v-if="circleInfoProps.circle_status == 'deployed' && whitelist.account_tba_address != connectedAccount.account_tba_address"
+            v-if="circleInfoProps.circle_status == 'deployed' && whitelist.account_tba_address != accountProfile.account_tba_address"
             type="button"
             @click="removeFromWhitelist(whitelist.account_tba_address)"
             class="front-btn red-btn ms-3"
@@ -73,10 +66,10 @@
             <span class="m-0 p-0">Remove</span>
           </div>
         </div>
-        <div v-if="!circleInfoProps.whitelists || circleInfoProps.whitelists.length < minMembers">
+        <div v-if="!circleInfoProps.whitelists || circleInfoProps.whitelists.length <= 1">
           <p class="help-text mt-4">
             <i class="fa fa-asterisk me-1" aria-hidden="true"></i>
-            {{ `You need to add at least ${minMembers - circleInfoProps.whitelists.length} more contact(s) to the whitelist before launch the circle.` }}
+            {{ `You need to add at least ${circleInfoProps.circle_size - circleInfoProps.whitelists.length} more contact(s) to the whitelist before launch the circle.` }}
           </p>
         </div>
         <div v-else-if="circleInfoProps.whitelists.length <= circleInfoProps.circle_size">
@@ -145,19 +138,12 @@
             :rounded="true"
             class="account-image-small"
           />
-          <!-- <JazzIcon
-            v-if="!contact.account_image_url"
-            :address="contact.account_tba_address"
-            :diameter="40"
-            :colors=jazzColors
-            class="account-image-small"
-          /> -->
           <p class="top-text small ms-2">
             <span>
               {{ contact.account_fullname || contact.account_nickname }}
             </span>
             <span class="note-text d-none d-sm-inline-block ps-2">
-              {{ `your contact since ${utils.formatDate(contact.updated_at, 'Month YYYY')}` }}
+              {{ `has been your contact since ${utils.formatDate(contact.updated_at, 'Month YYYY')}` }}
             </span>
           </p>
           <div
@@ -206,8 +192,6 @@ import { mapGetters, mapMutations } from "vuex";
 import { abi, api } from "@/services";
 import wallets from "@/wallets";
 import NotFound from '@/pages/NotFound.vue';
-
-// const { LendingCircleContract } = require('@/contracts');
 
 export default {
   name: "AccountCirclesCreateWhitelist",
@@ -304,8 +288,9 @@ export default {
                 dangerouslyUseHTMLString: true,
                 type: apiResponse.data.message_type,
                 duration: 3000,
-                onClose: () => { this.$router.go() }
+                // onClose: () => { this.$router.go() }
               })
+              this.$router.go();
             } else {
               if(apiResponse.data.status_code == "401") {
                 this.setConnectionStore({ is_connected: false });
@@ -358,72 +343,81 @@ export default {
       }
     },
     async removeFromWhitelist(whitelistedAdr) {
-      console.log(whitelistedAdr);
-      // try {
-      //   const circleContractAddress = this.circleInfoProps.circle_id;
-      //   const circleContract = await venomwallet.getDeployedContract(LendingCircleContract, circleContractAddress);
-      //   const circleOwner = new Address(this.connectedAccount.account_tba_address);
-      //   const transaction = await circleContract.methods.removeFromWhitelist({
-      //     delistedAddress: [whitelistedAdr]
-      //   }).send({
-      //     from: circleOwner,
-      //     amount: "0"
-      //   });
-      //   this.openLoadings[loadingId].close();
-
-      //   // console.log('transaction:', transaction);
-        
-      //   if(transaction) {
-      //     let apiResponse = await api.post_account_circles_creator_whitelists_remove(
-      //       {
-      //         circle_id: this.circleInfoProps.circle_id,
-      //         contact_adrs: JSON.stringify([whitelistedAdr])
-      //       }
-      //     );
-      //     if(apiResponse.data.done) {
-      //       this.notif({
-      //         title: "SUCCESS!",
-      //         message: apiResponse.data.message,
-      //         dangerouslyUseHTMLString: true,
-      //         type: apiResponse.data.message_type,
-      //         duration: 3000,
-      //         onClose: () => { this.$router.go() }
-      //       })
-      //     } else {
-      //       if(apiResponse.data.status_code == "401") {
-      //         this.setConnectionStore({ is_connected: false });
-      //         this.setProfileStore(null);
-      //         this.$router.go();
-      //       } else {
-      //         this.notif({
-      //           title: "OOPS!",
-      //           message: apiResponse.data.message,
-      //           dangerouslyUseHTMLString: true,
-      //           type: apiResponse.data.message_type,
-      //           duration: 3000,
-      //         })
-      //       }
-      //     }
-      //   } else {
-      //     this.notif({
-      //       title: "OOPS!",
-      //       message: "Something went wrong, please try again later.",
-      //       dangerouslyUseHTMLString: true,
-      //       type: "error",
-      //       duration: 3000,
-      //     })
-      //   }
-      // } catch(err) {
-      //   this.openLoadings[loadingId].close();
-      //   this.notif({
-      //     title: "OOPS!",
-      //     message: "Something went wrong, please try again later.",
-      //     dangerouslyUseHTMLString: true,
-      //     type: "error",
-      //     duration: 3000,
-      //   })
-      //   console.log(err);
-      // }
+      if(whitelistedAdr) {
+        try {
+          let abiResponse = null;
+          if(this.circleInfoProps.circle_mode == 'fully_dec') {
+            abiResponse = await this.removeFromWhitelistFDCircle(whitelistedAdr);
+          } else {
+            abiResponse = await this.removeFromWhitelistSDCircle();
+          }
+          if(abiResponse.done) {
+            let apiResponse = await api.post_account_circles_creator_whitelists_remove(
+              {
+                circle_id: this.circleInfoProps.circle_id,
+                contact_adrs: JSON.stringify([whitelistedAdr])
+              }
+            );
+            if(apiResponse.data.done) {
+              this.notif({
+                title: "SUCCESS!",
+                message: apiResponse.data.message,
+                dangerouslyUseHTMLString: true,
+                type: apiResponse.data.message_type,
+                duration: 3000,
+                // onClose: () => { this.$router.go() }
+              })
+              this.$router.go();
+            } else {
+              if(apiResponse.data.status_code == "401") {
+                this.setConnectionStore({ is_connected: false });
+                this.setProfileStore(null);
+                this.$router.go();
+              } else {
+                this.notif({
+                  title: "OOPS!",
+                  message: apiResponse.data.message,
+                  dangerouslyUseHTMLString: true,
+                  type: apiResponse.data.message_type,
+                  duration: 3000,
+                })
+              }
+            }
+          }
+        } catch(err) {
+          this.notif({
+            title: "OOPS!",
+            message: "Something went wrong, please try again later.",
+            dangerouslyUseHTMLString: true,
+            type: "error",
+            duration: 3000,
+          })
+          console.log(err);
+        }
+      }
+    },
+    async removeFromWhitelistFDCircle(whitelistedAdr) {
+      const contract = await abi.setAbi(
+        this.accountProfile.account_tba_address, // sender tba address
+        "ERC6551Account"
+      );
+      // execute TLCC addToWhitelist
+      return await contract.interaction("executeFunction", [
+        "TLCC", // contract name
+        "removeFromWhitelist", // function name
+        ["function removeFromWhitelist(address moderator, address[] memory accounts)"], // function ABI
+        [this.accountProfile.account_tba_address, [whitelistedAdr]], // function args
+        0, // value
+        this.circleInfoProps.circle_id // Contract Address
+      ]);
+    },
+    async removeFromWhitelistSDCircle() {
+      let personalSign = await this.personalSign();
+      if(personalSign) {
+        return {done: true};
+      } else {
+        return {done: false};
+      }
     },
     async selectAllContacts() {
       for(let contact of this.circleInfoProps.contacts) {
