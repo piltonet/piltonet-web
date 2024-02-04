@@ -103,7 +103,7 @@
                   @click="$router.push('/account/circles')"
                 >
                   <i class="far fa-circle-dot pe-3" aria-hidden="true"></i>
-                  My Circles
+                  Your Circles
                 </a>
               </li>
               <li v-if="connectedAccount.account_status != 'fresh' && connectedAccount.account_status != 'waiting'">
@@ -341,14 +341,14 @@ export default {
 /* Start Mobile - sm < 768px */
 @media (max-width: 767px) {
   .top-navbar {
-    padding: 5rem 3rem 3rem;
+    padding: 1.3rem 1rem 0;
   }
 }
 
 /* Start Mini Mobile - None < 576px */
 @media (max-width: 575px) {
   .top-navbar {
-    padding: 3.3rem 1rem;
+    padding: 1rem 0.7rem 0;
   }
   .btn-connect {
     line-height: 40px;

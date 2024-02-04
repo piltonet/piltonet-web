@@ -15,8 +15,8 @@
           :type="activePage == 'deploy' ? '' : 'button'"
           @click="activePage != 'deploy' ? $router.push({path: '/account/circles/create', query: {active_page: 'deploy', circle_id: circleInfoProps.circle_id}}) : ''"
           class="side-bar-btn"
-          :class="activePage == 'deploy' ? (circleInfoProps.circle_status == 'deployed' ? 'active doing' : 'active done')
-            : (circleInfoProps.circle_status == 'deployed' ? 'doing' : 'done')"
+          :class="activePage == 'deploy' ? (circleInfoProps.circle_status == 'deployed' ? 'active done' : 'active done')
+            : (circleInfoProps.circle_status == 'deployed' ? 'done' : 'done')"
         >
           <span class="side-bar-number d-md-none d-lg-inline-block p-0 mx-auto ms-lg-3 me-lg-1">1</span>
           <p class="d-none d-md-inline-block m-0 ps-2">Setup & Deploy</p>

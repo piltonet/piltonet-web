@@ -3,7 +3,7 @@
     id="calculator-modal"
     v-model="showModal"
     title="Calculator"
-    class="calculator-dialog pt-3"
+    class="calculator-dialog"
     :style="''"
   >
     <div class="d-flex flex-column justify-content-center align-items-start p-2">
@@ -30,7 +30,7 @@
           </div>
           
           <!-- Round Duration -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+          <div class="d-flex flex-column justify-content-center align-items-start mt-2">
             <label for="roundPeriod" class="input-label">
               Round Duration
               <span class="input-label-small">(in days)</span>
@@ -50,7 +50,7 @@
           </div>
 
           <!-- Round Payments -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+          <div class="d-flex flex-column justify-content-center align-items-start mt-2">
             <label for="roundPayments" class="input-label">
               <div class="d-flex flex-row justify-content-center align-items-center">
                 {{ this.circleInfo.circle_payment_type == 'fixed_pay' ? 'Round Payments' : 'Loan Amount' }}
@@ -82,7 +82,7 @@
           </div>
           
           <!-- Patience Benefit -->
-          <div class="d-flex flex-column justify-content-center align-items-start mt-3">
+          <div class="d-flex flex-column justify-content-center align-items-start mt-2">
             <label for="patienceBenefit" class="input-label">
               Patience Benefit
               <span class="input-label-small">(%)</span>

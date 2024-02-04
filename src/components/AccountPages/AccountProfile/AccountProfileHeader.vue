@@ -2,14 +2,15 @@
   <div id="account-profile-header">
     <div class="d-flex flex-row justify-content-center align-items-start row">
       <!-- profile info -->
-      <div class="col-12 col-md-5 mt-5">
-        <div class="d-flex flex-column justify-content-center align-items-start pt-5 ps-2">
+      <div class="col-12 col-md-5 mt-0 mt-md-5">
+        <div class="d-flex flex-column justify-content-center align-items-start pt-0 pt-md-5 px-2">
           <AvatarImage
             :imageSrc="accountProfile?.account_image_url"
             :name="accountProfile?.account_fullname || accountProfile?.account_nickname"
             :size="150"
             :rounded="false"
             :border="accountProfile?.account_image_url ? false : true"
+            class="mw-100 p-0"
           />
 
           <div v-if="accountProfile?.account_fullname" class="account-fullname mt-3">

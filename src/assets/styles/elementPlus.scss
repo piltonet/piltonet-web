@@ -167,7 +167,9 @@
     border-radius: 0.5rem !important;
     width: 90%;
     max-width: 500px;
-    height: auto;
+    // height: auto;
+    height: 482px;
+    margin-top: calc((100vh - 482px) / 2);
     padding: 0;
 }
 
