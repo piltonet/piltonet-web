@@ -166,15 +166,17 @@ export default {
   color: rgba(var(--ptn-third-gray-rgb), 0.7);
 }
 .side-bar-btn.doing {
-  color: rgba(var(--ptn-second-blue-rgb), 0.7);
+  // color: rgba(var(--ptn-second-blue-rgb), 0.7);
+  color: rgba(var(--ptn-color-rgb), 0.7);
 }
 .side-bar-btn.done {
   font-size: 23px;
   color: rgba(var(--ptn-green-rgb), 0.6);
 }
 .side-bar-btn.active.doing {
-  color: var(--ptn-second-blue);
-  border: solid 2px var(--ptn-second-blue);
+  // color: var(--ptn-second-blue);
+  // border: solid 2px var(--ptn-second-blue);
+  color: rgba(var(--ptn-color-rgb), 0.9);
 }
 .side-bar-btn.active.done {
   color: rgba(var(--ptn-green-rgb), 0.9);
