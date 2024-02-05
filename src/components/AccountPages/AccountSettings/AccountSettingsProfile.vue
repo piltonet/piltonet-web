@@ -1,7 +1,7 @@
 <template>
   <CropperModal ref="cropper_modal" />
   <div id="account-settings-profile">
-    <div class="d-flex flex-column justify-content-center align-items-start ms-3 ms-xl-5 py-4">
+    <div class="d-flex flex-column justify-content-center align-items-start mx-auto py-4">
       <button
         type="button" 
         class="back-btn p-0"
